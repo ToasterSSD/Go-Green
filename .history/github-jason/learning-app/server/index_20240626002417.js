@@ -26,8 +26,8 @@ const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);
 const announcementRoute = require("./routes/announcement");
 app.use("/announcement", announcementRoute);
-const chatareaRoute = require("./routes/chatarea");
-app.use("/chatarea", chatareaRoute);
+const chatareaRoute = require("./routes/c");
+app.use("/announcement", announcementRoute);
 
 const db = require('./models');
 db.sequelize.sync({ alter: true })

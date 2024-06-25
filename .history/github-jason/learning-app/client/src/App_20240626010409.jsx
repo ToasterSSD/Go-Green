@@ -61,7 +61,7 @@ function App() {
                   <Typography>Announcements-Detail</Typography>
                 </Link>
                 <Link to="/chatarea">
-                  <Typography>Chat Area</Typography>
+                  <Typography>/Typography>
                 </Link>
 
                 <Box sx={{ flexGrow: 1 }}></Box>
@@ -99,7 +99,6 @@ function App() {
                 path={"/announcementDetail"}
                 element={<AnnouncementDetail />}
               />
-              <Route path={"/chatarea"} element={<ChatArea />} />
             </Routes>
           </Container>
         </ThemeProvider>

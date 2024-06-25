@@ -99,7 +99,7 @@ function App() {
                 path={"/announcementDetail"}
                 element={<AnnouncementDetail />}
               />
-              <Route path={"/chatarea"} element={<ChatArea />} />
+              <Route path={"/chatarea"} element={<MyForm />} />
             </Routes>
           </Container>
         </ThemeProvider>

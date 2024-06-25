@@ -60,7 +60,7 @@ function App() {
                 <Link to="/announcementDetail">
                   <Typography>Announcements-Detail</Typography>
                 </Link>
-                <Link to="/chatarea">
+                <Link to="/chatare">
                   <Typography>Chat Area</Typography>
                 </Link>
 
@@ -99,7 +99,6 @@ function App() {
                 path={"/announcementDetail"}
                 element={<AnnouncementDetail />}
               />
-              <Route path={"/chatarea"} element={<ChatArea />} />
             </Routes>
           </Container>
         </ThemeProvider>

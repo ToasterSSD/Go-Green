@@ -21,7 +21,6 @@ import http from "./http";
 import UserContext from "./contexts/UserContext";
 import Announcement from "./pages/Announcement";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
-import ChatArea from "./pages/ChatArea";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,9 +59,6 @@ function App() {
                 <Link to="/announcementDetail">
                   <Typography>Announcements-Detail</Typography>
                 </Link>
-                <Link to="/chatarea">
-                  <Typography>Chat Area</Typography>
-                </Link>
 
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
@@ -99,7 +95,6 @@ function App() {
                 path={"/announcementDetail"}
                 element={<AnnouncementDetail />}
               />
-              <Route path={"/chatarea"} element={<ChatArea />} />
             </Routes>
           </Container>
         </ThemeProvider>
