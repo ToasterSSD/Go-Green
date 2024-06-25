@@ -6,6 +6,8 @@ const mysql = require('mysql')
 const cors = require('cors');
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public'));
 
 // Enable CORS
 app.use(cors({
@@ -17,8 +19,8 @@ app.get("/", (req, res) => {
     res.send("Welcome to Go Green.");
 });
 // Routes
-const tutorialRoute = require('./routes/tutorial');
-app.use("/tutorial", tutorialRoute);
+const articleRoute = require('./routes/article');
+app.use("/article", articleRoute);
 
 // Set up body-parser middleware to parse JSON requests
 app.use(bodyParser.json());
@@ -31,8 +33,15 @@ const gogreendb = mysql.createConnection({
     database: 'gogreendb'
   });
 
-let port = process.env.APP_PORT;
+const db = require('./models');
+db.sequelize.sync({ alter: true })
+    .then(() => {
+        let port = process.env.APP_PORT;
 
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
+        app.listen(port, () => {
+            console.log(`Server running on http://localhost:${port}`);
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
