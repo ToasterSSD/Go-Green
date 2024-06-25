@@ -1,0 +1,30 @@
+module.exports = (sequelize, DataTypes) => {
+  const announcement = sequelize.define(
+    "announcement",
+    {
+      title: {
+        type: DataTypes.STRING(100),
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      imageFile: {
+        type: DataTypes.STRING(20),
+      },
+    },
+    {
+      tableName: "announcements",
+    }
+  );
+
+  announcement.associate = (models) => {
+    announcement.belongsTo(models.User, {
+      foreignKey: "userId",
+      as: "user",
+    });
+  };
+
+  return announcement;
+};
