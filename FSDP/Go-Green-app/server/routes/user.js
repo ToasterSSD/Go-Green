@@ -21,7 +21,7 @@ router.post("/register", async (req, res) => {
     });
     try {
         data = await validationSchema.validate(data,
-            { abortEarly: false });
+            { abortEarly: false });module.exports = router;
 
         // Check email
         let user = await User.findOne({
