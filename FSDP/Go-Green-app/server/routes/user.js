@@ -118,8 +118,8 @@ router.post("/adminlogin", async (req, res) => {
 let data = req.body;
 // Validate request body
 let validationSchema = yup.object({
-    adminemail: yup.string().trim().lowercase().email().max(50).required(),
-    adminpassword: yup.string().trim().min(8).max(50).required(),
+    email: yup.string().trim().lowercase().email().max(50).required(),
+    password: yup.string().trim().min(8).max(50).required(),
 });
 try {
     data = await validationSchema.validate(data, { abortEarly: false });
@@ -127,13 +127,13 @@ try {
     // Check email and password
     let errorMsg = "Email or password is not correct.";
     let user = await User.findOne({
-    where: { adminemail: data.adminemail },
+    where: { email: data.email },
     });
     if (!user) {
     res.status(400).json({ message: errorMsg });
     return;
     }
-    let match = await bcrypt.compare(data.adminpassword, user.adminpassword);
+    let match = await bcrypt.compare(data.password, user.password);
     if (!match) {
     res.status(400).json({ message: errorMsg });
     return;
@@ -141,7 +141,7 @@ try {
     // Return user info
     let userInfo = {
     id: user.id,
-    adminemail: user.adminemail,
+    email: user.email,
     name: user.name,
     };
     let accessToken = sign(userInfo, process.env.APP_SECRET, {

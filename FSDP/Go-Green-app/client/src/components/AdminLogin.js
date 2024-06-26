@@ -9,7 +9,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/admin/login', { email, password });
+            const response = await axios.post('/adminlogin', { email, password });
             localStorage.setItem('token', response.data.token);
             setMessage('Login successful');
         } catch (error) {
