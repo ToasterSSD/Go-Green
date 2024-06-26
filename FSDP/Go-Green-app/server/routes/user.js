@@ -7,8 +7,8 @@ const { sign } = require("jsonwebtoken");
 const { validateToken } = require("../middlewares/auth");
 require("dotenv").config();
 
-const adminEmail = "admin@example.com";
-const adminPassword = bcrypt.hashSync("adminpassword", 8);
+const Email = "admin@example.com";
+const Password = bcrypt.hashSync("adminpassword", 8);
 
 router.post("/register", async (req, res) => {
   let data = req.body;
@@ -113,50 +113,48 @@ router.get("/auth", validateToken, (req, res) => {
   res.json({
     user: userInfo,
   });
-  
+});
+
 router.post("/adminlogin", async (req, res) => {
-let data = req.body;
-// Validate request body
-let validationSchema = yup.object({
+  let data = req.body;
+  // Validate request body
+  let validationSchema = yup.object({
     email: yup.string().trim().lowercase().email().max(50).required(),
     password: yup.string().trim().min(8).max(50).required(),
-});
-try {
+  });
+  try {
     data = await validationSchema.validate(data, { abortEarly: false });
 
     // Check email and password
     let errorMsg = "Email or password is not correct.";
     let user = await User.findOne({
-    where: { email: data.email },
+      where: { email: data.email },
     });
     if (!user) {
-    res.status(400).json({ message: errorMsg });
-    return;
+      res.status(400).json({ message: errorMsg });
+      return;
     }
     let match = await bcrypt.compare(data.password, user.password);
     if (!match) {
-    res.status(400).json({ message: errorMsg });
-    return;
+      res.status(400).json({ message: errorMsg });
+      return;
     }
     // Return user info
     let userInfo = {
-    id: user.id,
-    email: user.email,
-    name: user.name,
+      id: user.id,
+      email: user.email,
+      name: user.name,
     };
     let accessToken = sign(userInfo, process.env.APP_SECRET, {
-    expiresIn: process.env.TOKEN_EXPIRES_IN,
+      expiresIn: process.env.TOKEN_EXPIRES_IN,
     });
     res.json({
-    accessToken: accessToken,
-    user: userInfo,
+      accessToken: accessToken,
+      user: userInfo,
     });
-} catch (err) {
+  } catch (err) {
     res.status(400).json({ errors: err.errors });
     return;
-}
+  }
 });
-
-});
-
 module.exports = router;
