@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
 
+
 function ChatArea() {
   const [chatareaList, setChatAreaList] = useState([]);
   const [search, setSearch] = useState("");
@@ -48,12 +49,12 @@ function ChatArea() {
           return (
             <Grid item xs={12} md={6} lg={4} key={chatarea.id}>
               <Card>
-                {chatarea.imageFile && (
+                {tutorial.imageFile && (
                   <Box className="aspect-ratio-container">
                     <img
-                      alt="chatarea"
+                      alt="tutorial"
                       src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                        chatarea.imageFile
+                        tutorial.imageFile
                       }`}
                     ></img>
                   </Box>
@@ -99,5 +100,7 @@ function ChatArea() {
     </Box>
   );
 }
+
+
 
 export default ChatArea;

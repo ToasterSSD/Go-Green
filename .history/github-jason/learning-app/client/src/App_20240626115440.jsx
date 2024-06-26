@@ -23,7 +23,6 @@ import Announcement from "./pages/Announcement";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
-import EditAnnouncement from "./pages/EditAnnouncement";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -102,8 +101,6 @@ function App() {
                 element={<AnnouncementDetail />}
               />
               <Route path={"/chatarea"} element={<ChatArea />} />
-              <Route path={"/addannouncement"} element={<AddAnnouncement />} />
-              <Route path={"/editannouncement/:id"} element={<EditAnnouncement />} />
             </Routes>
           </Container>
         </ThemeProvider>

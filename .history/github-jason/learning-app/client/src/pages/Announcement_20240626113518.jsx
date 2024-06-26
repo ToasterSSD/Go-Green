@@ -22,49 +22,43 @@ import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
 
-function ChatArea() {
-  const [chatareaList, setChatAreaList] = useState([]);
+function Announcement() {
+  const [announcementList, setAnnouncementList] = useState([]);
   const [search, setSearch] = useState("");
   const { user } = useContext(UserContext);
 
-  const getChatAreas = () => {
-    http.get("/chatarea").then((res) => {
-      setChatAreaList(res.data);
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const getAnnouncements = () => {
+    http.get("/announcement").then((res) => {
+      setAnnouncementList(res.data);
     });
   };
 
   useEffect(() => {
-    getChatAreas();
+    getAnnouncements();
   }, []);
 
   return (
     <Box>
       <Typography variant="h5" sx={{ my: 2 }}>
-        ChatArea
+        Announcement
       </Typography>
 
       <Grid container spacing={2}>
-        {chatareaList.map((chatarea, i) => {
+        {announcementList.map((announcement, i) => {
           return (
-            <Grid item xs={12} md={6} lg={4} key={chatarea.id}>
+            <Grid item xs={12} md={6} lg={4} key={announcement.id}>
               <Card>
-                {chatarea.imageFile && (
-                  <Box className="aspect-ratio-container">
-                    <img
-                      alt="chatarea"
-                      src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                        chatarea.imageFile
-                      }`}
-                    ></img>
-                  </Box>
-                )}
                 <CardContent>
                   <Box sx={{ display: "flex", mb: 1 }}>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                      {chatarea.title}
+                      {announcement.title}
                     </Typography>
-                    {user && user.id === chatarea.userId && (
-                      <Link to={`/editchatarea/${chatarea.id}`}>
+                    {user && user.id === announcement.userId && (
+                      <Link to={`/editannouncement/${announcement.id}`}>
                         <IconButton color="primary" sx={{ padding: "4px" }}>
                           <Edit />
                         </IconButton>
@@ -76,7 +70,7 @@ function ChatArea() {
                     color="text.secondary"
                   >
                     <AccountCircle sx={{ mr: 1 }} />
-                    <Typography>{chatarea.user?.name}</Typography>
+                    <Typography>{announcement.user?.name}</Typography>
                   </Box>
                   <Box
                     sx={{ display: "flex", alignItems: "center", mb: 1 }}
@@ -84,11 +78,13 @@ function ChatArea() {
                   >
                     <AccessTime sx={{ mr: 1 }} />
                     <Typography>
-                      {dayjs(chatarea.createdAt).format(global.datetimeFormat)}
+                      {dayjs(announcement.createdAt).format(
+                        global.datetimeFormat
+                      )}
                     </Typography>
                   </Box>
                   <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                    {chatarea.content}
+                    {announcement.content}
                   </Typography>
                 </CardContent>
               </Card>
@@ -100,4 +96,4 @@ function ChatArea() {
   );
 }
 
-export default ChatArea;
+export default Announcement;

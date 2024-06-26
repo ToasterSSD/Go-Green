@@ -103,7 +103,7 @@ function App() {
               />
               <Route path={"/chatarea"} element={<ChatArea />} />
               <Route path={"/addannouncement"} element={<AddAnnouncement />} />
-              <Route path={"/editannouncement/:id"} element={<EditAnnouncement />} />
+              <Route path="/edit"
             </Routes>
           </Container>
         </ThemeProvider>
