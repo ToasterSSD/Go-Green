@@ -10,5 +10,3 @@ node_modules
 # uploads
 public/uploads/*
 !public/uploads/README.md
-.history
-.history/*
