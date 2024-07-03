@@ -24,8 +24,6 @@ const userRoute = require('./routes/user');
 app.use("/user", userRoute);
 const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);
-// const adminRoute = require('./routes/admin');
-// app.use("/admin", adminRoute);
 
 const db = require('./models');
 db.sequelize.sync({ alter: true })
@@ -38,20 +36,3 @@ db.sequelize.sync({ alter: true })
     .catch((err) => {
         console.log(err);
     });
-
-
-    // //stripe
-    // import Stripe from 'stripe';
-    // import express, {json} from 'express';
-    // import * as dotenv from 'dotenv';
-    // import cors from 'cors';
-    
-    // dotenv.config();
-    // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-    // const port = process.env.PORT || 3000;
-    // app.use(cors());
-    // app.use(json());
-    
-    // app.use((error, req, res, next) => {
-    //     res.status(500).json({ error: error.message });
-    // });
