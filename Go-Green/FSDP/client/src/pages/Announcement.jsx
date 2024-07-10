@@ -36,7 +36,7 @@ function Announcement() {
       setAnnouncementList(res.data);
     });
   };
-  
+
   const searchAnnouncement = () => {
     http.get(`/announcement?search=${search}`).then((res) => {
       setAnnouncementList(res.data);
@@ -88,6 +88,16 @@ function Announcement() {
           return (
             <Grid item xs={12} md={6} lg={4} key={announcement.id}>
               <Card>
+                {announcement.imageFile && (
+                  <Box className="aspect-ratio-container">
+                    <img
+                      alt="tutorial"
+                      src={`${import.meta.env.VITE_FILE_BASE_URL}${
+                        announcement.imageFile
+                      }`}
+                    ></img>
+                  </Box>
+                )}
                 <CardContent>
                   <Box sx={{ display: "flex", mb: 1 }}>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>

@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       linkText: {
         type: DataTypes.STRING(200),
       },
+      imageFile: {
+        type: DataTypes.STRING(20),
+      },
     },
     {
       tableName: "announcement",

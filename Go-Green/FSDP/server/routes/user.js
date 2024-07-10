@@ -75,7 +75,8 @@ router.post("/login", async (req, res) => {
         let userInfo = {
             id: user.id,
             email: user.email,
-            name: user.name
+            name: user.name,
+            roles: user.roles
         };
         let accessToken = sign(userInfo, process.env.APP_SECRET,
             { expiresIn: process.env.TOKEN_EXPIRES_IN });

@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING(100),
             allowNull: false
+        },
+        roles: {
+            type: DataTypes.STRING(100),
+            allowNull: false
         }
     }, {
         tableName: 'users'
@@ -24,4 +28,4 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     return User;
-}
+};
