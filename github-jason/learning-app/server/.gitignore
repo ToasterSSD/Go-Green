@@ -12,4 +12,3 @@ public/uploads/*
 !public/uploads/README.md
 .history
 .history/*
-.history\*
