@@ -21,6 +21,8 @@ app.get("/", (req, res) => {
 const tutorialRoute = require('./routes/tutorial');
 app.use("/tutorial", tutorialRoute);
 const userRoute = require('./routes/user');
+const feedbackRoutes = require('./routes/feedback');
+app.use('/feedback', feedbackRoutes);
 app.use("/user", userRoute);
 const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);

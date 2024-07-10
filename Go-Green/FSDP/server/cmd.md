@@ -8,4 +8,4 @@ npm i yup
 npm i bcrypt
 npm i jsonwebtoken
 npm i multer
-npm i nanoid@3
+npm i nanoid@3 
