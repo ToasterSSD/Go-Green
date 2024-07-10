@@ -99,8 +99,12 @@ function AddAnnouncement() {
               value={formik.values.content}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.content && Boolean(formik.errors.content)}
-              helperText={formik.touched.content && formik.errors.content}
+              error={
+                formik.touched.content && Boolean(formik.errors.content)
+              }
+              helperText={
+                formik.touched.content && formik.errors.content
+              }
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>

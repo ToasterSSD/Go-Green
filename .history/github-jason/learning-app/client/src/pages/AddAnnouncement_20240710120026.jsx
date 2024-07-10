@@ -6,11 +6,9 @@ import * as yup from "yup";
 import http from "../http";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 function AddAnnouncement() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
-
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -42,7 +40,6 @@ function AddAnnouncement() {
       });
     },
   });
-
   const onFileChange = (e) => {
     let file = e.target.files[0];
     if (file) {
@@ -50,7 +47,6 @@ function AddAnnouncement() {
         toast.error("Maximum file size is 1MB");
         return;
       }
-
       let formData = new FormData();
       formData.append("file", file);
       http
@@ -67,7 +63,6 @@ function AddAnnouncement() {
         });
     }
   };
-
   return (
     <Box>
       <Typography variant="h5" sx={{ my: 2 }}>
@@ -101,6 +96,8 @@ function AddAnnouncement() {
               onBlur={formik.handleBlur}
               error={formik.touched.content && Boolean(formik.errors.content)}
               helperText={formik.touched.content && formik.errors.content}
+              error={formik.touched.content && Boolean(formik.errors.content)}
+              helperText={formik.touched.content && formik.errors.content}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -132,10 +129,8 @@ function AddAnnouncement() {
           </Button>
         </Box>
       </Box>
-
       <ToastContainer />
     </Box>
   );
 }
-
 export default AddAnnouncement;
