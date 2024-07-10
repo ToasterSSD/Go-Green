@@ -85,6 +85,11 @@ function Announcement() {
         <Link to="/addannouncement" style={{ textDecoration: "none" }}>
           <Button variant="contained">Add</Button>
         </Link>
+        {announcement.link && (
+          <a href={announcement.link} target="_blank" rel="noopener noreferrer">
+            Click here to visit the link
+          </a>
+        )}
       </Box>
       <Grid container spacing={2}>
         {announcementList.map((announcement) => (
@@ -131,23 +136,20 @@ function Announcement() {
                     )}
                   </Typography>
                 </Box>
-                <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
                   {announcement.content}
                 </Typography>
-                {announcement.link && (
-                  <Typography>
-                    Link:
-                    <Box component="span" sx={{ ml: 1 }}>
-                      <a
-                        href={announcement.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {announcement.link}
-                      </a>
-                    </Box>
-                  </Typography>
-                )}
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                  {announcement.link && (
+                    <a
+                      href={announcement.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Click here to visit the link
+                    </a>
+                  )}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>

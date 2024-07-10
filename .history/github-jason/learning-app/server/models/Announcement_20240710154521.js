@@ -10,9 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      link: {
+      linkL: {
         type: DataTypes.STRING(200),
-        allowNull: true
       },
       linkText: {
         type: DataTypes.STRING(200),

@@ -131,23 +131,25 @@ function Announcement() {
                     )}
                   </Typography>
                 </Box>
-                <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
                   {announcement.content}
                 </Typography>
-                {announcement.link && (
-                  <Typography>
-                    Link:
-                    <Box component="span" sx={{ ml: 1 }}>
-                      <a
-                        href={announcement.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {announcement.link}
-                      </a>
-                    </Box>
-                  </Typography>
-                )}
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                  {announcement.link && (
+                    <a
+                      href={announcement.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Click here to visit the link
+                    </a>
+                  )}
+                </Typography>
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Link to={`/announcement/${announcement.id}`}>
+                    <Button variant="contained">View</Button>
+                  </Link>
+                </Box>
               </CardContent>
             </Card>
           </Grid>

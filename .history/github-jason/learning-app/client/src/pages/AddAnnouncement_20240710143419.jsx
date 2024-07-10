@@ -16,7 +16,6 @@ function AddAnnouncement() {
     initialValues: {
       title: "",
       content: "",
-      link: "",
     },
     validationSchema: yup.object({
       title: yup
@@ -31,10 +30,6 @@ function AddAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(2000, "Content must be at most 2000 characters")
         .required("Content is required"),
-      link: yup
-        .string()
-        .url("Must be a valid URL")
-        .required("Link is required"),
     }),
     onSubmit: (data) => {
       if (imageFile) {
@@ -42,8 +37,6 @@ function AddAnnouncement() {
       }
       data.title = data.title.trim();
       data.content = data.content.trim();
-      data.link = formik.values.link.trim();
-      console.log("Form data being sent:", data);
       http.post("/announcement", data).then((res) => {
         console.log(res.data);
         navigate("/announcement");

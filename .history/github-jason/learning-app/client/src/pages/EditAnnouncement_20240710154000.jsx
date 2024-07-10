@@ -60,7 +60,6 @@ function EditAnnouncement() {
       }
       data.title = data.title.trim();
       data.content = data.content.trim();
-      data.link = formik.values.link.trim();
       http.put(`/announcement/${id}`, data).then((res) => {
         console.log(res.data);
         navigate("/announcement");
@@ -144,17 +143,6 @@ function EditAnnouncement() {
                 onBlur={formik.handleBlur}
                 error={formik.touched.content && Boolean(formik.errors.content)}
                 helperText={formik.touched.content && formik.errors.content}
-              />
-              <TextField
-                fullWidth
-                id="link"
-                name="link"
-                label="Link"
-                value={formik.values.link}
-                onChange={formik.handleChange}
-                error={formik.touched.link && Boolean(formik.errors.link)}
-                helperText={formik.touched.link && formik.errors.link}
-                sx={{ mb: 2 }}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

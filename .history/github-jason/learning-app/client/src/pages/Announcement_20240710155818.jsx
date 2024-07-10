@@ -131,12 +131,15 @@ function Announcement() {
                     )}
                   </Typography>
                 </Box>
+                <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                  {announcement.content}
+                </Typography>
                 <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
                   {announcement.content}
                 </Typography>
-                {announcement.link && (
-                  <Typography>
-                    Link:
+                <Typography>
+                  Link:
+                  {announcement.link && (
                     <Box component="span" sx={{ ml: 1 }}>
                       <a
                         href={announcement.link}
@@ -146,8 +149,8 @@ function Announcement() {
                         {announcement.link}
                       </a>
                     </Box>
-                  </Typography>
-                )}
+                  )}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>

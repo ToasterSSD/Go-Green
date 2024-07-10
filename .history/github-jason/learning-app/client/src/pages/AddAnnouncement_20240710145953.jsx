@@ -43,7 +43,7 @@ function AddAnnouncement() {
       data.title = data.title.trim();
       data.content = data.content.trim();
       data.link = formik.values.link.trim();
-      console.log("Form data being sent:", data);
+      console.log("Form data being sent:")
       http.post("/announcement", data).then((res) => {
         console.log(res.data);
         navigate("/announcement");

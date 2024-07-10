@@ -145,17 +145,6 @@ function EditAnnouncement() {
                 error={formik.touched.content && Boolean(formik.errors.content)}
                 helperText={formik.touched.content && formik.errors.content}
               />
-              <TextField
-                fullWidth
-                id="link"
-                name="link"
-                label="Link"
-                value={formik.values.link}
-                onChange={formik.handleChange}
-                error={formik.touched.link && Boolean(formik.errors.link)}
-                helperText={formik.touched.link && formik.errors.link}
-                sx={{ mb: 2 }}
-              />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <Box sx={{ textAlign: "center", mt: 2 }}>

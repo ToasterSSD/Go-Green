@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      link: {
+      linkURL: {
         type: DataTypes.STRING(200),
-        allowNull: true
+        allowNull: true,
       },
       linkText: {
         type: DataTypes.STRING(200),
