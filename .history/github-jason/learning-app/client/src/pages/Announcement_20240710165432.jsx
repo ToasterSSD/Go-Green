@@ -155,7 +155,11 @@ function AnnouncementCard({ announcement, user }) {
                   announcement.content.length > 500 ? "..." : ""
                 }`}
           </Typography>
-          
+          {announcement.content.length > 500 && (
+            <Button onClick={toggleExpanded}>
+              {isExpanded ? "Show Less" : "Read More"}
+            </Button>
+          )}
           {announcement.link && (
             <Typography>
               Link:
