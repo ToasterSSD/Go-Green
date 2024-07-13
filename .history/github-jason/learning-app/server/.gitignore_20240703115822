@@ -1,0 +1,14 @@
+# dependencies
+node_modules
+
+# environment
+.env
+
+# Mac OS
+.DS_Store
+
+# uploads
+public/uploads/*
+!public/uploads/README.md
+.history
+.history/*
