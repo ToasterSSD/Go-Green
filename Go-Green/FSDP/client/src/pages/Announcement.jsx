@@ -36,26 +36,23 @@ function Announcement() {
       setAnnouncementList(res.data);
     });
   };
-
+  
   const searchAnnouncement = () => {
     http.get(`/announcement?search=${search}`).then((res) => {
       setAnnouncementList(res.data);
     });
   };
-
   const onSearchKeyDown = (e) => {
     if (e.key === "Enter") {
       searchAnnouncement();
     }
   };
-
   const onClickSearch = () => {
     searchAnnouncement();
   };
-
   const onClickClear = () => {
     setSearch("");
-    getAnnouncements();
+    getAnnouncement();
   };
 
   useEffect(() => {
@@ -87,92 +84,51 @@ function Announcement() {
         </Link>
       </Box>
       <Grid container spacing={2}>
-        {announcementList.map((announcement) => (
-          <AnnouncementCard
-            key={announcement.id}
-            announcement={announcement}
-            user={user}
-          />
-        ))}
+        {announcementList.map((announcement, i) => {
+          return (
+            <Grid item xs={12} md={6} lg={4} key={announcement.id}>
+              <Card>
+                <CardContent>
+                  <Box sx={{ display: "flex", mb: 1 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                      {announcement.title}
+                    </Typography>
+                    {user && user.id === announcement.userId && (
+                      <Link to={`/editannouncement/${announcement.id}`}>
+                        <IconButton color="primary" sx={{ padding: "4px" }}>
+                          <Edit />
+                        </IconButton>
+                      </Link>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                    color="text.secondary"
+                  >
+                    <AccountCircle sx={{ mr: 1 }} />
+                    <Typography>{announcement.user?.name}</Typography>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                    color="text.secondary"
+                  >
+                    <AccessTime sx={{ mr: 1 }} />
+                    <Typography>
+                      {dayjs(announcement.createdAt).format(
+                        global.datetimeFormat
+                      )}
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                    {announcement.content}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
-  );
-}
-
-function AnnouncementCard({ announcement, user }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  return (
-    <Grid item xs={12} md={6} lg={4}>
-      <Card>
-        {announcement.imageFile && (
-          <Box className="aspect-ratio-container">
-            <img
-              alt="announcement"
-              src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                announcement.imageFile
-              }`}
-            ></img>
-          </Box>
-        )}
-        <CardContent>
-          <Box sx={{ display: "flex", mb: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              {announcement.title}
-            </Typography>
-            {user && user.id === announcement.userId && (
-              <Link to={`/editannouncement/${announcement.id}`}>
-                <IconButton color="primary" sx={{ padding: "4px" }}>
-                  <Edit />
-                </IconButton>
-              </Link>
-            )}
-          </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", mb: 1 }}
-            color="text.secondary"
-          >
-            <AccountCircle sx={{ mr: 1 }} />
-            <Typography>{announcement.user?.name}</Typography>
-          </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", mb: 1 }}
-            color="text.secondary"
-          >
-            <AccessTime sx={{ mr: 1 }} />
-            <Typography>
-              {dayjs(announcement.createdAt).format(global.datetimeFormat)}
-            </Typography>
-          </Box>
-          <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
-            {isExpanded
-              ? announcement.content
-              : `${announcement.content.substring(0, 500)}${
-                  announcement.content.length > 500 ? "..." : ""
-                }`}
-          </Typography>
-          
-          {announcement.link && (
-            <Typography>
-              Link:
-              <Box component="span" sx={{ ml: 1 }}>
-                <a
-                  href={announcement.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {announcement.link}
-                </a>
-              </Box>
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
-    </Grid>
   );
 }
 

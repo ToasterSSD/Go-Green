@@ -49,8 +49,8 @@ function App() {
             <Container>
               <Toolbar disableGutters={true}>
                 <Link to="/">
-                  <Typography variant="h5" component="div">
-                    Go-Green
+                  <Typography variant="h6" component="div">
+                    Learning
                   </Typography>
                 </Link>
                 <Link to="/tutorials">
