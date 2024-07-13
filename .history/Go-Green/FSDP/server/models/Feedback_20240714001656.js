@@ -54,13 +54,5 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "feedback",
     }
   );
-
-  Feedback.associate = (models) => {
-    Feedback.belongsTo(models.User, {
-      foreignKey: "userId",
-      as: "user",
-    });
-  };
-
   return Feedback;
 };

@@ -29,38 +29,35 @@
 //   };
 
 module.exports = (sequelize, DataTypes) => {
-  const Feedback = sequelize.define(
-    "Feedback",
+  const Announcement = sequelize.define(
+    "Announcement",
     {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-          },
-        name: {
-          type: DataTypes.STRING(50),
-          allowNull: false,
-        },
-        email: {
-          type: DataTypes.TEXT,
-          allowNull: false,
-        },
-        feedback: {
-          type: DataTypes.TEXT,
-          allowNull: false
-        },
+      title: {
+        type: DataTypes.STRING(200),
+        allowNull: false,
       },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      linkURL: {
+        type: DataTypes.STRING(200),
+      },
+      linkText: {
+        type: DataTypes.STRING(200),
+      },
+    },
     {
       tableName: "feedback",
     }
   );
 
-  Feedback.associate = (models) => {
-    Feedback.belongsTo(models.User, {
+  Announcement.associate = (models) => {
+    Announcement.belongsTo(models.User, {
       foreignKey: "userId",
       as: "user",
     });
   };
 
-  return Feedback;
+  return Announcement;
 };

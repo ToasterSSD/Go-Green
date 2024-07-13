@@ -52,29 +52,21 @@ router.post("/", validateToken, async (req, res) => {
 router.get("/", async (req, res) => {
   let condition = {};
   let search = req.query.search;
-
   if (search) {
     condition[Op.or] = [
-      { name: { [Op.like]: `%${search}%` } },
-      { email: { [Op.like]: `%${search}%` } },
-      { feedback: { [Op.like]: `%${search}%` } },
+      { title: { [Op.like]: `%${search}%` } },
+      { content: { [Op.like]: `%${search}%` } },
     ];
   }
+  // You can add condition for other columns here
+  // e.g. condition.columnName = value;
 
-  try {
-    let list = await Feedback.findAll({
-      where: condition,
-      order: [["createdAt", "DESC"]],
-      include: {
-        model: User,
-        as: "user",
-        attributes: ["name"],
-      },
-    });
-    res.json(list);
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
-  }
+  let list = await Feedback.findAll({
+    where: condition,
+    order: [["createdAt", "DESC"]],
+    include: { model: User, as: "user", attributes: ["name"] },
+  });
+  res.json(list);
 });
 
 // show feedback by id

@@ -1,21 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const feedbackController = require('../controllers/feedbackController');
-
-// // Create new feedback (for all users)
-// router.post('/', feedbackController.createFeedback);
-
-// // Get all feedbacks (Admin only)
-// router.get('/', feedbackController.getAllFeedbacks);
-
-// // Get feedback by ID (Admin only)
-// router.get('/:id', feedbackController.getFeedbackById);
-
-// // Delete feedback by ID (Admin only)
-// router.delete('/:id', feedbackController.deleteFeedback);
-
-// module.exports = router;
-
 const express = require("express");
 const router = express.Router();
 const { User, Feedback } = require("../models");
@@ -52,29 +34,21 @@ router.post("/", validateToken, async (req, res) => {
 router.get("/", async (req, res) => {
   let condition = {};
   let search = req.query.search;
-
   if (search) {
     condition[Op.or] = [
-      { name: { [Op.like]: `%${search}%` } },
-      { email: { [Op.like]: `%${search}%` } },
-      { feedback: { [Op.like]: `%${search}%` } },
+      { title: { [Op.like]: `%${search}%` } },
+      { content: { [Op.like]: `%${search}%` } },
     ];
   }
+  // You can add condition for other columns here
+  // e.g. condition.columnName = value;
 
-  try {
-    let list = await Feedback.findAll({
-      where: condition,
-      order: [["createdAt", "DESC"]],
-      include: {
-        model: User,
-        as: "user",
-        attributes: ["name"],
-      },
-    });
-    res.json(list);
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
-  }
+  let list = await Feedback.findAll({
+    where: condition,
+    order: [["createdAt", "DESC"]],
+    include: { model: User, as: "user", attributes: ["name"] },
+  });
+  res.json(list);
 });
 
 // show feedback by id

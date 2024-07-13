@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.TEXT,
           allowNull: false,
         },
-        feedback: {
+        actualfeedback: {
           type: DataTypes.TEXT,
           allowNull: false
         },

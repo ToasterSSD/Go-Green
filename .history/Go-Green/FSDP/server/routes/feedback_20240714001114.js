@@ -23,21 +23,14 @@ const { Op } = require("sequelize");
 const yup = require("yup");
 const { validateToken } = require("../middlewares/auth");
 
-// Create new feedback
+// Create new announcement
 router.post("/", validateToken, async (req, res) => {
   let data = req.body;
   data.userId = req.user.id;
   // Validate request body
   let validationSchema = yup.object({
-    name: yup
-      .string()
-      .max(50, "Name must be at most 50 characters")
-      .required("Name is required"),
-    email: yup
-      .string()
-      .email("Email must be a valid email address")
-      .required("Email is required"),
-    feedback: yup.string().required("Feedback is required"),
+    title: yup.string().trim().min(3).max(200).required(),
+    content: yup.string().trim().min(3).max(1000).required(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });
@@ -48,62 +41,54 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
-// show all feedbacks
+// show all announcements
 router.get("/", async (req, res) => {
   let condition = {};
   let search = req.query.search;
-
   if (search) {
     condition[Op.or] = [
-      { name: { [Op.like]: `%${search}%` } },
-      { email: { [Op.like]: `%${search}%` } },
-      { feedback: { [Op.like]: `%${search}%` } },
+      { title: { [Op.like]: `%${search}%` } },
+      { content: { [Op.like]: `%${search}%` } },
     ];
   }
+  // You can add condition for other columns here
+  // e.g. condition.columnName = value;
 
-  try {
-    let list = await Feedback.findAll({
-      where: condition,
-      order: [["createdAt", "DESC"]],
-      include: {
-        model: User,
-        as: "user",
-        attributes: ["name"],
-      },
-    });
-    res.json(list);
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
-  }
+  let list = await Feedback.findAll({
+    where: condition,
+    order: [["createdAt", "DESC"]],
+    include: { model: User, as: "user", attributes: ["name"] },
+  });
+  res.json(list);
 });
 
-// show feedback by id
+// show announcement by id
 router.get("/:id", async (req, res) => {
   let id = req.params.id;
-  let feedback = await Feedback.findByPk(id, {
+  let announcement = await Feedback.findByPk(id, {
     include: { model: User, as: "user", attributes: ["name"] },
   });
   // Check id not found
-  if (!feedback) {
+  if (!announcement) {
     res.sendStatus(404);
     return;
   }
-  res.json(feedback);
+  res.json(announcement);
 });
 
-// update feedback via id
+// update announcement via id
 router.put("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
   // Check id not found
-  let feedback = await Feedback.findByPk(id);
-  if (!feedback) {
+  let announcement = await Feedback.findByPk(id);
+  if (!announcement) {
     res.sendStatus(404);
     return;
   }
 
   // Check request user id
   let userId = req.user.id;
-  if (feedback.userId != userId) {
+  if (announcement.userId != userId) {
     res.sendStatus(403);
     return;
   }
@@ -126,7 +111,7 @@ router.put("/:id", validateToken, async (req, res) => {
       });
     } else {
       res.status(400).json({
-        message: `Cannot update feedback with id ${id}.`,
+        message: `Cannot update announcement with id ${id}.`,
       });
     }
   } catch (err) {
@@ -134,19 +119,19 @@ router.put("/:id", validateToken, async (req, res) => {
   }
 });
 
-// delete feedback via id
+// delete announcement via id
 router.delete("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
   // Check id not found
-  let feedback = await Feedback.findByPk(id);
-  if (!feedback) {
+  let announcement = await Feedback.findByPk(id);
+  if (!announcement) {
     res.sendStatus(404);
     return;
   }
 
   // Check request user id
   let userId = req.user.id;
-  if (feedback.userId != userId) {
+  if (announcement.userId != userId) {
     res.sendStatus(403);
     return;
   }
@@ -160,7 +145,7 @@ router.delete("/:id", validateToken, async (req, res) => {
     });
   } else {
     res.status(400).json({
-      message: `Cannot delete feedback with id ${id}.`,
+      message: `Cannot delete announcement with id ${id}.`,
     });
   }
 });
