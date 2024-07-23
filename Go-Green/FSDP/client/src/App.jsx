@@ -24,6 +24,10 @@ import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
+import Feedback from "./pages/Feedback";
+import FeedbackAdmin from "./pages/FeedbackAdmin";
+import AddFeedback from "./pages/AddFeedback";
+import DeleteFeedback from "./pages/DeleteFeedback";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -65,6 +69,12 @@ function App() {
                 <Link to="/chatarea">
                   <Typography>Chat Area</Typography>
                 </Link>
+                <Link to="/feedback">
+                  <Typography>Feedback</Typography>
+                </Link>
+                <Link to="/feedbackAdmin">
+                  <Typography>Feedback</Typography>
+                </Link>
 
                 <Box sx={{ flexGrow: 1 }}></Box>
                 {user && (
@@ -94,6 +104,10 @@ function App() {
               <Route path={"/announcement"} element={<Announcement />} />
               <Route path={"/addtutorial"} element={<AddTutorial />} />
               <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
+              <Route path={"/feedbackadmin/:id"} element={<FeedbackAdmin />} />
+              <Route path={"/addfeedback"} element={<AddFeedback />} />
+              <Route path={"/deletefeedback/:id"} element={<DeleteFeedback />} />
+              <Route path={"/feedback"} element={<Feedback />} />
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
