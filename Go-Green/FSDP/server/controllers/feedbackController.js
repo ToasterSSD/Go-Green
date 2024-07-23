@@ -7,7 +7,7 @@ exports.createFeedback = async (req, res) => {
     const newFeedback = await Feedback.create({id, name, email, feedback});
     res.status(201).json(newFeedback);
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error', error });
+    res.status(500).json({ message: 'Internal Server Errorz', error });
   }
 };
 
@@ -16,7 +16,7 @@ exports.getAllFeedbacks = async (_req, res) => {
     const feedbacks = await Feedback.findAll();
     res.status(200).json(feedbacks);
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error', error });
+    res.status(500).json({ message: 'Internal Server Errors', error });
   }
 };
 
@@ -30,7 +30,7 @@ exports.getFeedbackById = async (req, res) => {
             res.status(404).json({ message: 'Feedback not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error', error });
+        res.status(500).json({ message: 'Internal Server Errorn', error });
     }
 };
 
@@ -44,5 +44,5 @@ exports.deleteFeedback = async (req, res) => {
             res.status(404).json({ message: 'Feedback not found' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Internal Server Error', error });
+        res.status(500).json({ message: 'Internal Server Errorw', error });
     }};
