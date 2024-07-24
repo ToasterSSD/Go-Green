@@ -94,7 +94,7 @@ function Feedback() {
                       {feedback.title}
                     </Typography>
                     {user && user.id === feedback.userId && (
-                      <Link to={`/editFeedback'${feedback.id}`}>
+                      <Link to={`/DeleteFeedback/${feedback.id}`}>
                         <IconButton color="primary" sx={{ padding: "4px" }}>
                           <Edit />
                         </IconButton>
