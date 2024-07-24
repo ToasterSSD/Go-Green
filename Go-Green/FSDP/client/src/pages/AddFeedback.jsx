@@ -27,8 +27,9 @@ function AddFeedback() {
      email: yup
         .string()
         .trim()
+        .email()
         .min(3, "Email must be at least 3 characters")
-        .max(200, "Email must be at most 20 characters")
+        .max(20, "Email must be at most 20 characters")
         .required("Email is required"),
       feedback: yup
         .string()
@@ -43,6 +44,7 @@ function AddFeedback() {
       data.feedback = data.feedback.trim();
       http.post("/feedback", data).then((res) => {
         console.log(res.data);
+        toast.success("Feedback added successfully");
         navigate("/feedback");});
     },
   });
