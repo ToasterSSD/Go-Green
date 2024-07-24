@@ -73,7 +73,7 @@ function App() {
                   <Typography>Feedback</Typography>
                 </Link>
                 <Link to="/feedbackAdmin">
-                  <Typography>Feedback</Typography>
+                  <Typography>Feedback-Admin</Typography>
                 </Link>
 
                 <Box sx={{ flexGrow: 1 }}></Box>
@@ -104,17 +104,14 @@ function App() {
               <Route path={"/announcement"} element={<Announcement />} />
               <Route path={"/addtutorial"} element={<AddTutorial />} />
               <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
-              <Route path={"/feedbackadmin/:id"} element={<FeedbackAdmin />} />
+              <Route path={"/feedbackadmin"} element={<FeedbackAdmin />} />
               <Route path={"/addfeedback"} element={<AddFeedback />} />
               <Route path={"/deletefeedback/:id"} element={<DeleteFeedback />} />
               <Route path={"/feedback"} element={<Feedback />} />
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />
-              <Route
-                path={"/announcementDetail"}
-                element={<AnnouncementDetail />}
-              />
+              <Route path={"/announcementDetail"} element={<AnnouncementDetail />}/>
               <Route path={"/chatarea"} element={<ChatArea />} />
               <Route path={"/addannouncement"} element={<AddAnnouncement />} />
               <Route path={"/editannouncement/:id"} element={<EditAnnouncement />} />

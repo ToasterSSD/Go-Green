@@ -120,7 +120,7 @@ function Feedback() {
                     </Typography>
                   </Box>
                   <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                    {feedback.content}
+                    {feedback.feedback}
                   </Typography>
                 </CardContent>
               </Card>

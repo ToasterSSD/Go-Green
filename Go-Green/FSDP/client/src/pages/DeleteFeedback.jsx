@@ -21,7 +21,7 @@ function DeleteFeedback() {
   const [feedback, setFeedback] = useState({
     name: "",
     email: "",
-    content: "",
+    feedback: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,33 +37,13 @@ function DeleteFeedback() {
   const formik = useFormik({
     initialValues: feedback,
     enableReinitialize: true,
-    validationSchema: yup.object({
-      name: yup
-        .string()
-        .trim()
-        .min(3, "Name must be at least 3 characters")
-        .max(100, "Name must be at most 100 characters")
-        .required("Name is required"),
-       email: yup
-        .string()
-        .trim()
-        .min(3, "Email must be at least 3 characters")
-        .max(100, "Email must be at most 100 characters")
-        .required("Email is required"),
-      content: yup
-        .string()
-        .trim()
-        .min(3, "Content must be at least 3 characters")
-        .max(500, "Content must be at most 500 characters")
-        .required("Content is required"),
-    }),
     onSubmit: (data) => {
       if (imageFile) {
         data.imageFile = imageFile;
       }
       data.name = data.name.trim();
       data.email = data.email.trim();
-      data.content = data.content.trim();
+      data.feedback = data.feedback.trim();
       http.put(`/feedback/${id}`, data).then((res) => {
         console.log(res.data);
         navigate("/feedback");
@@ -152,13 +132,13 @@ function DeleteFeedback() {
                 autoComplete="off"
                 multiline
                 minRows={2}
-                label="Content"
-                name="content"
-                value={formik.values.content}
+                label="Feedback"
+                name="feedback"
+                value={formik.values.feedback}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.content && Boolean(formik.errors.content)}
-                helperText={formik.touched.content && formik.errors.content}
+                error={formik.touched.feedback && Boolean(formik.errors.feedback)}
+                helperText={formik.touched.feedback && formik.errors.feedback}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

@@ -9,13 +9,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 function AddFeedback() {
   const navigate = useNavigate();
-  const [imageFile, setImageFile] = useState(null);
+  // const [imageFile, setImageFile] = useState(null);
 
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
-      content: "",
+      feedback: "",
     },
     validationSchema: yup.object({
       name: yup
@@ -30,28 +30,24 @@ function AddFeedback() {
         .min(3, "Email must be at least 3 characters")
         .max(200, "Email must be at most 20 characters")
         .required("Email is required"),
-      content: yup
+      feedback: yup
         .string()
         .trim()
-        .min(3, "Content must be at least 3 characters")
-        .max(2000, "Content must be at most 2000 characters")
-        .required("Content is required"),
+        .min(3, "Feedback must be at least 3 characters")
+        .max(2000, "Feedback must be at most 2000 characters")
+        .required("Feedback is required"),
     }),
     onSubmit: (data) => {
-      if (imageFile) {
-        data.imageFile = imageFile;
-      }
       data.name = data.name.trim();
       data.email = data.email.trim();
-      data.content = data.content.trim();
+      data.feedback = data.feedback.trim();
       http.post("/feedback", data).then((res) => {
         console.log(res.data);
-        navigate("/feedback");
-      });
+        navigate("/feedback");});
     },
   });
 
-  const onFileChange = (e) => {
+  /* const onFileChange = (e) => {
     let file = e.target.files[0];
     if (file) {
       if (file.size > 1024 * 1024) {
@@ -74,7 +70,7 @@ function AddFeedback() {
           console.log(error.response);
         });
     }
-  };
+  }; */
 
   return (
     <Box>
@@ -110,9 +106,7 @@ function AddFeedback() {
               error={
                 formik.touched.email && Boolean(formik.errors.email)
               }
-              helperText={
-                formik.touched.email && formik.errors.email
-              }
+              helperText={formik.touched.email && formik.errors.email}
             />
             <TextField
               fullWidth
@@ -120,40 +114,18 @@ function AddFeedback() {
               autoComplete="off"
               multiline
               minRows={2}
-              label="Content"
-              name="content"
-              value={formik.values.content}
+              label="Feedback"
+              name="feedback"
+              value={formik.values.feedback}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                formik.touched.content && Boolean(formik.errors.content)
+                formik.touched.feedback && Boolean(formik.errors.feedback)
               }
               helperText={
-                formik.touched.content && formik.errors.content
+                formik.touched.feedback && formik.errors.feedback
               }
             />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <Box sx={{ textAlign: "center", mt: 2 }}>
-              <Button variant="contained" component="label">
-                Upload Image
-                <input
-                  hidden
-                  accept="image/*"
-                  multiple
-                  type="file"
-                  onChange={onFileChange}
-                />
-              </Button>
-              {imageFile && (
-                <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
-                  <img
-                    alt="feedback"
-                    src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}
-                  ></img>
-                </Box>
-              )}
-            </Box>
           </Grid>
         </Grid>
         <Box sx={{ mt: 2 }}>

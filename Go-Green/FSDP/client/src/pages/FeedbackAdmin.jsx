@@ -80,7 +80,7 @@ function FeedbackAdmin() {
                     </Typography>
                   </Box>
                   <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                    {feedbackAdmin.content}
+                    {feedbackAdmin.feedback}
                   </Typography>
                 </CardContent>
               </Card>
