@@ -93,9 +93,10 @@ function Announcement() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                       {announcement.title}
                     </Typography>
-                    {user && user.id === announcement.userId && (
+                    {user && user.id === announcement.userId && user.role === "ADMIN" && (
                       <Link to={`/editannouncement/${announcement.id}`}>
                         <IconButton color="primary" sx={{ padding: "4px" }}>
+                        
                           <Edit />
                         </IconButton>
                       </Link>
