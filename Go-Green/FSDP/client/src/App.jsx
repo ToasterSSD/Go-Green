@@ -6,13 +6,18 @@ import {
   Toolbar,
   Typography,
   Box,
-  Button,
+  Menu,
+  MenuItem,
+  Avatar,
+  IconButton,
+  Divider,
+  Link as MuiLink,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import MyTheme from "./themes/MyTheme";
 import Tutorials from "./pages/Tutorials";
-import AddTutorial from "./pages/AddTutorial"; 
+import AddTutorial from "./pages/AddTutorial";
 import EditTutorial from "./pages/EditTutorial";
 import MyForm from "./pages/MyForm";
 import Register from "./pages/Register";
@@ -27,6 +32,7 @@ import EditAnnouncement from "./pages/EditAnnouncement";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
@@ -41,69 +47,105 @@ function App() {
     window.location = "/";
   };
 
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
           <AppBar position="static" className="AppBar">
             <Container>
-              <Toolbar disableGutters={true}>
-                <Link to="/">
+              <Toolbar disableGutters>
+                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <Typography variant="h6" component="div">
                     Learning
                   </Typography>
                 </Link>
-                <Link to="/tutorials">
-                  <Typography>Tutorials</Typography>
-                </Link>
-                <Link to="/announcement">
-                  <Typography>Announcements</Typography>
-                </Link>
-                <Link to="/announcementDetail">
-                  <Typography>Announcements-Detail</Typography>
-                </Link>
-                <Link to="/chatarea">
-                  <Typography>Chat Area</Typography>
-                </Link>
+                <Box sx={{ display: 'flex', flexGrow: 1, ml: 2 }}>
+                  <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    Tutorials
+                  </MuiLink>
+                  <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    Announcements
+                  </MuiLink>
+                  <MuiLink component={Link} to="/announcementDetail" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    Announcement Details
+                  </MuiLink>
+                  <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    Chat Area
+                  </MuiLink>
+                </Box>
 
-                <Box sx={{ flexGrow: 1 }}></Box>
-                {user && (
-                  <>
-                    <Typography>{user.name}</Typography>
-                    <Button onClick={logout}>Logout</Button>
-                  </>
-                )}
-                {!user && (
-                  <>
-                    <Link to="/register">
-                      <Typography>Register</Typography>
-                    </Link>
-                    <Link to="/login">
-                      <Typography>Login</Typography>
-                    </Link>
-                  </>
+                {user ? (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box onClick={handleMenuOpen} sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                      <Avatar
+                        alt={user.name}
+                        src="/static/images/avatar/1.jpg"
+                        sx={{ width: 40, height: 40 }}
+                      />
+                      <Typography sx={{ ml: 1 }}>{user.name}</Typography>
+                    </Box>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                      PaperProps={{
+                        sx: {
+                          borderRadius: '16px',
+                          mt: 1,
+                          minWidth: 200,
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+                        <Avatar
+                          alt={user.name}
+                          src="/static/images/avatar/1.jpg"
+                          sx={{ width: 40, height: 40, mr: 2 }}
+                        />
+                        <Typography variant="body1" noWrap>
+                          {user.name}
+                        </Typography>
+                      </Box>
+                      <Divider />
+                      <MenuItem onClick={logout}>Logout</MenuItem>
+                    </Menu>
+                  </Box>
+                ) : (
+                  <Box sx={{ display: 'flex' }}>
+                    <MuiLink component={Link} to="/register" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Register
+                    </MuiLink>
+                    <MuiLink component={Link} to="/login" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Login
+                    </MuiLink>
+                  </Box>
                 )}
               </Toolbar>
             </Container>
           </AppBar>
 
-          <Container>
+          <Container sx={{ mt: 4 }}>
             <Routes>
-              <Route path={"/"} element={<Tutorials />} />
-              <Route path={"/tutorials"} element={<Tutorials />} />
-              <Route path={"/announcement"} element={<Announcement />} />
-              <Route path={"/addtutorial"} element={<AddTutorial />} />
-              <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
-              <Route path={"/register"} element={<Register />} />
-              <Route path={"/login"} element={<Login />} />
-              <Route path={"/form"} element={<MyForm />} />
-              <Route
-                path={"/announcementDetail"}
-                element={<AnnouncementDetail />}
-              />
-              <Route path={"/chatarea"} element={<ChatArea />} />
-              <Route path={"/addannouncement"} element={<AddAnnouncement />} />
-              <Route path={"/editannouncement/:id"} element={<EditAnnouncement />} />
+              <Route path="/" element={<Tutorials />} />
+              <Route path="/tutorials" element={<Tutorials />} />
+              <Route path="/announcement" element={<Announcement />} />
+              <Route path="/addtutorial" element={<AddTutorial />} />
+              <Route path="/edittutorial/:id" element={<EditTutorial />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/form" element={<MyForm />} />
+              <Route path="/announcementDetail" element={<AnnouncementDetail />} />
+              <Route path="/chatarea" element={<ChatArea />} />
+              <Route path="/addannouncement" element={<AddAnnouncement />} />
+              <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
             </Routes>
           </Container>
         </ThemeProvider>

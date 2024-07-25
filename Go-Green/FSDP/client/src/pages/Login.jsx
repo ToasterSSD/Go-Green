@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import React, { useState, useContext } from 'react';
+import { Box, Typography, TextField, Button, IconButton, InputAdornment } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -7,16 +7,19 @@ import http from '../http';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserContext from '../contexts/UserContext';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function Login() {
     const navigate = useNavigate();
     const { setUser } = useContext(UserContext);
+    const [showPassword, setShowPassword] = useState(false);
 
     const formik = useFormik({
         initialValues: {
             email: "",
             password: ""
-        },
+        },  
         validationSchema: yup.object({
             email: yup.string().trim()
                 .email('Enter a valid email')
@@ -41,6 +44,14 @@ function Login() {
                 });
         }
     });
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     return (
         <Box sx={{
@@ -67,12 +78,26 @@ function Login() {
                 <TextField
                     fullWidth margin="dense" autoComplete="off"
                     label="Password"
-                    name="password" type="password"
+                    name="password" type={showPassword ? 'text' : 'password'}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     error={formik.touched.password && Boolean(formik.errors.password)}
                     helperText={formik.touched.password && formik.errors.password}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                 />
                 <Button fullWidth variant="contained" sx={{ mt: 2 }}
                     type="submit">
