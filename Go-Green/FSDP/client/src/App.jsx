@@ -9,7 +9,6 @@ import {
   Menu,
   MenuItem,
   Avatar,
-  IconButton,
   Divider,
   Link as MuiLink,
 } from "@mui/material";
@@ -82,52 +81,54 @@ function App() {
                   </MuiLink>
                 </Box>
 
-                {user ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box onClick={handleMenuOpen} sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                      <Avatar
-                        alt={user.name}
-                        src="/static/images/avatar/1.jpg"
-                        sx={{ width: 40, height: 40 }}
-                      />
-                      <Typography sx={{ ml: 1 }}>{user.name}</Typography>
-                    </Box>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={handleMenuClose}
-                      PaperProps={{
-                        sx: {
-                          borderRadius: '16px',
-                          mt: 1,
-                          minWidth: 200,
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-                        <Avatar
-                          alt={user.name}
-                          src="/static/images/avatar/1.jpg"
-                          sx={{ width: 40, height: 40, mr: 2 }}
-                        />
-                        <Typography variant="body1" noWrap>
-                          {user.name}
-                        </Typography>
-                      </Box>
-                      <Divider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </Menu>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box onClick={handleMenuOpen} sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <Avatar
+                      alt={user ? user.name : "Guest"}
+                      src="/static/images/avatar/1.jpg"
+                      sx={{ width: 40, height: 40 }}
+                    />
+                    <Typography sx={{ ml: 1 }}>{user ? user.name : "Guest"}</Typography>
                   </Box>
-                ) : (
-                  <Box sx={{ display: 'flex' }}>
-                    <MuiLink component={Link} to="/register" underline="none" color="inherit" sx={{ mx: 2 }}>
-                      Register
-                    </MuiLink>
-                    <MuiLink component={Link} to="/login" underline="none" color="inherit" sx={{ mx: 2 }}>
-                      Login
-                    </MuiLink>
-                  </Box>
-                )}
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                    PaperProps={{
+                      sx: {
+                        borderRadius: '16px',
+                        mt: 1,
+                        minWidth: 200,
+                      },
+                    }}
+                  >
+                    {user ? (
+                      <>
+                        <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+                          <Avatar
+                            alt={user.name}
+                            src="/static/images/avatar/1.jpg"
+                            sx={{ width: 40, height: 40, mr: 2 }}
+                          />
+                          <Typography variant="body1" noWrap>
+                            {user.name}
+                          </Typography>
+                        </Box>
+                        <Divider />
+                        <MenuItem onClick={logout}>Logout</MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <MenuItem component={Link} to="/register">
+                          Register
+                        </MenuItem>
+                        <MenuItem component={Link} to="/login">
+                          Login
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
+                </Box>
               </Toolbar>
             </Container>
           </AppBar>
