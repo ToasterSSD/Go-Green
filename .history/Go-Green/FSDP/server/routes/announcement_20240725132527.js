@@ -13,7 +13,6 @@ router.post("/", validateToken, async (req, res) => {
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
     content: yup.string().trim().min(3).max(1000).required(),
-    link: yup.string().trim().url().required(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });
@@ -59,6 +58,7 @@ router.get("/:id", async (req, res) => {
   res.json(announcement);
 });
 
+
 // update announcement via id
 router.put("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
@@ -81,7 +81,6 @@ router.put("/:id", validateToken, async (req, res) => {
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(100),
     description: yup.string().trim().min(3).max(500),
-    link: yup.string().trim().url(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });

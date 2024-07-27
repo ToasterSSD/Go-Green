@@ -59,6 +59,7 @@ router.get("/:id", async (req, res) => {
   res.json(announcement);
 });
 
+
 // update announcement via id
 router.put("/:id", validateToken, async (req, res) => {
   let id = req.params.id;

@@ -10,13 +10,11 @@ import "react-toastify/dist/ReactToastify.css";
 function AddAnnouncement() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
-  const [link, setLink] = useState("");
 
   const formik = useFormik({
     initialValues: {
       title: "",
       content: "",
-      link: "",
     },
     validationSchema: yup.object({
       title: yup
@@ -31,10 +29,6 @@ function AddAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(2000, "Content must be at most 2000 characters")
         .required("Content is required"),
-      link: yup
-        .string()
-        .url("Must be a valid URL")
-        .required("Link is required"),
     }),
     onSubmit: (data) => {
       if (imageFile) {
@@ -42,8 +36,6 @@ function AddAnnouncement() {
       }
       data.title = data.title.trim();
       data.content = data.content.trim();
-      data.link = formik.values.link.trim();
-      console.log("Form data being sent:", data);
       http.post("/announcement", data).then((res) => {
         console.log(res.data);
         navigate("/announcement");
@@ -107,19 +99,12 @@ function AddAnnouncement() {
               value={formik.values.content}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.content && Boolean(formik.errors.content)}
-              helperText={formik.touched.content && formik.errors.content}
-            />
-            <TextField
-              fullWidth
-              id="link"
-              name="link"
-              label="Link"
-              value={formik.values.link}
-              onChange={formik.handleChange}
-              error={formik.touched.link && Boolean(formik.errors.link)}
-              helperText={formik.touched.link && formik.errors.link}
-              sx={{ mb: 2 }}
+              error={
+                formik.touched.content && Boolean(formik.errors.content)
+              }
+              helperText={
+                formik.touched.content && formik.errors.content
+              }
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>

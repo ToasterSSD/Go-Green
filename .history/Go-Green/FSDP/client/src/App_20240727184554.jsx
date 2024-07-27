@@ -64,63 +64,29 @@ function App() {
           <AppBar position="static" className="AppBar">
             <Container>
               <Toolbar disableGutters>
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
+                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                   <Typography variant="h6" component="div">
                     Learning
                   </Typography>
                 </Link>
-                <Box sx={{ display: "flex", flexGrow: 1, ml: 2 }}>
-                  <MuiLink
-                    component={Link}
-                    to="/tutorials"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                <Box sx={{ display: 'flex', flexGrow: 1, ml: 2 }}>
+                  <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Tutorials
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/announcement"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Announcements
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/announcementDetail"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/announcementDetail" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Announcement Details
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/chatarea"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Chat Area
                   </MuiLink>
                 </Box>
 
                 {user ? (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box
-                      onClick={handleMenuOpen}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                      }}
-                    >
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Box onClick={handleMenuOpen} sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                       <Avatar
                         alt={user.name}
                         src="/static/images/avatar/1.jpg"
@@ -134,13 +100,13 @@ function App() {
                       onClose={handleMenuClose}
                       PaperProps={{
                         sx: {
-                          borderRadius: "16px",
+                          borderRadius: '16px',
                           mt: 1,
                           minWidth: 200,
                         },
                       }}
                     >
-                      <Box sx={{ display: "flex", alignItems: "center", p: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
                         <Avatar
                           alt={user.name}
                           src="/static/images/avatar/1.jpg"
@@ -155,23 +121,11 @@ function App() {
                     </Menu>
                   </Box>
                 ) : (
-                  <Box sx={{ display: "flex" }}>
-                    <MuiLink
-                      component={Link}
-                      to="/register"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                  <Box sx={{ display: 'flex' }}>
+                    <MuiLink component={Link} to="/register" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Register
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/login"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/login" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Login
                     </MuiLink>
                   </Box>
@@ -182,16 +136,7 @@ function App() {
 
           <Container sx={{ mt: 4 }}>
             <Routes>
-              <Route
-                path="/"
-                element={
-                  user?.role === "ADMIN" ? (
-                    <AdminComponent />
-                  ) : (
-                    <UserComponent />
-                  )
-                }
-              />
+              <Route path="/" element={user?.role === "ADMIN" ? <AdminComponent /> : <UserComponent />} />
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/announcement" element={<Announcement />} />
               <Route path="/addtutorial" element={<AddTutorial />} />
@@ -199,16 +144,10 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/form" element={<MyForm />} />
-              <Route
-                path="/announcementDetail"
-                element={<AnnouncementDetail />}
-              />
+              <Route path="/announcementDetail" element={<AnnouncementDetail />} />
               <Route path="/chatarea" element={<ChatArea />} />
               <Route path="/addannouncement" element={<AddAnnouncement />} />
-              <Route
-                path="/editannouncement/:id"
-                element={<EditAnnouncement />}
-              />
+              <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
             </Routes>
           </Container>
         </ThemeProvider>
