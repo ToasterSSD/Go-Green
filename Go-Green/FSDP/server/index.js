@@ -20,16 +20,12 @@ app.get("/", (req, res) => {
 // Routes
 const tutorialRoute = require('./routes/tutorial');
 app.use("/tutorial", tutorialRoute);
-
 const userRoute = require('./routes/user');
 app.use("/user", userRoute);
-
 const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);
-
 const announcementRoute = require("./routes/announcement");
 app.use("/announcement", announcementRoute);
-
 const chatareaRoute = require("./routes/chatarea");
 app.use("/chatarea", chatareaRoute);
 
