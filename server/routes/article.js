@@ -8,8 +8,9 @@ router.post("/", async (req, res) => {
     let data = req.body;
     // Validate request body
     let validationSchema = yup.object({
-        newsName: yup.string().trim().min(3).max(30).required(),
-        newsCat: yup.string().trim().min(3).max(30).required()
+        title: yup.string().trim().min(3).max(30).required(),
+        category: yup.string().trim().min(3).max(30).required(),
+        author: yup.string().trim().min(3).max(30).required()
     });
     try {
         data = await validationSchema.validate(data,
@@ -29,7 +30,8 @@ router.get("/", async (req, res) => {
     if (search) {
         condition[Op.or] = [
             { title: { [Op.like]: `%${search}%` } },
-            { description: { [Op.like]: `%${search}%` } }
+            { category: { [Op.like]: `%${search}%` } },
+            { author: { [Op.like]: `%${search}%` } }
         ];
     }
 
@@ -64,8 +66,9 @@ router.put("/:id", async (req, res) => {
     let data = req.body;
     // Validate request body
     let validationSchema = yup.object({
-        newsName: yup.string().trim().min(3).max(30),
-        newsCat: yup.string().trim().min(3).max(30)
+        title: yup.string().trim().min(3).max(30),
+        category: yup.string().trim().min(3).max(30),
+        author: yup.string().trim().min(3).max(30)
     });
     try {
         data = await validationSchema.validate(data,

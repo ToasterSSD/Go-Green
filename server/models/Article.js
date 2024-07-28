@@ -2,14 +2,22 @@ module.exports = (sequelize, DataTypes) => {
     const Article = sequelize.define(
         "Article", 
         {
-        newsName: {
+        title: {
             type: DataTypes.STRING(30),
             allowNull: false
         },
-        newsCat: {
+        category: {
             type: DataTypes.STRING(30),
             allowNull: false
+        },
+        author: {
+            type: DataTypes.STRING(30),
+            allowNull: false
+        },
+        imageFile: {
+            type: DataTypes.STRING(20)
         }
+        
     }, {
         tableName: 'articles'
     });

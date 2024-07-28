@@ -9,6 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
+
 // Enable CORS
 app.use(cors({
     origin: process.env.CLIENT_URL
@@ -21,6 +22,9 @@ app.get("/", (req, res) => {
 // Routes
 const articleRoute = require('./routes/article');
 app.use("/article", articleRoute);
+
+const fileRoute = require('./routes/file');
+app.use("/file", fileRoute);
 
 // Set up body-parser middleware to parse JSON requests
 app.use(bodyParser.json());

@@ -1,37 +1,83 @@
-import React from 'react'
-import { Box, Typography, TextField, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, TextField, Button, Grid } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import http from '../http';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function AddArticle() {
     const navigate = useNavigate();
+    const [imageFile, setImageFile] = useState(null);
+    const [imageError, setImageError] = useState(false);
+
     const formik = useFormik({
         initialValues: {
             title: "",
-            description: ""
+            category: "",
+            author: ""
         },
         validationSchema: yup.object({
-            newsName: yup.string().trim()
+            title: yup.string().trim()
                 .min(3, 'Title must be at least 3 characters')
                 .max(30, 'Title must be at most 30 characters')
                 .required('Title is required'),
-            newsCat: yup.string().trim()
-                .min(3, 'Description must be at least 3 characters')
-                .max(30, 'Description must be at most 30 characters')
-                .required('Description is required')
+            category: yup.string().trim()
+                .min(3, 'Category must be at least 3 characters')
+                .max(30, 'Category must be at most 30 characters')
+                .required('Category is required'),
+            author: yup.string().trim()
+                .min(3, 'Author must be at least 3 characters')
+                .max(30, 'Author must be at most 30 characters')
+                .required('Author is required')
         }),
         onSubmit: (data) => {
-            data.newsName = data.newsName.trim();
-            data.newsCat = data.newsCat.trim();
+            if (!imageFile) {
+                setImageError(true);
+                toast.error('Image file is required');
+                return;
+            }
+
+            data.imageFile = imageFile;
+            data.title = data.title.trim();
+            data.category = data.category.trim();
+            data.author = data.author.trim();
             http.post("/article", data)
                 .then((res) => {
                     console.log(res.data);
                     navigate("/articles");
+                })
+                .catch((err) => {
+                    console.error(err);
+                    toast.error('Failed to add article');
                 });
         }
     });
+
+    const onFileChange = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            if (file.size > 1024 * 1024) {
+                toast.error('Maximum file size is 1MB');
+                return;
+            }
+            let formData = new FormData();
+            formData.append('file', file);
+            http.post('/file/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then((res) => {
+                    setImageFile(res.data.filename);
+                    setImageError(false); // Reset image error if file upload is successful
+                })
+                .catch(function (error) {
+                    console.log(error.response);
+                });
+        }
+    };
 
     return (
         <Box>
@@ -39,35 +85,74 @@ function AddArticle() {
                 Add Article
             </Typography>
             <Box component="form" onSubmit={formik.handleSubmit}>
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Title"
-                    name="title"
-                    value={formik.values.newsName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.newsName && Boolean(formik.errors.title)}
-                    helperText={formik.touched.newsName && formik.errors.title}
-                />
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    multiline minRows={2}
-                    label="NewsCat"
-                    name="newsCat"
-                    value={formik.values.newsCat}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.newsCat && Boolean(formik.errors.title)}
-                    helperText={formik.touched.newsCat && formik.errors.title}
-                />
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={6} lg={8}>
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Title"
+                            name="title"
+                            value={formik.values.title}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.title && Boolean(formik.errors.title)}
+                            helperText={formik.touched.title && formik.errors.title}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            multiline minRows={2}
+                            label="Category"
+                            name="category"
+                            value={formik.values.category}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.category && Boolean(formik.errors.category)}
+                            helperText={formik.touched.category && formik.errors.category}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Author"
+                            name="author"
+                            value={formik.values.author}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.author && Boolean(formik.errors.author)}
+                            helperText={formik.touched.author && formik.errors.author}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={4}>
+                        <Box sx={{ textAlign: 'center', mt: 2 }}>
+                            <Button variant="contained" component="label">
+                                Upload Image
+                                <input hidden accept="image/*" multiple type="file"
+                                    onChange={onFileChange} />
+                            </Button>
+                            {imageError && (
+                                <Typography color="error" variant="body2">
+                                    Image file is required
+                                </Typography>
+                            )}
+                            {
+                                imageFile && (
+                                    <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
+                                        <img alt="article"
+                                            src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}>
+                                        </img>
+                                    </Box>
+                                )
+                            }
+                        </Box>
+                    </Grid>
+                </Grid>
                 <Box sx={{ mt: 2 }}>
                     <Button variant="contained" type="submit">
                         Add
                     </Button>
                 </Box>
             </Box>
+
+            <ToastContainer />
         </Box>
-    )
+    );
 }
 
-export default AddArticle
+export default AddArticle;
