@@ -13,7 +13,7 @@ router.post("/", validateToken, async (req, res) => {
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
     content: yup.string().trim().min(3).max(1000).required(),
-    link: yup.string().trim().url(),
+    link: yup.string().trim().url().required(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });
@@ -109,7 +109,7 @@ router.delete("/:id", validateToken, async (req, res) => {
   }
 
   // Check if user is the owner or has ADMIN role
-  if (req.user.roles.includes("ADMIN")) {
+  if req.user.roles.includes("ADMIN") {
     let num = await Announcement.destroy({
       where: { id: id },
     });

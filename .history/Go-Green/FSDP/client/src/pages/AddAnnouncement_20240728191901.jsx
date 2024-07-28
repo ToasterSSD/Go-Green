@@ -12,14 +12,14 @@ function AddAnnouncement() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [imageFile, setImageFile] = useState(null);
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(false); // State to control toast notification
 
   useEffect(() => {
     if (!user?.roles.includes("ADMIN")) {
-      setShowToast(true);
+      setShowToast(true); // Set the state to true to show the toast
       setTimeout(() => {
         navigate("/announcement");
-      }, 2000);
+      }, 2000); // Delay the navigation to give time for the toast to be shown
     }
   }, [user, navigate]);
 
@@ -48,7 +48,10 @@ function AddAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(500, "Content must be at most 500 characters")
         .required("Content is required"),
-      link: yup.string().url("Must be a valid URL"),
+      link: yup
+        .string()
+        .url("Must be a valid URL")
+        .required("Link is required"),
     }),
     onSubmit: (data) => {
       if (imageFile) {

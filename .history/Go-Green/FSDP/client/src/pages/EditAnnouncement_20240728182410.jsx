@@ -52,7 +52,10 @@ function EditAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(500, "Content must be at most 500 characters")
         .required("Content is required"),
-      link: yup.string().url("Must be a valid URL"),
+      link: yup
+        .string()
+        .url("Must be a valid URL")
+        .required("Link is required"),
     }),
     onSubmit: (data) => {
       if (imageFile) {
@@ -61,16 +64,10 @@ function EditAnnouncement() {
       data.title = data.title.trim();
       data.content = data.content.trim();
       data.link = data.link.trim();
-      http
-        .put(`/announcement/${id}`, data)
-        .then((res) => {
-          console.log(res.data);
-          toast.success("Announcement updated successfully.");
-          navigate("/announcement");
-        })
-        .catch((error) => {
-          toast.error("Failed to update announcement.");
-        });
+      http.put(`/announcement/${id}`, data).then((res) => {
+        console.log(res.data);
+        navigate("/announcement");
+      });
     },
   });
 
@@ -85,16 +82,10 @@ function EditAnnouncement() {
   };
 
   const deleteAnnouncement = () => {
-    http
-      .delete(`/announcement/${id}`)
-      .then((res) => {
-        console.log(res.data);
-        toast.success("Announcement deleted successfully.");
-        navigate("/announcement");
-      })
-      .catch((error) => {
-        toast.error("Failed to delete announcement.");
-      });
+    http.delete(`/announcement/${id}`).then((res) => {
+      console.log(res.data);
+      navigate("/announcement");
+    });
   };
 
   const onFileChange = (e) => {
@@ -121,17 +112,6 @@ function EditAnnouncement() {
         });
     }
   };
-
-  if (!user?.roles.includes("ADMIN")) {
-    return (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6">
-          You do not have permission to edit this announcement.
-        </Typography>
-        <ToastContainer />
-      </Box>
-    );
-  }
 
   return (
     <Box>
@@ -207,14 +187,17 @@ function EditAnnouncement() {
             <Button variant="contained" type="submit">
               Update
             </Button>
-            <Button
-              variant="contained"
-              sx={{ ml: 2 }}
-              color="error"
-              onClick={handleOpen}
-            >
-              Delete
-            </Button>
+            {user?.roles.includes("ADMIN") ||
+            user?.id === announcement.userId ? (
+              <Button
+                variant="contained"
+                sx={{ ml: 2 }}
+                color="error"
+                onClick={handleOpen}
+              >
+                Delete
+              </Button>
+            ) : null}
           </Box>
         </Box>
       )}

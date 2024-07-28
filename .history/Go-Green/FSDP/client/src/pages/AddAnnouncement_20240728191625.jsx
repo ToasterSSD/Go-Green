@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
@@ -12,22 +12,19 @@ function AddAnnouncement() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [imageFile, setImageFile] = useState(null);
-  const [showToast, setShowToast] = useState(false);
+  const toastShownRef = useRef(false); // Ref to track if toast is shown
 
   useEffect(() => {
     if (!user?.roles.includes("ADMIN")) {
-      setShowToast(true);
+      if (!toastShownRef.current) {
+        toast.error("You do not have permission to add an announcement.");
+        toastShownRef.current = true;
+      }
       setTimeout(() => {
         navigate("/announcement");
-      }, 2000);
+      }, 2000); // Delay the navigation to give time for the toast to be shown
     }
   }, [user, navigate]);
-
-  useEffect(() => {
-    if (showToast) {
-      toast.error("You do not have permission to add an announcement.");
-    }
-  }, [showToast]);
 
   const formik = useFormik({
     initialValues: {
@@ -48,7 +45,10 @@ function AddAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(500, "Content must be at most 500 characters")
         .required("Content is required"),
-      link: yup.string().url("Must be a valid URL"),
+      link: yup
+        .string()
+        .url("Must be a valid URL")
+        .required("Link is required"),
     }),
     onSubmit: (data) => {
       if (imageFile) {
