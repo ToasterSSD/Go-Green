@@ -90,7 +90,7 @@ function PublicArticles() {
                                 }
                                 <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                     <Box sx={{ display: 'flex', mb: 1 }}>
-                                        <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Nunito, sans-serif', fontWeight: 'bold' }}>
+                                        <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
                                             {article.title}
                                         </Typography>
                                     </Box>
