@@ -13,7 +13,7 @@ router.post("/", validateToken, async (req, res) => {
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
     content: yup.string().trim().min(3).max(1000).required(),
-    link: yup.string().trim().url().required(),
+    link: yup.string().trim().url(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });

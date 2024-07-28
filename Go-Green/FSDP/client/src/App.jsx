@@ -32,7 +32,8 @@ import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
-import SettingsModel from "./components/SettingsModel";
+import SettingsModal from "./components/SettingsModal";
+import Footer from "./components/Footer";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -78,7 +79,7 @@ function App() {
             className="AppBar"
             sx={{ backgroundColor: "#A7A7A7" }}
           >
-            <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
+            <Container sx={{ padding: 0 }}>
               {/* Ensure no extra padding */}
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -102,10 +103,10 @@ function App() {
                   </Link>
                 </Box>
 
-                <Box sx={{ display: "flex", flexGrow: 1, ml: 2 }}>
+                <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
                   <MuiLink
                     component={Link}
-                    to="/tutorials" // to be removed
+                    to="/tutorials"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -114,7 +115,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/News" //change to your own page name
+                    to="/News"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -132,7 +133,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/chatarea" //WIP
+                    to="/chatarea"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -141,7 +142,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Learning" //change to your own page name
+                    to="/Learning"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -150,7 +151,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Games" //change to your own page name
+                    to="/Games"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -159,7 +160,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Donations" //change to your own page name
+                    to="/Donations"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -168,7 +169,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Feedback" //change to your own page name
+                    to="/Feedback"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -221,9 +222,7 @@ function App() {
                           </Typography>
                         </Box>
                         <Divider />
-                        <MenuItem
-                          onClick={handleSettingsOpen}
-                        >
+                        <MenuItem onClick={handleSettingsOpen}>
                           Settings
                         </MenuItem>
                         <MenuItem onClick={logout}>Logout</MenuItem>
@@ -274,9 +273,10 @@ function App() {
               />
             </Routes>
           </Container>
+          <Footer />
         </ThemeProvider>
       </Router>
-      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
+      <SettingsModal open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }

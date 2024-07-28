@@ -26,7 +26,9 @@ const checkAdminRole = async (req, res, next) => {
     return next();
   }
 
-  return res.status(403).json({ message: "You do not have the required permissions" });
+  return res
+  .status(403)
+  .json({ message: "You do not have the required permissions" });
 };
 
 module.exports = { validateToken, checkAdminRole };

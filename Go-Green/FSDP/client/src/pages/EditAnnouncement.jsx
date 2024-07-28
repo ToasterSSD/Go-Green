@@ -23,7 +23,7 @@ function EditAnnouncement() {
   const [announcement, setAnnouncement] = useState({
     title: "",
     content: "",
-    link: ""
+    link: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -52,10 +52,7 @@ function EditAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(500, "Content must be at most 500 characters")
         .required("Content is required"),
-      link: yup
-        .string()
-        .url("Must be a valid URL")
-        .required("Link is required"),
+      link: yup.string().url("Must be a valid URL"),
     }),
     onSubmit: (data) => {
       if (imageFile) {
@@ -64,10 +61,15 @@ function EditAnnouncement() {
       data.title = data.title.trim();
       data.content = data.content.trim();
       data.link = data.link.trim();
-      http.put(`/announcement/${id}`, data).then((res) => {
-        console.log(res.data);
-        navigate("/announcement");
-      });
+      http
+        .put(`/announcement/${id}`, data)
+        .then((res) => {
+          toast.success("Announcement updated successfully.");
+          navigate("/announcement");
+        })
+        .catch((error) => {
+          toast.error("Failed to update announcement.");
+        });
     },
   });
 
@@ -82,10 +84,15 @@ function EditAnnouncement() {
   };
 
   const deleteAnnouncement = () => {
-    http.delete(`/announcement/${id}`).then((res) => {
-      console.log(res.data);
-      navigate("/announcement");
-    });
+    http
+      .delete(`/announcement/${id}`)
+      .then((res) => {
+        toast.success("Announcement deleted successfully.");
+        navigate("/announcement");
+      })
+      .catch((error) => {
+        toast.error("Failed to delete announcement.");
+      });
   };
 
   const onFileChange = (e) => {
@@ -187,7 +194,8 @@ function EditAnnouncement() {
             <Button variant="contained" type="submit">
               Update
             </Button>
-            {user?.roles.includes("ADMIN") || user?.id === announcement.userId ? (
+            {user?.roles.includes("ADMIN") ||
+            user?.id === announcement.userId ? (
               <Button
                 variant="contained"
                 sx={{ ml: 2 }}

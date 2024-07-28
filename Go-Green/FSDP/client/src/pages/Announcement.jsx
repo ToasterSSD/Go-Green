@@ -84,9 +84,11 @@ function Announcement() {
           <Clear />
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />
-        <Link to="/addannouncement" style={{ textDecoration: "none" }}>
-          <Button variant="contained">Add</Button>
-        </Link>
+        {user?.roles.includes("ADMIN") && (
+          <Link to="/addannouncement" style={{ textDecoration: "none" }}>
+            <Button variant="contained">Add</Button>
+          </Link>
+        )}
       </Box>
       <Grid container spacing={2}>
         {announcementList.map((announcement) => (
@@ -124,7 +126,7 @@ function AnnouncementCard({ announcement, user }) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               {announcement.title || "No Title"}
             </Typography>
-            {(user?.roles?.includes("ADMIN") || user?.id === announcement.userId) && (
+            {(user?.roles.includes("ADMIN") || user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
