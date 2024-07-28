@@ -20,7 +20,6 @@ import {
 import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
-import HeaderWithBackground from "../components/HeaderWithBackground";
 import global from "../global";
 
 function Announcement() {
@@ -64,11 +63,28 @@ function Announcement() {
   }, []);
 
   return (
+    
     <Box>
-      <HeaderWithBackground
-        title="Announcements"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
-      />
+      return (
+    
+    <Box>
+      <Typography variant="h5" sx={{ my: 2 }}>
+        Announcement
+      </Typography>
+
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Input
+          value={search}
+          placeholder="Search"
+          onChange={onSearchChange}
+          onKeyDown={onSearchKeyDown}
+        />
+        <IconButton color="primary" onClick={onClickSearch}>
+          <Search />
+        </IconButton>
+        <IconButton color="primary" onClick={onClickClear}>
+          <Clear />
+        </IconButton>
 
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <Input

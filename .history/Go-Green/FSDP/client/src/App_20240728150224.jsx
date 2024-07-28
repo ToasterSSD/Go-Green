@@ -65,9 +65,9 @@ function App() {
           <AppBar
             position="static"
             className="AppBar"
-            sx={{ backgroundColor: "#A7A7A7" }}
+            sx={{ backgroundColor: '#A7A7A7', margin: 0, padding: 0 }}}
           >
-            <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
+            <Container sx={{ padding: 0 }}>
               {" "}
               {/* Ensure no extra padding */}
               <Toolbar disableGutters>

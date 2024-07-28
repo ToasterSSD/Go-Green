@@ -67,7 +67,7 @@ function Announcement() {
     <Box>
       <HeaderWithBackground
         title="Announcements"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
+        backgroundImage="/uploads/New logo.png" // Path to your background image
       />
 
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>

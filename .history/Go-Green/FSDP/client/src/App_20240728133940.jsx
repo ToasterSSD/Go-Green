@@ -62,14 +62,8 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar
-            position="static"
-            className="AppBar"
-            sx={{ backgroundColor: "#A7A7A7" }}
-          >
-            <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
-              {" "}
-              {/* Ensure no extra padding */}
+          <AppBar position="static" className="AppBar">
+            <Container>
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Link
@@ -87,11 +81,11 @@ function App() {
                       style={{ height: "40px", marginRight: "10px" }}
                     />
                     <Typography variant="h6" component="div">
-                      Go <span style={{ color: "#06F92D" }}>Green</span>!
+                      Go-Green
                     </Typography>
                   </Link>
                 </Box>
-
+                
                 <Box sx={{ display: "flex", flexGrow: 1, ml: 2 }}>
                   <MuiLink
                     component={Link}
@@ -166,6 +160,7 @@ function App() {
                     Feedback
                   </MuiLink>
                 </Box>
+
                 {user ? (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box
