@@ -32,7 +32,7 @@ import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
-import SettingsModal from "./components/SettingsModal";
+import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 
 function App() {
@@ -276,7 +276,7 @@ function App() {
           <Footer />
         </ThemeProvider>
       </Router>
-      <SettingsModal open={settingsOpen} onClose={handleSettingsClose} user={user} />
+      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }
