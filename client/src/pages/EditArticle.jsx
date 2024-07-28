@@ -13,12 +13,7 @@ function EditArticle() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [article, setArticle] = useState({
-        title: "",
-        category: "",
-        author: "",
-        content: ""
-    });
+    const [article, setArticle] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -31,35 +26,51 @@ function EditArticle() {
     }, [id]);
 
     const formik = useFormik({
-        initialValues: article,
+        initialValues: {
+            title: article ? article.title : "",
+            category: article ? article.category : "",
+            author: article ? article.author : "",
+            content: article ? article.content : ""
+        },
         enableReinitialize: true,
         validationSchema: yup.object({
             title: yup.string().trim()
                 .min(3, 'Title must be at least 3 characters')
-                .max(100, 'Title must be at most 100 characters')
+                .max(30, 'Title must be at most 30 characters')
                 .required('Title is required'),
             category: yup.string().trim()
                 .min(3, 'Category must be at least 3 characters')
-                .max(500, 'Category must be at most 500 characters')
+                .max(30, 'Category must be at most 30 characters')
                 .required('Category is required'),
             author: yup.string().trim()
                 .min(3, 'Author must be at least 3 characters')
-                .max(100, 'Author must be at most 100 characters')
+                .max(30, 'Author must be at most 30 characters')
                 .required('Author is required'),
             content: yup.string().trim()
                 .required('Content is required')
         }),
         onSubmit: (data) => {
+            const formData = new FormData();
+            formData.append('title', data.title.trim());
+            formData.append('category', data.category.trim());
+            formData.append('author', data.author.trim());
+            formData.append('content', data.content.trim());
             if (imageFile) {
-                data.imageFile = imageFile;
+                formData.append('imageFile', imageFile);
             }
-            data.title = data.title.trim();
-            data.category = data.category.trim();
-            data.author = data.author.trim();
-            http.put(`/article/${id}`, data)
+
+            http.put(`/article/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((res) => {
                     console.log(res.data);
                     navigate("/articles");
+                })
+                .catch((err) => {
+                    console.error(err);
+                    toast.error('Failed to update article');
                 });
         }
     });
@@ -79,6 +90,10 @@ function EditArticle() {
             .then((res) => {
                 console.log(res.data);
                 navigate("/articles");
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error('Failed to delete article');
             });
     }
 
@@ -89,20 +104,7 @@ function EditArticle() {
                 toast.error('Maximum file size is 1MB');
                 return;
             }
-
-            let formData = new FormData();
-            formData.append('file', file);
-            http.post('/file/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then((res) => {
-                    setImageFile(res.data.filename);
-                })
-                .catch(function (error) {
-                    console.log(error.response);
-                });
+            setImageFile(file);  // Directly set the file without uploading it separately
         }
     };
 
@@ -149,7 +151,7 @@ function EditArticle() {
                                 />
                                 <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                                 <Editor
-                                    apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                                    apiKey="YOUR_TINYMCE_API_KEY"
                                     value={formik.values.content}
                                     init={{
                                         height: 500,
@@ -231,4 +233,5 @@ function EditArticle() {
 }
 
 export default EditArticle;
+
 
