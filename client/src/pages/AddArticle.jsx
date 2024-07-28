@@ -39,11 +39,17 @@ function AddArticle() {
                 return;
             }
 
-            data.imageFile = imageFile;
-            data.title = data.title.trim();
-            data.category = data.category.trim();
-            data.author = data.author.trim();
-            http.post("/article", data)
+            const formData = new FormData();
+            formData.append('title', data.title.trim());
+            formData.append('category', data.category.trim());
+            formData.append('author', data.author.trim());
+            formData.append('imageFile', imageFile);
+
+            http.post("/article", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((res) => {
                     console.log(res.data);
                     navigate("/articles");
@@ -62,20 +68,8 @@ function AddArticle() {
                 toast.error('Maximum file size is 1MB');
                 return;
             }
-            let formData = new FormData();
-            formData.append('file', file);
-            http.post('/file/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-                .then((res) => {
-                    setImageFile(res.data.filename);
-                    setImageError(false); // Reset image error if file upload is successful
-                })
-                .catch(function (error) {
-                    console.log(error.response);
-                });
+            setImageFile(file);  // Directly set the file without uploading it separately
+            setImageError(false); // Reset image error if file is selected
         }
     };
 
@@ -123,7 +117,7 @@ function AddArticle() {
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Button variant="contained" component="label">
                                 Upload Image
-                                <input hidden accept="image/*" multiple type="file"
+                                <input hidden accept="image/*" type="file"
                                     onChange={onFileChange} />
                             </Button>
                             {imageError && (
@@ -135,7 +129,8 @@ function AddArticle() {
                                 imageFile && (
                                     <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                                         <img alt="article"
-                                            src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}>
+                                            src={URL.createObjectURL(imageFile)}
+                                            style={{ width: '100%', height: 'auto' }}>
                                         </img>
                                     </Box>
                                 )
@@ -156,3 +151,4 @@ function AddArticle() {
 }
 
 export default AddArticle;
+

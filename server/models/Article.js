@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         imageFile: {
-            type: DataTypes.STRING(20)
+            type: DataTypes.STRING(255)
         }
         
     }, {
