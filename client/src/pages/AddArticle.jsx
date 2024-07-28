@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import http from '../http';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
+import { Editor } from '@tinymce/tinymce-react';
 import 'react-toastify/dist/ReactToastify.css';
 
 function AddArticle() {
@@ -16,7 +17,8 @@ function AddArticle() {
         initialValues: {
             title: "",
             category: "",
-            author: ""
+            author: "",
+            content: ""
         },
         validationSchema: yup.object({
             title: yup.string().trim()
@@ -30,7 +32,9 @@ function AddArticle() {
             author: yup.string().trim()
                 .min(3, 'Author must be at least 3 characters')
                 .max(30, 'Author must be at most 30 characters')
-                .required('Author is required')
+                .required('Author is required'),
+            content: yup.string().trim()
+                .required('Content is required')
         }),
         onSubmit: (data) => {
             if (!imageFile) {
@@ -43,6 +47,7 @@ function AddArticle() {
             formData.append('title', data.title.trim());
             formData.append('category', data.category.trim());
             formData.append('author', data.author.trim());
+            formData.append('content', data.content.trim());
             formData.append('imageFile', imageFile);
 
             http.post("/article", formData, {
@@ -112,6 +117,30 @@ function AddArticle() {
                             error={formik.touched.author && Boolean(formik.errors.author)}
                             helperText={formik.touched.author && formik.errors.author}
                         />
+                        <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
+                        <Editor
+                            apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                            value={formik.values.content}
+                            init={{
+                                height: 500,
+                                menubar: false,
+                                plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount'
+                                ],
+                                toolbar:
+                                    'undo redo | formatselect | bold italic backcolor | \
+                                    alignleft aligncenter alignright alignjustify | \
+                                    bullist numlist outdent indent | removeformat | help'
+                            }}
+                            onEditorChange={(content) => formik.setFieldValue('content', content)}
+                        />
+                        {formik.touched.content && formik.errors.content ? (
+                            <Typography color="error" variant="body2">
+                                {formik.errors.content}
+                            </Typography>
+                        ) : null}
                     </Grid>
                     <Grid item xs={12} md={6} lg={4}>
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
@@ -151,4 +180,9 @@ function AddArticle() {
 }
 
 export default AddArticle;
+
+
+
+
+
 

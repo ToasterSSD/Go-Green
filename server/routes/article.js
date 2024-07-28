@@ -46,7 +46,8 @@ router.post("/", upload.single('imageFile'), async (req, res) => {
     let validationSchema = yup.object({
         title: yup.string().trim().min(3).max(30).required(),
         category: yup.string().trim().min(3).max(30).required(),
-        author: yup.string().trim().min(3).max(30).required()
+        author: yup.string().trim().min(3).max(30).required(),
+        content: yup.string().trim().required()
     });
 
     try {
@@ -69,8 +70,6 @@ router.post("/", upload.single('imageFile'), async (req, res) => {
         res.status(400).json({ errors: err.errors || [err.message] });
     }
 });
-
-// Other routes remain unchanged
 
 router.get("/", async (req, res) => {
     let condition = {};
@@ -101,9 +100,8 @@ router.get("/:id", async (req, res) => {
     res.json(article);
 });
 
-router.put("/:id", upload.single('imageFile'), async (req, res) => { // Added upload for image update
+router.put("/:id", upload.single('imageFile'), async (req, res) => {
     let id = req.params.id;
-    // Check id not found
     let article = await Article.findByPk(id);
     if (!article) {
         res.sendStatus(404);
@@ -115,8 +113,10 @@ router.put("/:id", upload.single('imageFile'), async (req, res) => { // Added up
     let validationSchema = yup.object({
         title: yup.string().trim().min(3).max(30),
         category: yup.string().trim().min(3).max(30),
-        author: yup.string().trim().min(3).max(30)
+        author: yup.string().trim().min(3).max(30),
+        content: yup.string().trim().required()
     });
+
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
@@ -160,5 +160,6 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
 
 

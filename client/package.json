@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
+    "@tinymce/tinymce-react": "^5.1.1",
     "axios": "^1.7.2",
     "dayjs": "^1.11.11",
     "formik": "^2.4.6",
@@ -24,6 +25,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.0",
     "react-toastify": "^10.0.5",
+    "tinymce": "^7.2.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {
