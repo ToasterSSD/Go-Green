@@ -151,7 +151,7 @@ function EditArticle() {
                                 />
                                 <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                                 <Editor
-                                    apiKey="YOUR_TINYMCE_API_KEY"
+                                    apiKey="Kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
                                     value={formik.values.content}
                                     init={{
                                         height: 500,
