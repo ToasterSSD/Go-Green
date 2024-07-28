@@ -15,7 +15,7 @@ import {
   AccessTime,
   Search,
   Clear,
-  Edit as EditIcon,
+  Edit,
 } from "@mui/icons-material";
 import http from "../http";
 import dayjs from "dayjs";
@@ -36,7 +36,7 @@ function Announcement() {
       setAnnouncementList(res.data);
     });
   };
-  
+
   const searchAnnouncement = () => {
     http.get(`/announcement?search=${search}`).then((res) => {
       setAnnouncementList(res.data);
@@ -97,7 +97,8 @@ function Announcement() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                       {announcement.title}
                     </Typography>
-                    {user && user.id === announcement.userId && (
+                    {(user?.roles.includes("ADMIN") ||
+                      user?.id === announcement.userId) && (
                       <Link to={`/editannouncement/${announcement.id}`}>
                         <IconButton color="primary" sx={{ padding: "4px" }}>
                           <Edit />
