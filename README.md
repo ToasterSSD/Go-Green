@@ -9,7 +9,7 @@ ya
 Ensure the User model includes a roles field to store user roles.
 
 // models/User.js
-const { DataTypes } = require('sequelize');
+```const { DataTypes } = require('sequelize');
 const sequelize = require('../db'); // Assuming you have a Sequelize instance
 
 const User = sequelize.define("User", {
@@ -26,14 +26,14 @@ User.associate = (models) => {
     });
 };
 
-module.exports = User;
+module.exports = User;```
 
 
 # 2. Authentication Middleware
 Create middleware to validate JWT tokens and check for admin roles.
 
 // middlewares/auth.js
-const { verify } = require('jsonwebtoken');
+``` const { verify } = require('jsonwebtoken');
 const { User } = require('../models');
 require('dotenv').config();
 
@@ -60,14 +60,14 @@ const checkAdminRole = async (req, res, next) => {
   return res.status(403).json({ message: "You do not have the required permissions" });
 };
 
-module.exports = { validateToken, checkAdminRole };
+module.exports = { validateToken, checkAdminRole };```
 
 
 # 3. Backend Routes
 Use the authentication middleware in your routes to enforce role-based access.
 
 // routes/user.js
-const express = require('express');
+``` const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { User } = require('../models');
@@ -141,11 +141,11 @@ router.get("/auth", validateToken, (req, res) => {
     res.json({ user: userInfo });
 });
 
-module.exports = router;
+module.exports = router;```
 
 # 4. Role-Based Access in Announcement Routes
 // routes/announcement.js
-const express = require('express');
+```const express = require('express');
 const router = express.Router();
 const { validateToken, checkAdminRole } = require('../middlewares/auth');
 const { Announcement } = require('../models');
@@ -200,13 +200,13 @@ router.delete("/:id", validateToken, async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router;```
 
 # 5. Frontend Implementation
 Ensure the frontend correctly handles the user roles and displays UI elements accordingly.
 
 // components/Announcement.js
-import React, { useEffect, useState, useContext } from "react";
+```import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -357,4 +357,4 @@ function AnnouncementCard({ announcement, user }) {
   );
 }
 
-export default Announcement;
+export default Announcement;```
