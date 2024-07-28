@@ -3,7 +3,7 @@ const router = express.Router();
 const { User, Announcement } = require("../models");
 const { Op } = require("sequelize");
 const yup = require("yup");
-const { validateToken } = require("../middlewares/auth");
+const { validateToken, checkAdminRole } = require("../middlewares/auth");
 
 // Create new announcement
 router.post("/", validateToken, async (req, res) => {
@@ -24,7 +24,7 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
-// show all announcements
+// Show all announcements
 router.get("/", async (req, res) => {
   let condition = {};
   let search = req.query.search;
@@ -34,8 +34,6 @@ router.get("/", async (req, res) => {
       { content: { [Op.like]: `%${search}%` } },
     ];
   }
-  // You can add condition for other columns here
-  // e.g. condition.columnName = value;
 
   let list = await Announcement.findAll({
     where: condition,
@@ -45,13 +43,12 @@ router.get("/", async (req, res) => {
   res.json(list);
 });
 
-// show announcement by id
+// Show announcement by id
 router.get("/:id", async (req, res) => {
   let id = req.params.id;
   let announcement = await Announcement.findByPk(id, {
     include: { model: User, as: "user", attributes: ["name"] },
   });
-  // Check id not found
   if (!announcement) {
     res.sendStatus(404);
     return;
@@ -59,78 +56,72 @@ router.get("/:id", async (req, res) => {
   res.json(announcement);
 });
 
-// update announcement via id
+// Update announcement via id
 router.put("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
-  // Check id not found
   let announcement = await Announcement.findByPk(id);
   if (!announcement) {
     res.sendStatus(404);
     return;
   }
 
-  // Check request user id
-  let userId = req.user.id;
-  if (announcement.userId != userId) {
-    res.sendStatus(403);
+  // Check if user is the owner or has ADMIN role
+  if (req.user.id === announcement.userId || req.user.roles.includes("ADMIN")) {
+    let data = req.body;
+    // Validate request body
+    let validationSchema = yup.object({
+      title: yup.string().trim().min(3).max(100),
+      content: yup.string().trim().min(3).max(500),
+      link: yup.string().trim().url(),
+    });
+    try {
+      data = await validationSchema.validate(data, { abortEarly: false });
+
+      let num = await Announcement.update(data, {
+        where: { id: id },
+      });
+      if (num == 1) {
+        res.json({
+          message: "Announcement was updated successfully.",
+        });
+      } else {
+        res.status(400).json({
+          message: `Cannot update announcement with id ${id}.`,
+        });
+      }
+    } catch (err) {
+      res.status(400).json({ errors: err.errors });
+    }
+  } else {
+    res.status(403).json({ message: "You do not have the required permissions" });
+  }
+});
+
+// Delete announcement via id
+router.delete("/:id", validateToken, async (req, res) => {
+  let id = req.params.id;
+  let announcement = await Announcement.findByPk(id);
+  if (!announcement) {
+    res.sendStatus(404);
     return;
   }
 
-  let data = req.body;
-  // Validate request body
-  let validationSchema = yup.object({
-    title: yup.string().trim().min(3).max(100),
-    description: yup.string().trim().min(3).max(500),
-    link: yup.string().trim().url(),
-  });
-  try {
-    data = await validationSchema.validate(data, { abortEarly: false });
-
-    let num = await Announcement.update(data, {
+  // Check if user is the owner or has ADMIN role
+  if (req.user.id === announcement.userId || req.user.roles.includes("ADMIN")) {
+    let num = await Announcement.destroy({
       where: { id: id },
     });
     if (num == 1) {
       res.json({
-        message: "Announcement was updated successfully.",
+        message: "Announcement was deleted successfully.",
       });
     } else {
       res.status(400).json({
-        message: `Cannot update announcement with id ${id}.`,
+        message: `Cannot delete announcement with id ${id}.`,
       });
     }
-  } catch (err) {
-    res.status(400).json({ errors: err.errors });
-  }
-});
-
-// delete announcement via id
-router.delete("/:id", validateToken, async (req, res) => {
-  let id = req.params.id;
-  // Check id not found
-  let announcement = await Announcement.findByPk(id);
-  if (!announcement) {
-    res.sendStatus(404);
-    return;
-  }
-
-  // Check request user id
-  let userId = req.user.id;
-  if (announcement.userId != userId) {
-    res.sendStatus(403);
-    return;
-  }
-
-  let num = await Announcement.destroy({
-    where: { id: id },
-  });
-  if (num == 1) {
-    res.json({
-      message: "Announcement was deleted successfully.",
-    });
   } else {
-    res.status(400).json({
-      message: `Cannot delete announcement with id ${id}.`,
-    });
+    res.status(403).json({ message: "You do not have the required permissions" });
   }
 });
 

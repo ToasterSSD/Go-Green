@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import {
@@ -13,14 +13,17 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../contexts/UserContext";
 
 function EditAnnouncement() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const [announcement, setAnnouncement] = useState({
     title: "",
     content: "",
+    link: ""
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,7 +34,7 @@ function EditAnnouncement() {
       setImageFile(res.data.imageFile);
       setLoading(false);
     });
-  }, []);
+  }, [id]);
 
   const formik = useFormik({
     initialValues: announcement,
@@ -60,7 +63,7 @@ function EditAnnouncement() {
       }
       data.title = data.title.trim();
       data.content = data.content.trim();
-      data.link = formik.values.link.trim();
+      data.link = data.link.trim();
       http.put(`/announcement/${id}`, data).then((res) => {
         console.log(res.data);
         navigate("/announcement");
@@ -104,7 +107,7 @@ function EditAnnouncement() {
         .then((res) => {
           setImageFile(res.data.filename);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error.response);
         });
     }
@@ -174,7 +177,7 @@ function EditAnnouncement() {
                     <img
                       alt="announcement"
                       src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}
-                    ></img>
+                    />
                   </Box>
                 )}
               </Box>
@@ -184,14 +187,16 @@ function EditAnnouncement() {
             <Button variant="contained" type="submit">
               Update
             </Button>
-            <Button
-              variant="contained"
-              sx={{ ml: 2 }}
-              color="error"
-              onClick={handleOpen}
-            >
-              Delete
-            </Button>
+            {user?.roles.includes("ADMIN") || user?.id === announcement.userId ? (
+              <Button
+                variant="contained"
+                sx={{ ml: 2 }}
+                color="error"
+                onClick={handleOpen}
+              >
+                Delete
+              </Button>
+            ) : null}
           </Box>
         </Box>
       )}

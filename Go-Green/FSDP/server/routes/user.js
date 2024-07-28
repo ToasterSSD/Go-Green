@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models');
 const yup = require("yup");
 const { sign } = require('jsonwebtoken');
-const { validateToken } = require('../middlewares/auth');
+const { validateToken, } = require('../middlewares/auth');
 require('dotenv').config();
 
 router.post("/register", async (req, res) => {
@@ -102,5 +102,7 @@ router.get("/auth", validateToken, (req, res) => {
         user: userInfo
     });
 });
+
+
 
 module.exports = router;
