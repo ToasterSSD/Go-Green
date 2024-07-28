@@ -75,7 +75,7 @@ router.post("/login", async (req, res) => {
         let userInfo = {
             id: user.id,
             email: user.email,
-            name: user.name,
+            name: user.name
             roles: user.roles
         };
         let accessToken = sign(userInfo, process.env.APP_SECRET,
@@ -95,8 +95,7 @@ router.get("/auth", validateToken, (req, res) => {
     let userInfo = {
         id: req.user.id,
         email: req.user.email,
-        name: req.user.name,
-        roles: req.user.roles
+        name: req.user.name
     };
     res.json({
         user: userInfo

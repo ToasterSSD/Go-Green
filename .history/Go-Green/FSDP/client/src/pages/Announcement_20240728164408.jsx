@@ -179,4 +179,5 @@ function AnnouncementCard({ announcement, user }) {
   );
 }
 
+
 export default Announcement;

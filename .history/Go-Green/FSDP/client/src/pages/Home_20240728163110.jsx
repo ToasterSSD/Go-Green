@@ -8,8 +8,9 @@ function Home() {
     <Box>
       <HeaderWithBackground
         title="Home Page"
-        backgroundImage="/uploads/Go-Green logo.jpg" // Path to your background image
+        backgroundImage="/uploads/" // Path to your background image
       />
+
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h3" gutterBottom>
           Welcome to Our Application

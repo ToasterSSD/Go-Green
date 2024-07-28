@@ -18,7 +18,7 @@ const HeaderWithBackground = ({ title, backgroundImage }) => {
         color: "#fafafa", // Adjust the text color as needed
         textShadow: "1px 1px 2px black", // Add text shadow for better readability
         marginBottom: "32px",
-        marginTop: "-32px",
+        marginTop: "-30px",
       }}
     >
       <Typography variant="h2">{title}</Typography>

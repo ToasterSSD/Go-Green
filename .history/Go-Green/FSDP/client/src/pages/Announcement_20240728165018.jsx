@@ -126,14 +126,16 @@ function AnnouncementCard({ announcement, user }) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               {announcement.title}
             </Typography>
-            {(user?.roles.includes("ADMIN") ||
-              user?.id === announcement.userId) && (
-              <Link to={`/editannouncement/${announcement.id}`}>
-                <IconButton color="primary" sx={{ padding: "4px" }}>
-                  <Edit />
-                </IconButton>
-              </Link>
-            )}
+            {user &&
+              user.roles &&
+              (user.roles.includes("ADMIN") ||
+                user.id === announcement.userId) && (
+                <Link to={`/editannouncement/${announcement.id}`}>
+                  <IconButton color="primary" sx={{ padding: "4px" }}>
+                    <Edit />
+                  </IconButton>
+                </Link>
+              )}
           </Box>
           <Box
             sx={{ display: "flex", alignItems: "center", mb: 1 }}

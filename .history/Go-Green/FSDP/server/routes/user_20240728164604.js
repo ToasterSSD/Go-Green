@@ -95,8 +95,8 @@ router.get("/auth", validateToken, (req, res) => {
     let userInfo = {
         id: req.user.id,
         email: req.user.email,
-        name: req.user.name,
-        roles: req.user.roles
+        name: req.user.name
+        roles: 
     };
     res.json({
         user: userInfo

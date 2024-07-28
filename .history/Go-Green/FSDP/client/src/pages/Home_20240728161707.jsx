@@ -7,9 +7,10 @@ function Home() {
   return (
     <Box>
       <HeaderWithBackground
-        title="Home Page"
-        backgroundImage="/uploads/Go-Green logo.jpg" // Path to your background image
+        title="Welcome to Our Application"
+        backgroundImage="/uploads/background.jpg" // Path to your background image
       />
+
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h3" gutterBottom>
           Welcome to Our Application
@@ -17,6 +18,16 @@ function Home() {
         <Typography variant="h6" gutterBottom>
           This is the home page accessible to all users.
         </Typography>
+        <Link to="/register" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary" sx={{ m: 2 }}>
+            Register
+          </Button>
+        </Link>
+        <Link to="/login" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="secondary" sx={{ m: 2 }}>
+            Login
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

@@ -129,6 +129,7 @@ function AnnouncementCard({ announcement, user }) {
             {(user?.roles.includes("ADMIN") ||
               user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
+              <link to={`/editannouncement/${announcement.id}`}></link
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
                 </IconButton>
