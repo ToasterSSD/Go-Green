@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
 import { AccessTime, Search, Clear } from '@mui/icons-material';
 import http from '../http';
@@ -73,21 +74,19 @@ function PublicArticles() {
             </Box>
 
             <Grid container spacing={5}>
-                {
-                    articleList.map((article, i) => (
-                        <Grid item xs={12} md={6} lg={4} key={article.id}>
+                {articleList.map((article, i) => (
+                    <Grid item xs={12} md={6} lg={4} key={article.id}>
+                        <Link to={`/public-article/${article.id}`} style={{ textDecoration: 'none' }}>
                             <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                                {
-                                    article.imageFile && (
-                                        <Box className="aspect-ratio-container">
-                                            <img
-                                                alt="article"
-                                                src={`${import.meta.env.VITE_FILE_BASE_URL}${article.imageFile}`}
-                                                style={{ width: '100%', height: '100%' }}
-                                            />
-                                        </Box>
-                                    )
-                                }
+                                {article.imageFile && (
+                                    <Box className="aspect-ratio-container">
+                                        <img
+                                            alt="article"
+                                            src={`${import.meta.env.VITE_FILE_BASE_URL}${article.imageFile}`}
+                                            style={{ width: '100%', height: '100%' }}
+                                        />
+                                    </Box>
+                                )}
                                 <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                                     <Box sx={{ display: 'flex', mb: 1 }}>
                                         <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
@@ -113,13 +112,14 @@ function PublicArticles() {
                                     </Typography>
                                 </CardContent>
                             </Card>
-                        </Grid>
-                    ))
-                }
+                        </Link>
+                    </Grid>
+                ))}
             </Grid>
         </Box>
     );
 }
 
 export default PublicArticles;
+
 

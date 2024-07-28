@@ -5,6 +5,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } 
 import http from '../http';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { Editor } from '@tinymce/tinymce-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +16,8 @@ function EditArticle() {
     const [article, setArticle] = useState({
         title: "",
         category: "",
-        author: ""
+        author: "",
+        content: ""
     });
     const [imageFile, setImageFile] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -43,7 +45,9 @@ function EditArticle() {
             author: yup.string().trim()
                 .min(3, 'Author must be at least 3 characters')
                 .max(100, 'Author must be at most 100 characters')
-                .required('Author is required')
+                .required('Author is required'),
+            content: yup.string().trim()
+                .required('Content is required')
         }),
         onSubmit: (data) => {
             if (imageFile) {
@@ -135,7 +139,6 @@ function EditArticle() {
                                 />
                                 <TextField
                                     fullWidth margin="dense" autoComplete="off"
-                                    multiline minRows={2}
                                     label="Author"
                                     name="author"
                                     value={formik.values.author}
@@ -144,6 +147,30 @@ function EditArticle() {
                                     error={formik.touched.author && Boolean(formik.errors.author)}
                                     helperText={formik.touched.author && formik.errors.author}
                                 />
+                                <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
+                                <Editor
+                                    apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                                    value={formik.values.content}
+                                    init={{
+                                        height: 500,
+                                        menubar: false,
+                                        plugins: [
+                                            'advlist autolink lists link image charmap print preview anchor',
+                                            'searchreplace visualblocks code fullscreen',
+                                            'insertdatetime media table paste code help wordcount'
+                                        ],
+                                        toolbar:
+                                            'undo redo | formatselect | bold italic backcolor | \
+                                            alignleft aligncenter alignright alignjustify | \
+                                            bullist numlist outdent indent | removeformat | help'
+                                    }}
+                                    onEditorChange={(content) => formik.setFieldValue('content', content)}
+                                />
+                                {formik.touched.content && formik.errors.content ? (
+                                    <Typography color="error" variant="body2">
+                                        {formik.errors.content}
+                                    </Typography>
+                                ) : null}
                             </Grid>
                             <Grid item xs={12} md={6} lg={4}>
                                 <Box sx={{ textAlign: 'center', mt: 2 }} >
@@ -204,3 +231,4 @@ function EditArticle() {
 }
 
 export default EditArticle;
+

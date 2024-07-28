@@ -2,7 +2,8 @@ import './App.css';
 import Articles from './pages/Articles';
 import AddArticle from './pages/AddArticle';
 import EditArticle from './pages/EditArticle';
-import PublicArticles from './pages/PublicArticles'; // Make sure to import the new PublicArticles component
+import PublicArticles from './pages/PublicArticles';
+import ArticleDetails from './pages/ArticleDetails'; // Import the ArticleDetails component
 import { Container, AppBar, Toolbar, Typography } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
@@ -15,23 +16,32 @@ function App() {
         <AppBar position="static" className='AppBar'>
           <Container>
             <Toolbar disableGutters={true}>
-              <Link to="/">
+              <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography variant="h6" component="div">
                   Green News
                 </Typography>
               </Link>
-              <Link to="/articles"><Typography>Articles</Typography></Link>
-              <Link to="/public-articles"><Typography>Public Articles</Typography></Link>
+              <Link to="/articles" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant="h6" component="div" sx={{ ml: 2 }}>
+                  Articles
+                </Typography>
+              </Link>
+              <Link to="/public-articles" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant="h6" component="div" sx={{ ml: 2 }}>
+                  Public Articles
+                </Typography>
+              </Link>
             </Toolbar>
           </Container>
         </AppBar>
         <Container>
           <Routes>
-            <Route path={"/"} element={<Articles />} />
-            <Route path={"/articles"} element={<Articles />} />
-            <Route path={"/public-articles"} element={<PublicArticles />} />
-            <Route path={"/addarticle"} element={<AddArticle />} />
-            <Route path={"/editarticle/:id"} element={<EditArticle />} />
+            <Route path="/" element={<Articles />} />
+            <Route path="/articles" element={<Articles />} />
+            <Route path="/public-articles" element={<PublicArticles />} />
+            <Route path="/addarticle" element={<AddArticle />} />
+            <Route path="/editarticle/:id" element={<EditArticle />} />
+            <Route path="/public-article/:id" element={<ArticleDetails />} /> {/* Add route for ArticleDetails */}
           </Routes>
         </Container>
       </ThemeProvider>
@@ -40,4 +50,5 @@ function App() {
 }
 
 export default App;
+
 
