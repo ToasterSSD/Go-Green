@@ -88,52 +88,14 @@ function Announcement() {
           <Button variant="contained">Add</Button>
         </Link>
       </Box>
-
       <Grid container spacing={2}>
-        {announcementList.map((announcement, i) => {
-          return (
-            <Grid item xs={12} md={6} lg={4} key={announcement.id}>
-              <Card>
-                <CardContent>
-                  <Box sx={{ display: "flex", mb: 1 }}>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                      {announcement.title}
-                    </Typography>
-                    {(user?.roles.includes("ADMIN") ||
-                      user?.id === announcement.userId) && (
-                      <Link to={`/editannouncement/${announcement.id}`}>
-                        <IconButton color="primary" sx={{ padding: "4px" }}>
-                          <Edit />
-                        </IconButton>
-                      </Link>
-                    )}
-                  </Box>
-                  <Box
-                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
-                    color="text.secondary"
-                  >
-                    <AccountCircle sx={{ mr: 1 }} />
-                    <Typography>{announcement.user?.name}</Typography>
-                  </Box>
-                  <Box
-                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
-                    color="text.secondary"
-                  >
-                    <AccessTime sx={{ mr: 1 }} />
-                    <Typography>
-                      {dayjs(announcement.createdAt).format(
-                        global.datetimeFormat
-                      )}
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                    {announcement.content}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
+        {announcementList.map((announcement) => (
+          <AnnouncementCard
+            key={announcement.id}
+            announcement={announcement}
+            user={user}
+          />
+        ))}
       </Grid>
     </Box>
   );
