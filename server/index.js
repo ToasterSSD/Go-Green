@@ -26,6 +26,11 @@ app.use("/article", articleRoute);
 const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);
 
+// Route for public articles
+app.get('/public-articles', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
+});
+
 // Set up body-parser middleware to parse JSON requests
 app.use(bodyParser.json());
 
