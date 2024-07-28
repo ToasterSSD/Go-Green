@@ -8,3 +8,7 @@
   color: inherit;
   margin-left: 12px;
 }
+
+.blurred {
+  filter: blur(5px);
+}

@@ -64,7 +64,6 @@ function EditAnnouncement() {
       http
         .put(`/announcement/${id}`, data)
         .then((res) => {
-          console.log(res.data);
           toast.success("Announcement updated successfully.");
           navigate("/announcement");
         })
@@ -88,7 +87,6 @@ function EditAnnouncement() {
     http
       .delete(`/announcement/${id}`)
       .then((res) => {
-        console.log(res.data);
         toast.success("Announcement deleted successfully.");
         navigate("/announcement");
       })
@@ -121,17 +119,6 @@ function EditAnnouncement() {
         });
     }
   };
-
-  if (!user?.roles.includes("ADMIN")) {
-    return (
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="h6">
-          You do not have permission to edit this announcement.
-        </Typography>
-        <ToastContainer />
-      </Box>
-    );
-  }
 
   return (
     <Box>
@@ -207,14 +194,17 @@ function EditAnnouncement() {
             <Button variant="contained" type="submit">
               Update
             </Button>
-            <Button
-              variant="contained"
-              sx={{ ml: 2 }}
-              color="error"
-              onClick={handleOpen}
-            >
-              Delete
-            </Button>
+            {user?.roles.includes("ADMIN") ||
+            user?.id === announcement.userId ? (
+              <Button
+                variant="contained"
+                sx={{ ml: 2 }}
+                color="error"
+                onClick={handleOpen}
+              >
+                Delete
+              </Button>
+            ) : null}
           </Box>
         </Box>
       )}

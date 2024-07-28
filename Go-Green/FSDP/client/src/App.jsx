@@ -6,10 +6,10 @@ import {
   Toolbar,
   Typography,
   Box,
-  Button,
-  Avatar,
   Menu,
   MenuItem,
+  Avatar,
+  IconButton,
   Divider,
   Link as MuiLink,
 } from "@mui/material";
@@ -32,11 +32,13 @@ import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
+import SettingsModal from "./components/SettingsModal";
 import Footer from "./components/Footer";
 
 function App() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
@@ -59,6 +61,15 @@ function App() {
     setAnchorEl(null);
   };
 
+  const handleSettingsOpen = () => {
+    setSettingsOpen(true);
+    handleMenuClose();
+  };
+
+  const handleSettingsClose = () => {
+    setSettingsOpen(false);
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
@@ -69,6 +80,7 @@ function App() {
             sx={{ backgroundColor: "#A7A7A7" }}
           >
             <Container sx={{ padding: 0 }}>
+              {/* Ensure no extra padding */}
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Link
@@ -165,76 +177,81 @@ function App() {
                     Feedback
                   </MuiLink>
                 </Box>
-                {user ? (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box
-                      onClick={handleMenuOpen}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Avatar
-                        alt={user.name}
-                        src="/static/images/avatar/1.jpg"
-                        sx={{ width: 40, height: 40 }}
-                      />
-                      <Typography sx={{ ml: 1 }}>{user.name}</Typography>
-                    </Box>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={handleMenuClose}
-                      PaperProps={{
-                        sx: {
-                          borderRadius: "16px",
-                          mt: 1,
-                          minWidth: 200,
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center", p: 2 }}>
-                        <Avatar
-                          alt={user.name}
-                          src="/static/images/avatar/1.jpg"
-                          sx={{ width: 40, height: 40, mr: 2 }}
-                        />
-                        <Typography variant="body1" noWrap>
-                          {user.name}
-                        </Typography>
-                      </Box>
-                      <Divider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </Menu>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
+                    onClick={handleMenuOpen}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Avatar
+                      alt={user?.name || "Guest"}
+                      src={user ? "/static/images/avatar/1.jpg" : ""}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                    <Typography sx={{ ml: 1 }}>
+                      {user?.name || "Guest"}
+                    </Typography>
                   </Box>
-                ) : (
-                  <Box sx={{ display: "flex" }}>
-                    <MuiLink
-                      component={Link}
-                      to="/register"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      Register
-                    </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/login"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      Login
-                    </MuiLink>
-                  </Box>
-                )}
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                    PaperProps={{
+                      sx: {
+                        borderRadius: "16px",
+                        mt: 1,
+                        minWidth: 200,
+                      },
+                    }}
+                  >
+                    {user ? (
+                      <>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", p: 2 }}
+                        >
+                          <Avatar
+                            alt={user.name}
+                            src="/static/images/avatar/1.jpg"
+                            sx={{ width: 40, height: 40, mr: 2 }}
+                          />
+                          <Typography variant="body1" noWrap>
+                            {user.name}
+                          </Typography>
+                        </Box>
+                        <Divider />
+                        <MenuItem onClick={handleSettingsOpen}>
+                          Settings
+                        </MenuItem>
+                        <MenuItem onClick={logout}>Logout</MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <MenuItem
+                          component={Link}
+                          to="/register"
+                          onClick={handleMenuClose}
+                        >
+                          Register
+                        </MenuItem>
+                        <MenuItem
+                          component={Link}
+                          to="/login"
+                          onClick={handleMenuClose}
+                        >
+                          Login
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
+                </Box>
               </Toolbar>
             </Container>
           </AppBar>
 
-          <Container sx={{ flexGrow: 1 }}>
+          <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/tutorials" element={<Tutorials />} />
@@ -256,10 +273,10 @@ function App() {
               />
             </Routes>
           </Container>
-
           <Footer />
         </ThemeProvider>
       </Router>
+      <SettingsModal open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }

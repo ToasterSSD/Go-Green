@@ -1,6 +1,7 @@
-const { verify } = require("jsonwebtoken");
-const { User } = require("../models");
-require("dotenv").config();
+// middlewares/auth.js
+const { verify } = require('jsonwebtoken');
+const { User } = require('../models');
+require('dotenv').config();
 
 const validateToken = (req, res, next) => {
   try {
@@ -26,8 +27,8 @@ const checkAdminRole = async (req, res, next) => {
   }
 
   return res
-    .status(403)
-    .json({ message: "You do not have the required permissions" });
+  .status(403)
+  .json({ message: "You do not have the required permissions" });
 };
 
 module.exports = { validateToken, checkAdminRole };

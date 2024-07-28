@@ -117,19 +117,16 @@ function AnnouncementCard({ announcement, user }) {
           <Box className="aspect-ratio-container">
             <img
               alt="announcement"
-              src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                announcement.imageFile
-              }`}
+              src={`${import.meta.env.VITE_FILE_BASE_URL}${announcement.imageFile}`}
             ></img>
           </Box>
         )}
         <CardContent>
           <Box sx={{ display: "flex", mb: 1 }}>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              {announcement.title}
+              {announcement.title || "No Title"}
             </Typography>
-            {(user?.roles.includes("ADMIN") ||
-              user?.id === announcement.userId) && (
+            {(user?.roles.includes("ADMIN") || user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
@@ -142,7 +139,7 @@ function AnnouncementCard({ announcement, user }) {
             color="text.secondary"
           >
             <AccountCircle sx={{ mr: 1 }} />
-            <Typography>{announcement.user?.name}</Typography>
+            <Typography>{announcement.user?.name || "Unknown User"}</Typography>
           </Box>
           <Box
             sx={{ display: "flex", alignItems: "center", mb: 1 }}
@@ -150,15 +147,17 @@ function AnnouncementCard({ announcement, user }) {
           >
             <AccessTime sx={{ mr: 1 }} />
             <Typography>
-              {dayjs(announcement.createdAt).format(global.datetimeFormat)}
+              {announcement.createdAt
+                ? dayjs(announcement.createdAt).format(global.datetimeFormat)
+                : "Unknown Date"}
             </Typography>
           </Box>
           <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
             {isExpanded
               ? announcement.content
-              : `${announcement.content.substring(0, 500)}${
-                  announcement.content.length > 500 ? "..." : ""
-                }`}
+              : `${announcement.content?.substring(0, 500)}${
+                  announcement.content?.length > 500 ? "..." : ""
+                }` || "No Content"}
           </Typography>
 
           {announcement.link && (
