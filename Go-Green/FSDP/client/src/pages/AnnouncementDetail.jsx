@@ -1,0 +1,95 @@
+import React, { useEffect, useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Input,
+  IconButton,
+  Button,
+} from "@mui/material";
+import {
+  AccountCircle,
+  AccessTime,
+  Search,
+  Clear,
+  Edit,
+} from "@mui/icons-material";
+import http from "../http";
+import dayjs from "dayjs";
+import UserContext from "../contexts/UserContext";
+import global from "../global";
+
+function AnnouncementDetail() {
+  const [announcementDetailList, setAnnouncementDetailList] = useState([]);
+  const [search, setSearch] = useState("");
+  const { user } = useContext(UserContext);
+
+  const getAnnouncementDetail = () => {
+    http.get("/announcement").then((res) => {
+      setAnnouncementDetailList(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getAnnouncementDetail();
+  }, []);
+
+  return (
+    <Box>
+      <Typography variant="h5" sx={{ my: 2 }}>
+        Announcement Detail
+      </Typography>
+
+      <Grid container spacing={2}>
+        {announcementDetailList.map((announcementDetail, i) => {
+          return (
+            <Grid item xs={12} md={6} lg={4} key={announcementDetail.id}>
+              <Card>
+                <CardContent>
+                  <Box sx={{ display: "flex", mb: 1 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                      {announcementDetail.title}
+                    </Typography>
+                    {user && user.id === announcementDetail.userId && (
+                      <Link to={`/editannouncementDetail/${announcementDetail.id}`}>
+                        <IconButton color="primary" sx={{ padding: "4px" }}>
+                          <Edit />
+                        </IconButton>
+                      </Link>
+                    )}
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                    color="text.secondary"
+                  >
+                    <AccountCircle sx={{ mr: 1 }} />
+                    <Typography>{announcementDetail.user?.name}</Typography>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                    color="text.secondary"
+                  >
+                    <AccessTime sx={{ mr: 1 }} />
+                    <Typography>
+                      {dayjs(announcementDetail.createdAt).format(
+                        global.datetimeFormat
+                      )}
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                    {announcementDetail.content}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Box>
+  );
+}
+
+export default AnnouncementDetail;
