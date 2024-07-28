@@ -6,18 +6,13 @@ import {
   Toolbar,
   Typography,
   Box,
-  Menu,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Divider,
-  Link as MuiLink,
+  Button,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import MyTheme from "./themes/MyTheme";
 import Tutorials from "./pages/Tutorials";
-import AddTutorial from "./pages/AddTutorial";
+import AddTutorial from "./pages/AddTutorial"; 
 import EditTutorial from "./pages/EditTutorial";
 import MyForm from "./pages/MyForm";
 import Register from "./pages/Register";
@@ -35,7 +30,6 @@ import UserComponent from "./pages/UserComponent";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
@@ -48,14 +42,6 @@ function App() {
   const logout = () => {
     localStorage.clear();
     window.location = "/";
-  };
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
   };
 
   return (
@@ -235,7 +221,7 @@ function App() {
             </Container>
           </AppBar>
 
-          <Container sx={{ mt: 4 }}>
+          <Container>
             <Routes>
               {/* <Route
                 path="/"
