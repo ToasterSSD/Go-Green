@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Container,
   AppBar,
@@ -68,7 +68,6 @@ function App() {
             sx={{ backgroundColor: "#A7A7A7" }}
           >
             <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
-              {" "}
               {/* Ensure no extra padding */}
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -166,87 +165,79 @@ function App() {
                     Feedback
                   </MuiLink>
                 </Box>
-                {user ? (
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box
-                      onClick={handleMenuOpen}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Avatar
-                        alt={user.name}
-                        src="/static/images/avatar/1.jpg"
-                        sx={{ width: 40, height: 40 }}
-                      />
-                      <Typography sx={{ ml: 1 }}>{user.name}</Typography>
-                    </Box>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={handleMenuClose}
-                      PaperProps={{
-                        sx: {
-                          borderRadius: "16px",
-                          mt: 1,
-                          minWidth: 200,
-                        },
-                      }}
-                    >
-                      <Box sx={{ display: "flex", alignItems: "center", p: 2 }}>
-                        <Avatar
-                          alt={user.name}
-                          src="/static/images/avatar/1.jpg"
-                          sx={{ width: 40, height: 40, mr: 2 }}
-                        />
-                        <Typography variant="body1" noWrap>
-                          {user.name}
-                        </Typography>
-                      </Box>
-                      <Divider />
-                      <MenuItem onClick={logout}>Logout</MenuItem>
-                    </Menu>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box
+                    onClick={handleMenuOpen}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Avatar
+                      alt={user?.name || "Guest"}
+                      src={user ? "/static/images/avatar/1.jpg" : ""}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                    <Typography sx={{ ml: 1 }}>
+                      {user?.name || "Guest"}
+                    </Typography>
                   </Box>
-                ) : (
-                  <Box sx={{ display: "flex" }}>
-                    <MuiLink
-                      component={Link}
-                      to="/register"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      Register
-                    </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/login"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      Login
-                    </MuiLink>
-                  </Box>
-                )}
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleMenuClose}
+                    PaperProps={{
+                      sx: {
+                        borderRadius: "16px",
+                        mt: 1,
+                        minWidth: 200,
+                      },
+                    }}
+                  >
+                    {user ? (
+                      <>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", p: 2 }}
+                        >
+                          <Avatar
+                            alt={user.name}
+                            src="/static/images/avatar/1.jpg"
+                            sx={{ width: 40, height: 40, mr: 2 }}
+                          />
+                          <Typography variant="body1" noWrap>
+                            {user.name}
+                          </Typography>
+                        </Box>
+                        <Divider />
+                        <MenuItem onClick={logout}>Logout</MenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <MenuItem
+                          component={Link}
+                          to="/register"
+                          onClick={handleMenuClose}
+                        >
+                          Register
+                        </MenuItem>
+                        <MenuItem
+                          component={Link}
+                          to="/login"
+                          onClick={handleMenuClose}
+                        >
+                          Login
+                        </MenuItem>
+                      </>
+                    )}
+                  </Menu>
+                </Box>
               </Toolbar>
             </Container>
           </AppBar>
 
           <Container sx={{ mt: 4 }}>
             <Routes>
-              {/* <Route
-                path="/"
-                element={
-                  user?.role === "ADMIN" ? (
-                    <AdminComponent />
-                  ) : (
-                    <UserComponent />
-                  )
-                }
-              /> */}
               <Route path="/" element={<Home />} />
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/announcement" element={<Announcement />} />
