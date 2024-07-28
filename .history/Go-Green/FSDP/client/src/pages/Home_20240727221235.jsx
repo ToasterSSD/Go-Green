@@ -22,7 +22,6 @@ import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
-
 function Home() {
   return (
     <Box sx={{ textAlign: "center", mt: 5 }}>

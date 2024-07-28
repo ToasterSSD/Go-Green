@@ -1,4 +1,7 @@
-
+// src/Home.jsx
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -22,7 +25,6 @@ import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
-
 function Home() {
   return (
     <Box sx={{ textAlign: "center", mt: 5 }}>

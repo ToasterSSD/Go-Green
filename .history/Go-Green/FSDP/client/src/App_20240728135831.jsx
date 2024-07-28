@@ -67,7 +67,7 @@ function App() {
             className="AppBar"
             sx={{ backgroundColor: "#A7A7A7" }}
           >
-            <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
+            <Container sx={{ padding: 0 }}>
               {" "}
               {/* Ensure no extra padding */}
               <Toolbar disableGutters>
@@ -87,7 +87,7 @@ function App() {
                       style={{ height: "40px", marginRight: "10px" }}
                     />
                     <Typography variant="h6" component="div">
-                      Go <span style={{ color: "#06F92D" }}>Green</span>!
+                      Go <span style={{ color: "06F92D" }}>Green</span>!
                     </Typography>
                   </Link>
                 </Box>

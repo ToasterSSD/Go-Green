@@ -62,40 +62,21 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar
-            position="static"
-            className="AppBar"
-            sx={{ backgroundColor: "#A7A7A7" }}
-          >
-            <Container sx={{ padding: 0, margin: 0, marginTop: 0 }}>
-              {" "}
-              {/* Ensure no extra padding */}
+          <AppBar position="static" className="AppBar">
+            <Container>
               <Toolbar disableGutters>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Link
-                    to="/"
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src="/uploads/New logo.png"
-                      alt="Go-Green Logo"
-                      style={{ height: "40px", marginRight: "10px" }}
-                    />
-                    <Typography variant="h6" component="div">
-                      Go <span style={{ color: "#06F92D" }}>Green</span>!
-                    </Typography>
-                  </Link>
-                </Box>
-
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <Typography variant="h6" component="div">
+                    Go-Green
+                  </Typography>
+                </Link>
                 <Box sx={{ display: "flex", flexGrow: 1, ml: 2 }}>
                   <MuiLink
                     component={Link}
-                    to="/tutorials" // to be removed
+                    to="/tutorials"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -104,7 +85,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/News" //change to your own page name
+                    to="/News"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -122,7 +103,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/chatarea" //WIP
+                    to="/chatarea"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -131,41 +112,16 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Learning" //change to your own page name
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Learn
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/Games" //change to your own page name
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Games
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/Donations" //change to your own page name
+                    to="/Donations"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
                     Donations
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/Feedback" //change to your own page name
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Feedback
-                  </MuiLink>
+                  
                 </Box>
+
                 {user ? (
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Box

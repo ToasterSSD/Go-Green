@@ -20,7 +20,6 @@ import {
 import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
-import HeaderWithBackground from "../components/HeaderWithBackground";
 import global from "../global";
 
 function Announcement() {
@@ -67,7 +66,7 @@ function Announcement() {
     <Box>
       <HeaderWithBackground
         title="Announcements"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
+        backgroundImage="/uploads/background.jpg" // Path to your background image
       />
 
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
