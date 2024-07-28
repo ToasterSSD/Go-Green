@@ -1,15 +1,15 @@
 import "./App.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   Container,
   AppBar,
   Toolbar,
   Typography,
   Box,
-  Button,
-  Avatar,
   Menu,
   MenuItem,
+  Avatar,
+  IconButton,
   Divider,
   Link as MuiLink,
 } from "@mui/material";
@@ -23,16 +23,16 @@ import MyForm from "./pages/MyForm";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import http from "./http";
-import Home from "./pages/Home";
+import Home from "./pages/Home"; 
 import UserContext from "./contexts/UserContext";
 import Announcement from "./pages/Announcement";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
+import Footer from "./components/Footer";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
-import Footer from "./components/Footer";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -68,7 +68,9 @@ function App() {
             className="AppBar"
             sx={{ backgroundColor: "#A7A7A7" }}
           >
-            <Container sx={{ padding: 0 }}>
+            <Container>
+              {" "}
+              {/* Ensure no extra padding */}
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Link
@@ -91,10 +93,10 @@ function App() {
                   </Link>
                 </Box>
 
-                <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
+                <Box sx={{ display: "flex", flexGrow: 1, ml: 2 }}>
                   <MuiLink
                     component={Link}
-                    to="/tutorials"
+                    to="/tutorials" // to be removed
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -103,7 +105,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/News"
+                    to="/News" //change to your own page name
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -121,7 +123,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/chatarea"
+                    to="/chatarea" //WIP
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -130,7 +132,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Learning"
+                    to="/Learning" //change to your own page name
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -139,7 +141,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Games"
+                    to="/Games" //change to your own page name
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -148,7 +150,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Donations"
+                    to="/Donations" //change to your own page name
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -157,7 +159,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Feedback"
+                    to="/Feedback" //change to your own page name
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -234,8 +236,18 @@ function App() {
             </Container>
           </AppBar>
 
-          <Container sx={{ flexGrow: 1 }}>
+          <Container sx={{ mt: 4 }}>
             <Routes>
+              {/* <Route
+                path="/"
+                element={
+                  user?.role === "ADMIN" ? (
+                    <AdminComponent />
+                  ) : (
+                    <UserComponent />
+                  )
+                }
+              /> */}
               <Route path="/" element={<Home />} />
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/announcement" element={<Announcement />} />
@@ -256,8 +268,6 @@ function App() {
               />
             </Routes>
           </Container>
-
-          <Footer />
         </ThemeProvider>
       </Router>
     </UserContext.Provider>
