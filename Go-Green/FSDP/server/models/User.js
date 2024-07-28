@@ -11,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING(100),
             allowNull: false
-        },
-        roles: {
-            type: DataTypes.STRING(100),
-            allowNull: true
         }
     }, {
         tableName: 'users'
