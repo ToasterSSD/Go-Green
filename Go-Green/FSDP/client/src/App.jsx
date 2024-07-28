@@ -23,7 +23,7 @@ import MyForm from "./pages/MyForm";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import http from "./http";
-import Home from "./pages/Home"; 
+import Home from "./pages/Home";
 import UserContext from "./contexts/UserContext";
 import Announcement from "./pages/Announcement";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
@@ -32,10 +32,12 @@ import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
+import SettingsModel from "./components/SettingsModel";
 
 function App() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
@@ -56,6 +58,15 @@ function App() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSettingsOpen = () => {
+    setSettingsOpen(true);
+    handleMenuClose();
+  };
+
+  const handleSettingsClose = () => {
+    setSettingsOpen(false);
   };
 
   return (
@@ -210,6 +221,11 @@ function App() {
                           </Typography>
                         </Box>
                         <Divider />
+                        <MenuItem
+                          onClick={handleSettingsOpen}
+                        >
+                          Settings
+                        </MenuItem>
                         <MenuItem onClick={logout}>Logout</MenuItem>
                       </>
                     ) : (
@@ -236,7 +252,7 @@ function App() {
             </Container>
           </AppBar>
 
-          <Container sx={{ mt: 4 }}>
+          <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/tutorials" element={<Tutorials />} />
@@ -260,6 +276,7 @@ function App() {
           </Container>
         </ThemeProvider>
       </Router>
+      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }
