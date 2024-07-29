@@ -54,6 +54,7 @@ function QuizPage() {
     const [score, setScore] = useState(0);
     const [quizFinished, setQuizFinished] = useState(false);
     const [savedScores, setSavedScores] = useState([]);
+    const [scoreUpdated, setScoreUpdated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -77,14 +78,18 @@ function QuizPage() {
         setShowAnswer(false);
         setScore(0);
         setQuizFinished(false);
+        setScoreUpdated(false);
     };
 
     const handleOptionClick = (index) => {
-        setSelectedOption(index);
-        setShowAnswer(true);
+        if (!scoreUpdated) {
+            setSelectedOption(index);
+            setShowAnswer(true);
+            setScoreUpdated(true);
 
-        if (index === questions[currentQuestion].answer) {
-            setScore((prevScore) => prevScore + 1);
+            if (index === questions[currentQuestion].answer) {
+                setScore((prevScore) => prevScore + 1);
+            }
         }
     };
 
@@ -93,6 +98,7 @@ function QuizPage() {
             setCurrentQuestion(currentQuestion + 1);
             setSelectedOption(null);
             setShowAnswer(false);
+            setScoreUpdated(false);
         } else {
             setQuizFinished(true);
         }
@@ -228,6 +234,7 @@ function QuizPage() {
 }
 
 export default QuizPage;
+
 
 
 
