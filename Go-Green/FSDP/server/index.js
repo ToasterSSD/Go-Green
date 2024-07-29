@@ -19,14 +19,17 @@ app.get("/", (req, res) => {
 
 // Routes
 const tutorialRoute = require('./routes/tutorial');
-app.use("/tutorial", tutorialRoute);
 const userRoute = require('./routes/user');
-app.use("/user", userRoute);
+const feedbackRoutes = require('./routes/feedback');
 const fileRoute = require('./routes/file');
+const announcementRoute = require('./routes/announcement');
+const chatareaRoute = require('./routes/chatarea');
+
+app.use("/tutorial", tutorialRoute);
+app.use("/user", userRoute);
+app.use("/feedback", feedbackRoutes);
 app.use("/file", fileRoute);
-const announcementRoute = require("./routes/announcement");
 app.use("/announcement", announcementRoute);
-const chatareaRoute = require("./routes/chatarea");
 app.use("/chatarea", chatareaRoute);
 
 const db = require('./models');
@@ -34,9 +37,9 @@ db.sequelize.sync({ alter: true })
     .then(() => {
         let port = process.env.APP_PORT;
         app.listen(port, () => {
-            console.log(`⚡ Sever running on http://localhost:${port}`);
+            console.log(`⚡ Server running on http://localhost:${port}`);
         });
     })
     .catch((err) => {
         console.log(err);
-    });
+    });
