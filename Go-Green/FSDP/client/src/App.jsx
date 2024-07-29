@@ -238,7 +238,7 @@ function App() {
                   >
                     <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
                     {user?.role === 'ADMIN' && [
-                      <MenuItem key="admin" component={Link} to="/admin" onClick={handleMenuClose}>
+                      <MenuItem key="ADMIN" component={Link} to="/admin" onClick={handleMenuClose}>
                         Admin Panel
                       </MenuItem>,
                       <Divider key="divider" />
