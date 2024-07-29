@@ -30,14 +30,14 @@ function Home() {
       title: "Games",
       description:
         "Engage in our Choose your own Adventure Game to develop your environmental knowledge in a fun and interactive way.",
-      link: "/games",
+      link: "/chatarea",
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
-
+    
     {
       title: "Learn",
       description:
-        "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
+        "Explore educational resources that raise awareness about environmental issues. Engage younger users with fun and informative content on serious global challenges.",
       link: "/Learning",
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },

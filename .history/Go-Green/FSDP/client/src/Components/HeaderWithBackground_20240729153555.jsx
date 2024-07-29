@@ -15,7 +15,7 @@ const HeaderWithBackground = ({ title, backgroundImage }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "#fafafa", // Adjust the text color as needed
+        color: "#fa", // Adjust the text color as needed
         textShadow: "1px 1px 2px black", // Add text shadow for better readability
         marginBottom: "32px",
         marginTop: "-32px",

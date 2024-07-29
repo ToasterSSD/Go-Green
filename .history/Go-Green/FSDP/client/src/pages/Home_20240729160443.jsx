@@ -17,7 +17,7 @@ function Home() {
       description:
         "Keep up-to-date with our latest announcements. Discover upcoming events and volunteer opportunities to help the environment.",
       link: "/announcement",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
+      image: "/uploads/astolfo.jpg, // Path to your feature image
     },
     {
       title: "Chat Area",
@@ -27,33 +27,25 @@ function Home() {
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
     {
-      title: "Games",
-      description:
-        "Engage in our Choose your own Adventure Game to develop your environmental knowledge in a fun and interactive way.",
-      link: "/games",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
-    },
-
-    {
       title: "Learn",
       description:
-        "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
+        "Explore educational resources that raise awareness about environmental issues. Engage younger users with fun and informative content on serious global challenges.",
       link: "/Learning",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
+      image: "/uploads/deals.png", // Path to your feature image
     },
     {
       title: "Donations",
       description:
         "Make a difference by donating. Join our mission to create a better world and support our cause for positive change.",
       link: "/Donations",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
+      image: "/uploads/family.png", // Path to your feature image
     },
     {
       title: "Feedback",
       description:
         "Share your thoughts and suggestions with our team. We value your feedback and will respond promptly to address any issues or improvements.",
       link: "/Feedback",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
+      image: "/uploads/tours.png", // Path to your feature image
     },
   ];
 
@@ -64,10 +56,10 @@ function Home() {
         backgroundImage="/uploads/green-earth.jpg" // Path to your background image
       />
       <Box sx={{ textAlign: "center", mt: 5 }}>
-        <Typography variant="h2" gutterBottom>
+        <Typography variant="h3" gutterBottom>
           About Go <span style={{ color: "green" }}>Green</span>
         </Typography>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Welcome to Go Green! Our mission is to educate and spread awareness
           about the critical need for sustainable waste management. Our web app
           offers a variety of features designed to inform, engage, and motivate
@@ -80,40 +72,29 @@ function Home() {
         </Typography>
       </Box>
       <Box sx={{ mt: 5 }}>
-        {features.map((feature, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              backgroundColor: index % 2 === 0 ? "#f7f7f7" : "#e7e7e7",
-              p: 5,
-              mb: 2,
-              borderRadius: "10px",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "100%",
-              
-            }}
-          >
-            <img
-              src={feature.image}
-              alt={feature.title}
-              style={{ height: "150px", marginRight: "30px" }}
-            />
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="h4">{feature.title}</Typography>
-              <Typography variant="body1" sx={{ fontSize: "1.2em" }}>
-                {feature.description}
-              </Typography>
-              <Link to={feature.link} style={{ textDecoration: "none" }}>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                  Learn More
-                </Button>
-              </Link>
-            </Box>
-          </Box>
-        ))}
+        
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          {features.map((feature, index) => (
+            <Grid item xs={12} md={6} key={index}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  style={{ height: "100px", marginRight: "20px" }}
+                />
+                <Box>
+                  <Typography variant="h5">{feature.title}</Typography>
+                  <Typography variant="body1">{feature.description}</Typography>
+                  <Link to={feature.link} style={{ textDecoration: "none" }}>
+                    <Button variant="contained" color="primary" sx={{ mt: 1 }}>
+                      Learn More
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
     </Box>
   );

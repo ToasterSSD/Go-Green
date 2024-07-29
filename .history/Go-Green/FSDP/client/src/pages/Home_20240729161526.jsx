@@ -27,17 +27,9 @@ function Home() {
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
     {
-      title: "Games",
-      description:
-        "Engage in our Choose your own Adventure Game to develop your environmental knowledge in a fun and interactive way.",
-      link: "/games",
-      image: "/uploads/astolfo.jpg", // Path to your feature image
-    },
-
-    {
       title: "Learn",
       description:
-        "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
+        "Explore educational resources that raise awareness about environmental issues. Engage younger users with fun and informative content on serious global challenges.",
       link: "/Learning",
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
@@ -92,8 +84,8 @@ function Home() {
               mb: 2,
               borderRadius: "10px",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "100%",
-              
+              width: "100vw",
+              mRGIN
             }}
           >
             <img

@@ -145,7 +145,7 @@ function App() {
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
-                    Learning
+                    Learn
                   </MuiLink>
                   <MuiLink
                     component={Link}

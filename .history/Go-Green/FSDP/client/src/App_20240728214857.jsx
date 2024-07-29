@@ -30,6 +30,8 @@ import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
+import AdminComponent from "./pages/AdminComponent";
+import UserComponent from "./pages/UserComponent";
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 
@@ -145,7 +147,7 @@ function App() {
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
-                    Learning
+                    Learn
                   </MuiLink>
                   <MuiLink
                     component={Link}

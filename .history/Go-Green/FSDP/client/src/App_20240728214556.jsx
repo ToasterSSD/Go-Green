@@ -30,7 +30,9 @@ import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
-import SettingsModel from "./components/SettingsModel";
+import AdminComponent from "./pages/AdminComponent";
+import UserComponent from "./pages/UserComponent";
+import SettingsModal from "./components/SettingsModal";
 import Footer from "./components/Footer";
 
 function App() {
@@ -145,7 +147,7 @@ function App() {
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
-                    Learning
+                    Learn
                   </MuiLink>
                   <MuiLink
                     component={Link}
@@ -274,7 +276,7 @@ function App() {
           <Footer />
         </ThemeProvider>
       </Router>
-      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
+      <SettingsModal open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }
