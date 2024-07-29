@@ -28,6 +28,10 @@ const announcementRoute = require('./routes/announcement');
 const chatareaRoute = require('./routes/chatarea');
 const articleRoute = require('./routes/article');
 const learningRoute = require('./routes/learning');
+const quizRoute = require('./routes/quiz');
+
+app.use('/quiz', quizRoute);
+
 
 app.use("/tutorial", tutorialRoute);
 app.use("/user", userRoute);
