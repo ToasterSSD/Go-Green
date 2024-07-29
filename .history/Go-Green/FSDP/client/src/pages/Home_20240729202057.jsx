@@ -53,7 +53,7 @@ function Home() {
       description:
         "Share your thoughts and suggestions with our team. We value your feedback and will respond promptly to address any issues or improvements.",
       link: "/Feedback",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
+      image: "/uploads/astolfo.jpg", // Path to your feature image
     },
   ];
 
@@ -61,7 +61,7 @@ function Home() {
     <Box>
       <HeaderWithBackground
         title="Home Page"
-        backgroundImage="/uploads/homepage.jpg" // Path to your background image
+        backgroundImage="/uploads/green-earth.jpg" // Path to your background image
       />
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h2" gutterBottom>

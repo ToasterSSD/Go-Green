@@ -39,21 +39,21 @@ function Home() {
       description:
         "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
       link: "/Learning",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
+      image: "/uploads/astolfo.jpg", // Path to your feature image
     },
     {
       title: "Donations",
       description:
         "Make a difference by donating. Join our mission to create a better world and support our cause for positive change.",
       link: "/Donations",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
+      image: "/uploads/astolfo.jpg", // Path to your feature image
     },
     {
       title: "Feedback",
       description:
         "Share your thoughts and suggestions with our team. We value your feedback and will respond promptly to address any issues or improvements.",
       link: "/Feedback",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
+      image: "/uploads/astolfo.jpg", // Path to your feature image
     },
   ];
 
@@ -61,7 +61,7 @@ function Home() {
     <Box>
       <HeaderWithBackground
         title="Home Page"
-        backgroundImage="/uploads/homepage.jpg" // Path to your background image
+        backgroundImage="/uploads/green-earth.jpg" // Path to your background image
       />
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h2" gutterBottom>

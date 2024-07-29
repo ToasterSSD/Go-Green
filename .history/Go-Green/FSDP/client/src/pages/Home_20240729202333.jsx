@@ -61,7 +61,7 @@ function Home() {
     <Box>
       <HeaderWithBackground
         title="Home Page"
-        backgroundImage="/uploads/homepage.jpg" // Path to your background image
+        backgroundImage="/uploads/homepageh.jpg" // Path to your background image
       />
       <Box sx={{ textAlign: "center", mt: 5 }}>
         <Typography variant="h2" gutterBottom>
