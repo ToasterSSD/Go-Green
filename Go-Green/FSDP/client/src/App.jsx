@@ -9,12 +9,10 @@ import {
   Menu,
   MenuItem,
   Avatar,
-  IconButton,
   Divider,
   Link as MuiLink,
-  Button,
 } from "@mui/material";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import MyTheme from "./themes/MyTheme";
 import Tutorials from "./pages/Tutorials";
@@ -47,6 +45,7 @@ import PublicLearningTopics from './pages/PublicLearningTopics';
 import QuizPage from './pages/QuizPage';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
+import AdminPanel from './pages/AdminPanel'; // Correctly imported AdminPanel
 
 function App() {
   const [user, setUser] = useState(null);
@@ -237,14 +236,15 @@ function App() {
                       },
                     }}
                   >
-                    <MenuItem onClick={handleSettingsOpen}>
-                      Settings
-                    </MenuItem>
+                    <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                    {user?.role === 'ADMIN' && [
+                      <MenuItem key="ADMIN" component={Link} to="/admin" onClick={handleMenuClose}>
+                        Admin Panel
+                      </MenuItem>,
+                      <Divider key="divider" />
+                    ]}
                     {user ? (
-                      <>
-                        <Divider />
-                        <MenuItem onClick={logout}>Logout</MenuItem>
-                      </>
+                      <MenuItem onClick={logout}>Logout</MenuItem>
                     ) : (
                       <>
                         <MenuItem
@@ -297,6 +297,7 @@ function App() {
               <Route path="/learning/:id" element={<LearningTopicDetails />} />
               <Route path="/public-learning" element={<PublicLearningTopics />} />
               <Route path="/quiz" element={<QuizPage />} />
+              <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
             </Routes>
           </Container>
           <Footer />
@@ -306,5 +307,10 @@ function App() {
     </UserContext.Provider>
   );
 }
+
+// Define the PrivateRoute component
+const PrivateRoute = ({ children, user }) => {
+  return user && user.role === 'ADMIN' ? children : <Navigate to="/login" />;
+};
 
 export default App;
