@@ -9,71 +9,70 @@ import { Editor } from '@tinymce/tinymce-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function EditArticle() {
+function EditLearningTopic() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [article, setArticle] = useState(null);
-    const [imageFile, setImageFile] = useState(null);
+    const [topic, setTopic] = useState(null);
+    const [videoFile, setVideoFile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        http.get(`/article/${id}`).then((res) => {
-            setArticle(res.data);
-            setImageFile(res.data.imageFile);
+        http.get(`/learning/${id}`).then((res) => {
+            setTopic(res.data);
             setLoading(false);
         });
     }, [id]);
 
     const formik = useFormik({
         initialValues: {
-            title: article ? article.title : "",
-            category: article ? article.category : "",
-            author: article ? article.author : "",
-            content: article ? article.content : ""
+            title: topic ? topic.title : "",
+            content: topic ? topic.content : ""
         },
         enableReinitialize: true,
         validationSchema: yup.object({
             title: yup.string().trim()
                 .min(3, 'Title must be at least 3 characters')
-                .max(30, 'Title must be at most 30 characters')
+                .max(100, 'Title must be at most 100 characters')
                 .required('Title is required'),
-            category: yup.string().trim()
-                .min(3, 'Category must be at least 3 characters')
-                .max(30, 'Category must be at most 30 characters')
-                .required('Category is required'),
-            author: yup.string().trim()
-                .min(3, 'Author must be at least 3 characters')
-                .max(30, 'Author must be at most 30 characters')
-                .required('Author is required'),
             content: yup.string().trim()
                 .required('Content is required')
         }),
         onSubmit: (data) => {
             const formData = new FormData();
             formData.append('title', data.title.trim());
-            formData.append('category', data.category.trim());
-            formData.append('author', data.author.trim());
             formData.append('content', data.content.trim());
-            if (imageFile) {
-                formData.append('imageFile', imageFile);
+
+            if (videoFile) {
+                formData.append('videoFile', videoFile);
             }
 
-            http.put(`/article/${id}`, formData, {
+            http.put(`/learning/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
                 .then((res) => {
                     console.log(res.data);
-                    navigate("/articles");
+                    navigate("/learning");
                 })
                 .catch((err) => {
                     console.error(err);
-                    toast.error('Failed to update article');
+                    toast.error('Failed to update learning topic');
                 });
         }
     });
+
+    const onFileChange = (e) => {
+        let file = e.target.files[0];
+        if (file) {
+            if (file.size > 200 * 1024 * 1024) { // 200MB limit
+                toast.error('Maximum file size is 200MB');
+                return;
+            }
+            setVideoFile(file);  // Directly set the file without uploading it separately
+        }
+    };
 
     const [open, setOpen] = useState(false);
 
@@ -85,39 +84,28 @@ function EditArticle() {
         setOpen(false);
     };
 
-    const deleteArticle = () => {
-        http.delete(`/article/${id}`)
+    const deleteLearningTopic = () => {
+        http.delete(`/learning/${id}`)
             .then((res) => {
                 console.log(res.data);
-                navigate("/articles");
+                navigate("/learning");
             })
             .catch((err) => {
                 console.error(err);
-                toast.error('Failed to delete article');
+                toast.error('Failed to delete learning topic');
             });
     }
-
-    const onFileChange = (e) => {
-        let file = e.target.files[0];
-        if (file) {
-            if (file.size > 1024 * 1024) {
-                toast.error('Maximum file size is 1MB');
-                return;
-            }
-            setImageFile(file);  // Directly set the file without uploading it separately
-        }
-    };
 
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
-                Edit Article
+                Edit Learning Topic
             </Typography>
             {
                 !loading && (
                     <Box component="form" onSubmit={formik.handleSubmit}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6} lg={8}>
+                            <Grid item xs={12}>
                                 <TextField
                                     fullWidth margin="dense" autoComplete="off"
                                     label="Title"
@@ -127,27 +115,6 @@ function EditArticle() {
                                     onBlur={formik.handleBlur}
                                     error={formik.touched.title && Boolean(formik.errors.title)}
                                     helperText={formik.touched.title && formik.errors.title}
-                                />
-                                <TextField
-                                    fullWidth margin="dense" autoComplete="off"
-                                    multiline minRows={2}
-                                    label="Category"
-                                    name="category"
-                                    value={formik.values.category}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    error={formik.touched.category && Boolean(formik.errors.category)}
-                                    helperText={formik.touched.category && formik.errors.category}
-                                />
-                                <TextField
-                                    fullWidth margin="dense" autoComplete="off"
-                                    label="Author"
-                                    name="author"
-                                    value={formik.values.author}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    error={formik.touched.author && Boolean(formik.errors.author)}
-                                    helperText={formik.touched.author && formik.errors.author}
                                 />
                                 <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                                 <Editor
@@ -173,24 +140,18 @@ function EditArticle() {
                                         {formik.errors.content}
                                     </Typography>
                                 ) : null}
-                            </Grid>
-                            <Grid item xs={12} md={6} lg={4}>
-                                <Box sx={{ textAlign: 'center', mt: 2 }} >
-                                    <Button variant="contained" component="label">
-                                        Upload Image
-                                        <input hidden accept="image/*" multiple type="file"
-                                            onChange={onFileChange} />
-                                    </Button>
-                                    {
-                                        imageFile && (
-                                            <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
-                                                <img alt="article"
-                                                    src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}>
-                                                </img>
-                                            </Box>
-                                        )
-                                    }
-                                </Box>
+                                <Button variant="contained" component="label" sx={{ mt: 2 }}>
+                                    Upload Video
+                                    <input hidden accept="video/*" type="file" onChange={onFileChange} />
+                                </Button>
+                                {videoFile && (
+                                    <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
+                                        <video controls style={{ width: '100%', height: 'auto' }}>
+                                            <source src={URL.createObjectURL(videoFile)} type="video/mp4" />
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </Box>
+                                )}
                             </Grid>
                         </Grid>
                         <Box sx={{ mt: 2 }}>
@@ -208,11 +169,11 @@ function EditArticle() {
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
-                    Delete Article
+                    Delete Learning Topic
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this article?
+                        Are you sure you want to delete this learning topic?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -221,7 +182,7 @@ function EditArticle() {
                         Cancel
                     </Button>
                     <Button variant="contained" color="error"
-                        onClick={deleteArticle}>
+                        onClick={deleteLearningTopic}>
                         Delete
                     </Button>
                 </DialogActions>
@@ -232,6 +193,6 @@ function EditArticle() {
     );
 }
 
-export default EditArticle;
+export default EditLearningTopic;
 
 

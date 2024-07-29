@@ -26,6 +26,13 @@ app.use("/article", articleRoute);
 const fileRoute = require('./routes/file');
 app.use("/file", fileRoute);
 
+const learningRoute = require('./routes/learning');
+app.use("/learning", learningRoute);
+
+app.get('/public-learning-topics', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
+});
+
 // Route for public articles
 app.get('/public-articles', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
