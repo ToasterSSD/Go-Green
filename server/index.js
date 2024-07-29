@@ -2,13 +2,13 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql')
+const mysql = require('mysql');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
-
 
 // Enable CORS
 app.use(cors({
@@ -19,6 +19,7 @@ app.use(cors({
 app.get("/", (req, res) => {
     res.send("Welcome to Go Green.");
 });
+
 // Routes
 const articleRoute = require('./routes/article');
 app.use("/article", articleRoute);
@@ -47,7 +48,7 @@ const gogreendb = mysql.createConnection({
     user: 'root',
     password: 'mysql',
     database: 'gogreendb'
-  });
+});
 
 const db = require('./models');
 db.sequelize.sync({ alter: true })
@@ -61,3 +62,4 @@ db.sequelize.sync({ alter: true })
     .catch((err) => {
         console.log(err);
     });
+

@@ -15,22 +15,23 @@ function EditArticle() {
 
     const [article, setArticle] = useState(null);
     const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         http.get(`/article/${id}`).then((res) => {
             setArticle(res.data);
-            setImageFile(res.data.imageFile);
+            setImagePreview(res.data.imageFile ? `${import.meta.env.VITE_FILE_BASE_URL}${res.data.imageFile}` : null);
             setLoading(false);
         });
     }, [id]);
 
     const formik = useFormik({
         initialValues: {
-            title: article ? article.title : "",
-            category: article ? article.category : "",
-            author: article ? article.author : "",
-            content: article ? article.content : ""
+            title: "",
+            category: "",
+            author: "",
+            content: ""
         },
         enableReinitialize: true,
         validationSchema: yup.object({
@@ -105,6 +106,7 @@ function EditArticle() {
                 return;
             }
             setImageFile(file);  // Directly set the file without uploading it separately
+            setImagePreview(URL.createObjectURL(file));
         }
     };
 
@@ -178,14 +180,15 @@ function EditArticle() {
                                 <Box sx={{ textAlign: 'center', mt: 2 }} >
                                     <Button variant="contained" component="label">
                                         Upload Image
-                                        <input hidden accept="image/*" multiple type="file"
+                                        <input hidden accept="image/*" type="file"
                                             onChange={onFileChange} />
                                     </Button>
                                     {
-                                        imageFile && (
+                                        imagePreview && (
                                             <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                                                 <img alt="article"
-                                                    src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}>
+                                                    src={imagePreview}
+                                                    style={{ width: '100%', height: 'auto' }}>
                                                 </img>
                                             </Box>
                                         )
@@ -233,5 +236,7 @@ function EditArticle() {
 }
 
 export default EditArticle;
+
+
 
 

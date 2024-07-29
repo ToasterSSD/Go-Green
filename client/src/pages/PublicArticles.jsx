@@ -45,13 +45,6 @@ function PublicArticles() {
         getArticles();
     };
 
-    useEffect(() => {
-        http.get('/article').then((res) => {
-            console.log(res.data);
-            setArticleList(res.data);
-        });
-    }, []);
-
     return (
         <Box>
             <Typography variant="h5" sx={{ my: 2 }}>
@@ -121,5 +114,6 @@ function PublicArticles() {
 }
 
 export default PublicArticles;
+
 
 
