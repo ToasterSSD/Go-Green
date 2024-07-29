@@ -12,6 +12,7 @@ import {
   IconButton,
   Divider,
   Link as MuiLink,
+  Button,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -32,6 +33,10 @@ import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
 import AdminComponent from "./pages/AdminComponent";
 import UserComponent from "./pages/UserComponent";
+import Feedback from "./pages/Feedback";
+import FeedbackAdmin from "./pages/FeedbackAdmin";
+import AddFeedback from "./pages/AddFeedback";
+import DeleteFeedback from "./pages/DeleteFeedback";
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 
@@ -261,16 +266,14 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/form" element={<MyForm />} />
-              <Route
-                path="/announcementDetail"
-                element={<AnnouncementDetail />}
-              />
+              <Route path="/announcementDetail" element={<AnnouncementDetail />} />
               <Route path="/chatarea" element={<ChatArea />} />
               <Route path="/addannouncement" element={<AddAnnouncement />} />
-              <Route
-                path="/editannouncement/:id"
-                element={<EditAnnouncement />}
-              />
+              <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
+              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
+              <Route path="/addfeedback" element={<AddFeedback />} />
+              <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
             </Routes>
           </Container>
           <Footer />
