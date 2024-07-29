@@ -33,12 +33,11 @@ function Home() {
       link: "/games",
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
-
+    
     {
       title: "Learn",
       description:
-        "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
-      link: "/Learning",
+Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.""      link: "/Learning",
       image: "/uploads/astolfo.jpg", // Path to your feature image
     },
     {
