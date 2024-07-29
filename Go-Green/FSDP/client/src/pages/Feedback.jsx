@@ -22,39 +22,79 @@ import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
 
-function AnnouncementDetail() {
-  const [announcementDetailList, setAnnouncementDetailList] = useState([]);
+function Feedback() {
+  const [feedbackList, setFeedbackList] = useState([]);
   const [search, setSearch] = useState("");
   const { user } = useContext(UserContext);
 
-  const getAnnouncementDetail = () => {
-    http.get("/announcement").then((res) => {
-      setAnnouncementDetailList(res.data);
+  const onSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const getFeedback = () => {
+    http.get("/feedback").then((res) => {
+      setFeedbackList(res.data);
     });
+  };
+  
+  const searchFeedback = () => {
+    http.get(`/feedback?search=${search}`).then((res) => {
+      setFeedbackList(res.data);
+    });
+  };
+  const onSearchKeyDown = (e) => {
+    if (e.key === "Enter") {
+      searchFeedback();
+    }
+  };
+  const onClickSearch = () => {
+    searchFeedback();
+  };
+  const onClickClear = () => {
+    setSearch("");
+    getFeedback();
   };
 
   useEffect(() => {
-    getAnnouncementDetail();
+    getFeedback();
   }, []);
 
   return (
     <Box>
       <Typography variant="h5" sx={{ my: 2 }}>
-        Announcement Detail
+        Feedback
       </Typography>
 
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Input
+          value={search}
+          placeholder="Search"
+          onChange={onSearchChange}
+          onKeyDown={onSearchKeyDown}
+        />
+        <IconButton color="primary" onClick={onClickSearch}>
+          <Search />
+        </IconButton>
+        <IconButton color="primary" onClick={onClickClear}>
+          <Clear />
+        </IconButton>
+        <Box sx={{ flexGrow: 1 }} />
+        <Link to="/addfeedback" style={{ textDecoration: "none" }}>
+          <Button variant="contained">Add</Button>
+        </Link>
+      </Box>
       <Grid container spacing={2}>
-        {announcementDetailList.map((announcementDetail, i) => {
+        {feedbackList.map((feedback, i) => {
           return (
-            <Grid item xs={12} md={6} lg={4} key={announcementDetail.id}>
+            <Grid item xs={12} md={6} lg={4} key={feedback.id}>
               <Card>
                 <CardContent>
                   <Box sx={{ display: "flex", mb: 1 }}>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                      {announcementDetail.title}
+                      {feedback.title}
                     </Typography>
-                    {user && user.id === announcementDetail.userId && (
-                      <Link to={`/editannouncementDetail/${announcementDetail.id}`}>
+                    {user && user.id === feedback.userId && (
+                      <Link to={`/DeleteFeedback/${feedback.id}`}>
                         <IconButton color="primary" sx={{ padding: "4px" }}>
                           <Edit />
                         </IconButton>
@@ -66,7 +106,7 @@ function AnnouncementDetail() {
                     color="text.secondary"
                   >
                     <AccountCircle sx={{ mr: 1 }} />
-                    <Typography>{announcementDetail.user?.name}</Typography>
+                    <Typography>{feedback.user?.name}</Typography>
                   </Box>
                   <Box
                     sx={{ display: "flex", alignItems: "center", mb: 1 }}
@@ -74,13 +114,13 @@ function AnnouncementDetail() {
                   >
                     <AccessTime sx={{ mr: 1 }} />
                     <Typography>
-                      {dayjs(announcementDetail.createdAt).format(
+                      {dayjs(feedback.createdAt).format(
                         global.datetimeFormat
                       )}
                     </Typography>
                   </Box>
                   <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                    {announcementDetail.content}
+                    {feedback.feedback}
                   </Typography>
                 </CardContent>
               </Card>
@@ -92,4 +132,4 @@ function AnnouncementDetail() {
   );
 }
 
-export default AnnouncementDetail;
+export default Feedback;

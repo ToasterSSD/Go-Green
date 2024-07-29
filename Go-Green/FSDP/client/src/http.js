@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 // Add a request interceptor
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use((config) => {
     // Do something before request is sent
     let accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
@@ -14,19 +14,23 @@ instance.interceptors.request.use(function (config) {
     if (config.data && config.data.user) {
         delete config.data.user;
     }
+    // Set the 'Content-Type' header for multipart/form-data when a FormData object is being sent
+    if (config.data && config.data instanceof FormData) {
+        config.headers['Content-Type'] = 'multipart/form-data';
+    }
     return config;
-}, function (error) {
+}, (error) => {
     // Do something with request error
     return Promise.reject(error);
 });
 
 // Add a response interceptor
-instance.interceptors.response.use(function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
+instance.interceptors.response.use((response) => {
+    // Any status code that lies within the range of 2xx causes this function to trigger
     // Do something with response data
     return response;
-}, function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
+}, (error) => {
+    // Any status codes that fall outside the range of 2xx cause this function to trigger
     // Do something with response error
     if (error.response.status === 401 || error.response.status === 403) {
         localStorage.clear();
