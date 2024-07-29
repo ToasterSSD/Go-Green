@@ -15,11 +15,14 @@ function EditLearningTopic() {
 
     const [topic, setTopic] = useState(null);
     const [videoFile, setVideoFile] = useState(null);
+    const [videoLinks, setVideoLinks] = useState(['']);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         http.get(`/learning/${id}`).then((res) => {
-            setTopic(res.data);
+            const topicData = res.data;
+            setTopic(topicData);
+            setVideoLinks(topicData.videos || ['']);
             setLoading(false);
         });
     }, [id]);
@@ -27,7 +30,7 @@ function EditLearningTopic() {
     const formik = useFormik({
         initialValues: {
             title: topic ? topic.title : "",
-            content: topic ? topic.content : ""
+            content: topic ? topic.content : "",
         },
         enableReinitialize: true,
         validationSchema: yup.object({
@@ -36,16 +39,23 @@ function EditLearningTopic() {
                 .max(100, 'Title must be at most 100 characters')
                 .required('Title is required'),
             content: yup.string().trim()
-                .required('Content is required')
+                .required('Content is required'),
+            videoLinks: yup.array().of(
+                yup.string().url('Invalid URL').nullable()
+            ).nullable()
         }),
         onSubmit: (data) => {
             const formData = new FormData();
             formData.append('title', data.title.trim());
             formData.append('content', data.content.trim());
 
+            // Add video file to formData
             if (videoFile) {
                 formData.append('videoFile', videoFile);
             }
+
+            // Add video links to formData
+            formData.append('videoLinks', JSON.stringify(videoLinks.filter(link => link)));
 
             http.put(`/learning/${id}`, formData, {
                 headers: {
@@ -72,6 +82,16 @@ function EditLearningTopic() {
             }
             setVideoFile(file);  // Directly set the file without uploading it separately
         }
+    };
+
+    const handleVideoLinkChange = (index, event) => {
+        const newVideoLinks = [...videoLinks];
+        newVideoLinks[index] = event.target.value;
+        setVideoLinks(newVideoLinks);
+    };
+
+    const addVideoLinkField = () => {
+        setVideoLinks([...videoLinks, '']);
     };
 
     const [open, setOpen] = useState(false);
@@ -140,6 +160,22 @@ function EditLearningTopic() {
                                         {formik.errors.content}
                                     </Typography>
                                 ) : null}
+
+                                {videoLinks.map((link, index) => (
+                                    <TextField
+                                        key={index}
+                                        fullWidth margin="dense" autoComplete="off"
+                                        label={`Video Link ${index + 1}`}
+                                        value={link}
+                                        onChange={(event) => handleVideoLinkChange(index, event)}
+                                        error={formik.touched.videoLinks && formik.errors.videoLinks}
+                                        helperText={formik.touched.videoLinks && formik.errors.videoLinks}
+                                    />
+                                ))}
+                                <Button variant="contained" onClick={addVideoLinkField} sx={{ mt: 2 }}>
+                                    Add Another Video Link
+                                </Button>
+
                                 <Button variant="contained" component="label" sx={{ mt: 2 }}>
                                     Upload Video
                                     <input hidden accept="video/*" type="file" onChange={onFileChange} />
@@ -194,5 +230,7 @@ function EditLearningTopic() {
 }
 
 export default EditLearningTopic;
+
+
 
 

@@ -86,15 +86,8 @@ function AddLearningTopic() {
                             init={{
                                 height: 500,
                                 menubar: false,
-                                plugins: [
-                                    'advlist autolink lists link image charmap print preview anchor',
-                                    'searchreplace visualblocks code fullscreen',
-                                    'insertdatetime media table paste code help wordcount'
-                                ],
-                                toolbar:
-                                    'undo redo | formatselect | bold italic backcolor | \
-                                    alignleft aligncenter alignright alignjustify | \
-                                    bullist numlist outdent indent | removeformat | help'
+                                plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount'.split(' '),
+                                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
                             }}
                             onEditorChange={(content) => formik.setFieldValue('content', content)}
                         />
@@ -110,7 +103,7 @@ function AddLearningTopic() {
                         {videoFile && (
                             <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                                 <video controls style={{ width: '100%', height: 'auto' }}>
-                                    <source src={URL.createObjectURL(videoFile)} type={videoFile.type} />
+                                    <source src={URL.createObjectURL(videoFile)} type="video/mp4" />
                                     Your browser does not support the video tag.
                                 </video>
                             </Box>
@@ -130,6 +123,7 @@ function AddLearningTopic() {
 }
 
 export default AddLearningTopic;
+
 
 
 

@@ -47,16 +47,24 @@ router.post("/", upload.single('videoFile'), async (req, res) => {
     let validationSchema = yup.object({
         title: yup.string().trim().min(3).max(100).required(),
         content: yup.string().trim().required(),
-        videoFile: yup.string().nullable(),
+        videoLink: yup.string().url().nullable(),
+        videoFile: yup.string().nullable()
     });
 
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
-        // Validate video file
+        // Handle video file upload
         if (req.file) {
             data.videoFile = req.file.filename;
         }
+
+        // Combine video file and video link into a single array
+        let videos = [];
+        if (data.videoLink) videos.push(data.videoLink);
+        if (data.videoFile) videos.push(data.videoFile);
+
+        data.videos = videos;
 
         // Process valid data
         let result = await LearningTopic.create(data);
@@ -112,16 +120,24 @@ router.put("/:id", upload.single('videoFile'), async (req, res) => {
     let validationSchema = yup.object({
         title: yup.string().trim().min(3).max(100).required(),
         content: yup.string().trim().required(),
-        videoFile: yup.string().nullable(),
+        videoLink: yup.string().url().nullable(),
+        videoFile: yup.string().nullable()
     });
 
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
-        // Validate video file if uploaded
+        // Handle video file upload if any
         if (req.file) {
             data.videoFile = req.file.filename;
         }
+
+        // Combine video file and video link into a single array
+        let videos = [];
+        if (data.videoLink) videos.push(data.videoLink);
+        if (data.videoFile) videos.push(data.videoFile);
+
+        data.videos = videos;
 
         // Process valid data
         let num = await LearningTopic.update(data, {
@@ -159,5 +175,8 @@ router.delete("/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+
+
 
 
