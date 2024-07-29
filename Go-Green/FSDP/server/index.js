@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const mysql = require('mysql');
 const cors = require('cors');
 const path = require('path');
 const app = express();
@@ -52,13 +51,6 @@ app.get('/public-articles', (req, res) => {
 // Set up body-parser middleware to parse JSON requests
 app.use(bodyParser.json());
 
-// Create a MySQL connection
-// const gogreendb = mysql.createConnection({
-//     host: '127.0.0.1',
-//     user: 'root',
-//     password: 'mysql',
-//     database: 'gogreendb'
-// });
 
 const db = require('./models');
 db.sequelize.sync({ alter: true })

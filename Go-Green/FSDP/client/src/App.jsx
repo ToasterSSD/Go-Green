@@ -290,7 +290,6 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/form" element={<MyForm />} />
-              <Route path="/announcementDetail" element={<AnnouncementDetail />} />
               <Route path="/chatarea" element={<ChatArea />} />
               <Route path="/addannouncement" element={<AddAnnouncement />} />
               <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
