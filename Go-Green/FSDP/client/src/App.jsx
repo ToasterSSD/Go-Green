@@ -27,16 +27,23 @@ import http from "./http";
 import Home from "./pages/Home";
 import UserContext from "./contexts/UserContext";
 import Announcement from "./pages/Announcement";
-import AnnouncementDetail from "./pages/AnnouncementDetail";
 import ChatArea from "./pages/ChatArea";
 import AddAnnouncement from "./pages/AddAnnouncement";
 import EditAnnouncement from "./pages/EditAnnouncement";
-import AdminComponent from "./pages/AdminComponent";
-import UserComponent from "./pages/UserComponent";
 import Feedback from "./pages/Feedback";
 import FeedbackAdmin from "./pages/FeedbackAdmin";
 import AddFeedback from "./pages/AddFeedback";
 import DeleteFeedback from "./pages/DeleteFeedback";
+import Articles from './pages/Articles';
+import AddArticle from './pages/AddArticle';
+import EditArticle from './pages/EditArticle';
+import PublicArticles from './pages/PublicArticles';
+import ArticleDetails from './pages/ArticleDetails';
+import LearningTopics from './pages/LearningTopics';
+import AddLearningTopic from './pages/AddLearningTopic';
+import EditLearningTopic from './pages/EditLearningTopic';
+import LearningTopicDetails from './pages/LearningTopicDetails';
+import PublicLearningTopics from './pages/PublicLearningTopics';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 
@@ -85,7 +92,6 @@ function App() {
             sx={{ backgroundColor: "#A7A7A7" }}
           >
             <Container sx={{ padding: 0 }}>
-              {/* Ensure no extra padding */}
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <Link
@@ -120,12 +126,21 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/News"
+                    to="/articles"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
-                    News
+                    Articles
+                  </MuiLink>
+                  <MuiLink
+                    component={Link}
+                    to="/public-articles"
+                    underline="none"
+                    color="inherit"
+                    sx={{ mx: 2 }}
+                  >
+                    Public Articles
                   </MuiLink>
                   <MuiLink
                     component={Link}
@@ -147,16 +162,25 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Learning"
+                    to="/learning"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
                   >
-                    Learn
+                    Learning
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Games"
+                    to="/public-learning"
+                    underline="none"
+                    color="inherit"
+                    sx={{ mx: 2 }}
+                  >
+                    Public Learning
+                  </MuiLink>
+                  <MuiLink
+                    component={Link}
+                    to="/games"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -165,7 +189,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Donations"
+                    to="/donations"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -174,7 +198,7 @@ function App() {
                   </MuiLink>
                   <MuiLink
                     component={Link}
-                    to="/Feedback"
+                    to="/feedback"
                     underline="none"
                     color="inherit"
                     sx={{ mx: 2 }}
@@ -274,6 +298,16 @@ function App() {
               <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
               <Route path="/addfeedback" element={<AddFeedback />} />
               <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
+              <Route path="/articles" element={<Articles />} />
+              <Route path="/public-articles" element={<PublicArticles />} />
+              <Route path="/addarticle" element={<AddArticle />} />
+              <Route path="/editarticle/:id" element={<EditArticle />} />
+              <Route path="/public-article/:id" element={<ArticleDetails />} />
+              <Route path="/learning" element={<LearningTopics />} />
+              <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+              <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+              <Route path="/learning/:id" element={<LearningTopicDetails />} />
+              <Route path="/public-learning" element={<PublicLearningTopics />} />
             </Routes>
           </Container>
           <Footer />
