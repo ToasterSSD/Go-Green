@@ -39,6 +39,19 @@ app.get('/public-articles', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
 });
 
+const tutorialRoute = require('./routes/tutorial');
+app.use("/tutorial", tutorialRoute);
+const userRoute = require('./routes/user');
+const feedbackRoutes = require('./routes/feedback');
+app.use('/feedback', feedbackRoutes);
+app.use("/user", userRoute);
+const fileRoute = require('./routes/file');
+app.use("/file", fileRoute);
+const announcementRoute = require("./routes/announcement");
+app.use("/announcement", announcementRoute);
+const chatareaRoute = require("./routes/chatarea");
+app.use("/chatarea", chatareaRoute);
+
 // Set up body-parser middleware to parse JSON requests
 app.use(bodyParser.json());
 
