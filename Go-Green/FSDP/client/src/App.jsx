@@ -44,6 +44,7 @@ import AddLearningTopic from './pages/AddLearningTopic';
 import EditLearningTopic from './pages/EditLearningTopic';
 import LearningTopicDetails from './pages/LearningTopicDetails';
 import PublicLearningTopics from './pages/PublicLearningTopics';
+import QuizPage from './pages/QuizPage';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 
@@ -307,6 +308,7 @@ function App() {
               <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
               <Route path="/learning/:id" element={<LearningTopicDetails />} />
               <Route path="/public-learning" element={<PublicLearningTopics />} />
+              <Route path="/quiz" element={<QuizPage />} />
             </Routes>
           </Container>
           <Footer />

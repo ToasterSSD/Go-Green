@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
 import { AccessTime, Search, Clear } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
-import DOMPurify from 'dompurify';
 import global from '../global';
 
 function PublicLearningTopics() {
@@ -103,10 +102,20 @@ function PublicLearningTopics() {
                     </Grid>
                 ))}
             </Grid>
+
+            <Box sx={{ mt: 4 }}>
+                <Typography variant="h5" sx={{ my: 2 }}>
+                    Quiz!
+                </Typography>
+                <Link to="/quiz" style={{ textDecoration: 'none' }}>
+                    <Button variant="contained">Take the Quiz</Button>
+                </Link>
+            </Box>
         </Box>
     );
 }
 
 export default PublicLearningTopics;
+
 
 
