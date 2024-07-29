@@ -236,24 +236,12 @@ function App() {
                       },
                     }}
                   >
+                    <MenuItem onClick={handleSettingsOpen}>
+                      Settings
+                    </MenuItem>
                     {user ? (
                       <>
-                        <Box
-                          sx={{ display: "flex", alignItems: "center", p: 2 }}
-                        >
-                          <Avatar
-                            alt={user.name}
-                            src="/static/images/avatar/1.jpg"
-                            sx={{ width: 40, height: 40, mr: 2 }}
-                          />
-                          <Typography variant="body1" noWrap>
-                            {user.name}
-                          </Typography>
-                        </Box>
                         <Divider />
-                        <MenuItem onClick={handleSettingsOpen}>
-                          Settings
-                        </MenuItem>
                         <MenuItem onClick={logout}>Logout</MenuItem>
                       </>
                     ) : (
