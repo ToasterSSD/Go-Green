@@ -9,7 +9,7 @@ import {
   Menu,
   MenuItem,
   Avatar,
-  IconButton,
+  Button,
   Divider,
   Link as MuiLink,
 } from "@mui/material";
@@ -42,6 +42,10 @@ import AddLearningTopic from './pages/AddLearningTopic';
 import EditLearningTopic from './pages/EditLearningTopic';
 import LearningTopicDetails from './pages/LearningTopicDetails';
 import PublicLearningTopics from './pages/PublicLearningTopics';
+import Feedback from "./pages/Feedback";
+import FeedbackAdmin from "./pages/FeedbackAdmin";
+import AddFeedback from "./pages/AddFeedback";
+import DeleteFeedback from "./pages/DeleteFeedback";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -300,6 +304,10 @@ function App() {
               <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
               <Route path="/learning/:id" element={<LearningTopicDetails />} />
               <Route path="/public-learning" element={<PublicLearningTopics />} />
+              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
+              <Route path="/addfeedback" element={<AddFeedback />} />
+              <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
             </Routes>
           </Container>
           <Footer />
