@@ -1,0 +1,24 @@
+{
+    "development": {
+      "username": "project",
+      "password": "project",
+      "database": "project",
+      "host": "127.0.0.1:3306",
+      "dialect": "mysql"
+    },
+    "test": {
+      "username": "project",
+      "password": "project",
+      "database": "project",
+      "host": "127.0.0.1:3306",
+      "dialect": "mysql"
+    },
+    "production": {
+      "username": "project",
+      "password": "project",
+      "database": "project",
+      "host": "127.0.0.1:3306",
+      "dialect": "mysql"
+    }
+
+  }
