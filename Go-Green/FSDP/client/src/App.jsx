@@ -237,12 +237,14 @@ function App() {
                     }}
                   >
                     <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
-                    {user?.role === 'ADMIN' && [
-                      <MenuItem key="ADMIN" component={Link} to="/admin" onClick={handleMenuClose}>
-                        Admin Panel
-                      </MenuItem>,
-                      <Divider key="divider" />
-                    ]}
+                    {user?.roles?.includes("ADMIN") && (
+                      <>
+                        <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
+                          Admin Panel
+                        </MenuItem>
+                        <Divider />
+                      </>
+                    )}
                     {user ? (
                       <MenuItem onClick={logout}>Logout</MenuItem>
                     ) : (
@@ -310,7 +312,7 @@ function App() {
 
 // Define the PrivateRoute component
 const PrivateRoute = ({ children, user }) => {
-  return user && user.role === 'ADMIN' ? children : <Navigate to="/login" />;
+  return user && user.roles?.includes("ADMIN") ? children : <Navigate to="/login" />;
 };
 
 export default App;
