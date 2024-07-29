@@ -108,10 +108,15 @@ function AddLearningTopic() {
                                 {formik.errors.content}
                             </Typography>
                         ) : null}
-                        <Button variant="contained" component="label" sx={{ mt: 2 }}>
-                            Upload Video
-                            <input hidden accept="video/*" type="file" onChange={onFileChange} />
-                        </Button>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                            <Button variant="contained" component="label">
+                                Upload Video
+                                <input hidden accept="video/*" type="file" onChange={onFileChange} />
+                            </Button>
+                            <Button variant="contained" type="submit" sx={{ ml: 2 }}>
+                                Add
+                            </Button>
+                        </Box>
                         {videoFile && (
                             <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                                 <video controls style={{ width: '100%', height: 'auto' }}>
@@ -122,11 +127,6 @@ function AddLearningTopic() {
                         )}
                     </Grid>
                 </Grid>
-                <Box sx={{ mt: 2 }}>
-                    <Button variant="contained" type="submit">
-                        Add
-                    </Button>
-                </Box>
             </Box>
 
             <ToastContainer />
