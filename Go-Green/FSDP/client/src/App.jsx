@@ -146,7 +146,7 @@ function App() {
                       Feedback
                     </MuiLink>
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", ml: 4 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", ml: 4, width: 'auto', whiteSpace: 'nowrap' }}>
                     <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer", ml: 2 }}>
                       <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                       <Typography sx={{ ml: 1 }}>
