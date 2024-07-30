@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
 import http from '../http';
+import HeaderWithBackground from "../components/HeaderWithBackground";
 
 function LearningTopics() {
     const [topics, setTopics] = useState([]);
@@ -14,6 +15,10 @@ function LearningTopics() {
 
     return (
         <Box>
+         <HeaderWithBackground
+        title="Tutorial"
+        backgroundImage="/uploads/test.jpg" // Path to your background image
+      />
             <Typography variant="h5" sx={{ my: 2 }}>Learning Topics</Typography>
             <Link to="/add-learning-topic">
                 <Button variant="contained">Add Learning Topic</Button>

@@ -21,6 +21,8 @@ import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
+import HeaderWithBackground from "../components/HeaderWithBackground";
+
 
 function ChatArea() {
   const [chatareaList, setChatAreaList] = useState([]);
@@ -39,6 +41,10 @@ function ChatArea() {
 
   return (
     <Box>
+         <HeaderWithBackground
+        title="Tutorial"
+        backgroundImage="/uploads/test.jpg" // Path to your background image
+      />
       <Typography variant="h5" sx={{ my: 2 }}>
         ChatArea
       </Typography>
