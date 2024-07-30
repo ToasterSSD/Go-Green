@@ -46,6 +46,7 @@ import QuizPage from './pages/QuizPage';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 import AdminPanel from './pages/AdminPanel'; // Correctly imported AdminPanel
+import UserProfile from './pages/UserProfile'
 
 function App() {
   const [user, setUser] = useState(null);
@@ -300,6 +301,7 @@ function App() {
               <Route path="/public-learning" element={<PublicLearningTopics />} />
               <Route path="/quiz" element={<QuizPage />} />
               <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
+              <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
             </Routes>
           </Container>
           <Footer />

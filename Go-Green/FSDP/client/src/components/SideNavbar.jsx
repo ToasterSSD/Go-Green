@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material';
-import { Dashboard, PostAdd, Category, Feedback } from '@mui/icons-material';
+import { PostAdd, Category, Feedback, AdminPanelSettings } from '@mui/icons-material';
 import { Link, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -8,7 +8,6 @@ const drawerWidth = 240;
 const SideNavbar = () => {
   const location = useLocation();
 
-  // Function to check if the item is active
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -17,11 +16,11 @@ const SideNavbar = () => {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', bgcolor: '#333', color: '#fff' },
       }}
     >
       <Toolbar>
-        <Typography variant="h6" noWrap>
+        <Typography variant="h6" noWrap sx={{ color: '#fff' }}>
           Admin Panel
         </Typography>
       </Toolbar>
@@ -29,18 +28,17 @@ const SideNavbar = () => {
         <ListItem 
           button 
           component={Link} 
-          to="/" 
+          to="/admin" 
           sx={{ 
-            bgcolor: isActive('/') ? 'action.selected' : 'transparent',
-            '&:hover': {
-              bgcolor: 'action.hover',
-            }
+            bgcolor: isActive('/admin') ? 'action.selected' : 'transparent',
+            '&:hover': { bgcolor: 'action.hover' },
+            color: '#fff',
           }}
         >
-          <ListItemIcon>
-            <Dashboard />
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <AdminPanelSettings />
           </ListItemIcon>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="Admin Panel" />
         </ListItem>
         <ListItem 
           button 
@@ -48,12 +46,11 @@ const SideNavbar = () => {
           to="/profile" 
           sx={{ 
             bgcolor: isActive('/profile') ? 'action.selected' : 'transparent',
-            '&:hover': {
-              bgcolor: 'action.hover',
-            }
+            '&:hover': { bgcolor: 'action.hover' },
+            color: '#fff',
           }}
         >
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: '#fff' }}>
             <PostAdd />
           </ListItemIcon>
           <ListItemText primary="User Profile" />
@@ -64,12 +61,11 @@ const SideNavbar = () => {
           to="/categories" 
           sx={{ 
             bgcolor: isActive('/categories') ? 'action.selected' : 'transparent',
-            '&:hover': {
-              bgcolor: 'action.hover',
-            }
+            '&:hover': { bgcolor: 'action.hover' },
+            color: '#fff',
           }}
         >
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: '#fff' }}>
             <Category />
           </ListItemIcon>
           <ListItemText primary="Categories" />
@@ -80,12 +76,11 @@ const SideNavbar = () => {
           to="/feedback" 
           sx={{ 
             bgcolor: isActive('/feedback') ? 'action.selected' : 'transparent',
-            '&:hover': {
-              bgcolor: 'action.hover',
-            }
+            '&:hover': { bgcolor: 'action.hover' },
+            color: '#fff',
           }}
         >
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: '#fff' }}>
             <Feedback />
           </ListItemIcon>
           <ListItemText primary="Feedback" />
