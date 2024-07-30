@@ -22,13 +22,6 @@ router.post("/register", async (req, res) => {
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
-        // Check if email already exists
-        let user = await User.findOne({ where: { email: data.email } });
-        if (user) {
-            res.status(400).json({ message: "Email already in use" });
-            return;
-        }
-
         // Hash password
         data.password = await bcrypt.hash(data.password, 10);
         // Create user
