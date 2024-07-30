@@ -15,10 +15,7 @@ function LearningTopics() {
 
     return (
         <Box>
-         <HeaderWithBackground
-        title="Learning Admin"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
-      />
+
             <Typography variant="h5" sx={{ my: 2 }}>Learning Topics</Typography>
             <Link to="/add-learning-topic">
                 <Button variant="contained">Add Learning Topic</Button>

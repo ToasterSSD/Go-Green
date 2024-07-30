@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton } from '@mui/material';
 import { AccessTime, Search, Clear } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import global from '../global';
 import HeaderWithBackground from "../components/HeaderWithBackground";
-
 
 function PublicArticles() {
     const [articleList, setArticleList] = useState([]);
@@ -49,12 +48,15 @@ function PublicArticles() {
 
     return (
         <Box>
-         <HeaderWithBackground
-        title="News articles"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
-      />
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Articles
+            <HeaderWithBackground
+                title="Green News"
+                backgroundImage="/uploads/articleimage.jpg" // Path to your background image
+            />
+            <Typography variant="h4" sx={{ my: 2, fontFamily: 'Raleway, sans-serif' }}>
+                Stay Green, Stay Informed
+            </Typography>
+            <Typography variant="subtitle1" sx={{ mb: 2, fontFamily: 'open-sans, sans-serif' }}>
+                Discover and read positive news about environmentalism and sustainability revealing the latest developments in waste management technologies and sustainable practices. Stay informed with our daily updates and expert insights.
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

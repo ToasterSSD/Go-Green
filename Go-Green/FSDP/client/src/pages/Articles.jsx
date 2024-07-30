@@ -57,7 +57,7 @@ function Articles() {
         <Box>
          <HeaderWithBackground
         title="News"
-        backgroundImage="/uploads/test.jpg" // Path to your background image
+        backgroundImage="/uploads/articleimage.jpg" // Path to your background image
       />
             <Typography variant="h5" sx={{ my: 2 }}>
                 Articles
