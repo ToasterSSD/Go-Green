@@ -1,132 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-  Box,
-  Container,
-  CssBaseline,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  IconButton,
-  Tooltip,
-} from '@mui/material';
-import { Edit, Visibility } from '@mui/icons-material';
-import SideNavbar from '../components/SideNavbar';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState, useContext } from 'react';
+import { Box, Typography, TextField, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import http from '../http';  // Changed import from axios to http
+import UserContext from '../contexts/UserContext';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const AdminPanel = () => {
-  const [users, setUsers] = useState([]); // Initialize state with an empty array
+const UserProfile = () => {
+    const { user } = useContext(UserContext);
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+    const [allUsers, setAllUsers] = useState([]);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        // Assume accessToken is stored in localStorage or some state management solution
-        const accessToken = localStorage.getItem('accessToken');
-
-        if (!accessToken) {
-          throw new Error('No access token found');
+    useEffect(() => {
+        if (user) {
+            http.get(`/userview/${user.id}`)
+                .then(response => setUserData(response.data))
+                .catch(err => toast.error(`Error fetching user data: ${err.message}`));
         }
+    }, [user]);
 
-        // Fetch users with authorization
-        const response = await axios.get('/api/users', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-
-        
-
-        // Check if response data is an array, if not, set it to an empty array
-        if (Array.isArray(response.data)) {
-          setUsers(response.data);
-        } else {
-          
-          setUsers([]); // Set empty array as a fallback
-          toast.error('Unexpected response format from server');
+    useEffect(() => {
+        if (user) {
+            http.get('/userview')
+                .then(response => setAllUsers(response.data))
+                .catch(err => toast.error(`Error fetching all users: ${err.message}`));
         }
-      } catch (error) {
-        if (error.response) {
-          // The request was made, but the server responded with a status code outside the range of 2xx
-          
-          toast.error(
-            error.response.data.message ||
-              'Error fetching users from the server'
-          );
-        } else if (error.request) {
-          // The request was made, but no response was received
-          toast.error(
-            'No response from the server. Check your network or server status.'
-          );
-        } else {
-          // Something happened in setting up the request
-          
-          toast.error('Error setting up the request: ' + error.message);
-        }
-      }
+    }, [user]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUserData(prevData => ({ ...prevData, [name]: value }));
     };
 
-    fetchUsers();
-  }, []);
+    const handleUpdate = () => {
+        http.put(`/userview/${user.id}`, userData)
+            .then(response => toast.success(response.data.message))
+            .catch(err => toast.error(`Error updating user: ${err.message}`));
+    };
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <SideNavbar />
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-      >
-        <Container maxWidth="lg">
-          <Typography variant="h4" gutterBottom>
-            User Profiles
-          </Typography>
-          <Paper elevation={3} sx={{ p: 2 }}>
-            <TableContainer>
-              <Table>
-                <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
-                  <TableRow>
-                    <TableCell>User ID</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>User Role</TableCell>
-                    <TableCell align="center">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {users.map((user) => (
-                    <TableRow key={user.id}>
-                      <TableCell>{user.id}</TableCell>
-                      <TableCell>{user.name}</TableCell>
-                      <TableCell>{user.email}</TableCell>
-                      <TableCell>{user.roles}</TableCell>
-                      <TableCell align="center">
-                        <Tooltip title="View">
-                          <IconButton>
-                            <Visibility />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton>
-                            <Edit />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+    const handleDelete = () => {
+        http.delete(`/userview/${user.id}`)
+            .then(response => {
+                toast.success(response.data.message);
+                localStorage.clear();
+                window.location = "/login";
+            })
+            .catch(err => toast.error(`Error deleting user: ${err.message}`));
+    };
+
+    return (
+        <Box sx={{ marginTop: 8, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Typography variant="h5" sx={{ my: 2 }}>
+                User Profile
+            </Typography>
+            <Box component="form" sx={{ maxWidth: '500px' }}>
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
+                    label="Name"
+                    name="name"
+                    value={userData.name}
+                    onChange={handleChange}
+                />
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
+                    label="Email"
+                    name="email"
+                    value={userData.email}
+                    onChange={handleChange}
+                />
+                <TextField
+                    fullWidth margin="dense" autoComplete="off"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    value={userData.password}
+                    onChange={handleChange}
+                />
+                <Button fullWidth variant="contained" sx={{ mt: 2 }} onClick={handleUpdate}>
+                    Update
+                </Button>
+                <Button fullWidth variant="contained" color="error" sx={{ mt: 2 }} onClick={handleDelete}>
+                    Delete
+                </Button>
+            </Box>
+            <Typography variant="h6" sx={{ my: 4 }}>
+                All Users
+            </Typography>
+            <TableContainer component={Paper} sx={{ maxWidth: '800px' }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Password</TableCell>
+                            <TableCell>Roles</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {allUsers.map((user) => (
+                            <TableRow key={user.id}>
+                                <TableCell>{user.id}</TableCell>
+                                <TableCell>{user.name}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.password}</TableCell>
+                                <TableCell>{user.roles}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             </TableContainer>
-          </Paper>
-        </Container>
-      </Box>
-    </Box>
-  );
+            <ToastContainer />
+        </Box>
+    );
 };
 
-export default AdminPanel;
+export default UserProfile;

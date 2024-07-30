@@ -29,10 +29,9 @@ const chatareaRoute = require('./routes/chatarea');
 const articleRoute = require('./routes/article');
 const learningRoute = require('./routes/learning');
 const quizRoute = require('./routes/quiz');
+const userviewRoute = require('./routes/userview');
 
 app.use('/quiz', quizRoute);
-
-
 app.use("/tutorial", tutorialRoute);
 app.use("/user", userRoute);
 app.use("/feedback", feedbackRoutes);
@@ -41,6 +40,7 @@ app.use("/announcement", announcementRoute);
 app.use("/chatarea", chatareaRoute);
 app.use("/article", articleRoute);
 app.use("/learning", learningRoute);
+app.use("/userview", userviewRoute);
 
 // Route for public learning topics
 app.get('/public-learning-topics', (req, res) => {
