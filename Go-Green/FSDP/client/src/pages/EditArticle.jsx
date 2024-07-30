@@ -28,10 +28,10 @@ function EditArticle() {
 
     const formik = useFormik({
         initialValues: {
-            title: "",
-            category: "",
-            author: "",
-            content: ""
+            title: article ? article.title : "",
+            category: article ? article.category : "",
+            author: article ? article.author : "",
+            content: article ? article.content : ""
         },
         enableReinitialize: true,
         validationSchema: yup.object({
@@ -241,6 +241,7 @@ function EditArticle() {
 }
 
 export default EditArticle;
+
 
 
 
