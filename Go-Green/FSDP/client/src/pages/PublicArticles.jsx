@@ -70,7 +70,15 @@ function PublicArticles() {
                 {articleList.map((article, i) => (
                     <Grid item xs={12} md={6} lg={4} key={article.id}>
                         <Link to={`/public-article/${article.id}`} style={{ textDecoration: 'none' }}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            <Card sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                height: '100%',
+                                transition: 'transform 0.3s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}>
                                 {article.imageFile && (
                                     <Box className="aspect-ratio-container">
                                         <img
@@ -80,7 +88,7 @@ function PublicArticles() {
                                         />
                                     </Box>
                                 )}
-                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#F5F5F5' }}>
                                     <Box sx={{ display: 'flex', mb: 1 }}>
                                         <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
                                             {article.title}
@@ -114,6 +122,7 @@ function PublicArticles() {
 }
 
 export default PublicArticles;
+
 
 
 
