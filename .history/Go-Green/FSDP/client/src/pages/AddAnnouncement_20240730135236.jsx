@@ -101,7 +101,7 @@ function AddAnnouncement() {
         Add Announcement
       </Typography>
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2}>
+        <Grid container spacing={5}>
           <Grid item xs={12} md={6} lg={8}>
             <TextField
               fullWidth
@@ -157,7 +157,7 @@ function AddAnnouncement() {
               onChange={formik.handleChange}
               error={formik.touched.link && Boolean(formik.errors.link)}
               helperText={formik.touched.link && formik.errors.link}
-              sx={{ mt:2, mb: 2 }}
+              sx={{ mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>

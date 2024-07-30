@@ -7,7 +7,6 @@ import http from "../http";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../contexts/UserContext";
-import { Editor } from "@tinymce/tinymce-react";
 
 function AddAnnouncement() {
   const navigate = useNavigate();
@@ -150,6 +149,20 @@ function AddAnnouncement() {
             ) : null}
             <TextField
               fullWidth
+              margin="dense"
+              autoComplete="off"
+              multiline
+              minRows={2}
+              label="Content"
+              name="content"
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.content && Boolean(formik.errors.content)}
+              helperText={formik.touched.content && formik.errors.content}
+            />
+            <TextField
+              fullWidth
               id="link"
               name="link"
               label="Link"
@@ -157,7 +170,7 @@ function AddAnnouncement() {
               onChange={formik.handleChange}
               error={formik.touched.link && Boolean(formik.errors.link)}
               helperText={formik.touched.link && formik.errors.link}
-              sx={{ mt:2, mb: 2 }}
+              sx={{ mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
