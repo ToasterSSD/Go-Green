@@ -45,8 +45,8 @@ import PublicLearningTopics from './pages/PublicLearningTopics';
 import QuizPage from './pages/QuizPage';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
-import AdminPanel from './pages/AdminPanel'; // Correctly imported AdminPanel
-import UserProfile from './pages/UserProfile'
+import AdminPanel from './pages/AdminPanel';
+import UserProfile from './pages/UserProfile';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -54,16 +54,22 @@ function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      http.get("/user/auth").then((res) => {
-        setUser(res.data.user);
-      });
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      http.get("/user/auth")
+        .then((res) => {
+          setUser(res.data.user);
+        })
+        .catch(() => {
+          localStorage.removeItem("accessToken");
+        });
     }
   }, []);
 
-  const logout = () => {
-    localStorage.clear();
-    window.location = "/";
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    setUser(null);
+    window.location.href = "/";
   };
 
   const handleMenuOpen = (event) => {
@@ -87,156 +93,57 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar
-            position="static"
-            className="AppBar"
-            sx={{ backgroundColor: "#A7A7A7" }}
-          >
+          <AppBar position="static" className="AppBar" sx={{ backgroundColor: "#A7A7A7" }}>
             <Container sx={{ padding: 0 }}>
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Link
-                    to="/"
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src="/uploads/New logo.png"
-                      alt="Go-Green Logo"
-                      style={{ height: "40px", marginRight: "10px" }}
-                    />
+                  <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
+                    <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                     <Typography variant="h6" component="div">
                       Go <span style={{ color: "#06F92D" }}>Green</span>!
                     </Typography>
                   </Link>
                 </Box>
-
                 <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
-                  <MuiLink
-                    component={Link}
-                    to="/tutorials"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Tutorials
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/articles"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Articles
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/public-articles"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Public Articles
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/announcement"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Announcements
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/chatarea"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Chat Area
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/learning"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Learning
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/public-learning"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Public Learning
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/games"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Games
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/donations"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/donations" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Donations
                   </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/feedback"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
+                  <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Feedback
                   </MuiLink>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box
-                    onClick={handleMenuOpen}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <Avatar
-                      alt={user?.name || "Guest"}
-                      src={user ? "/static/images/avatar/1.jpg" : ""}
-                      sx={{ width: 40, height: 40 }}
-                    />
+                  <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+                    <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                     <Typography sx={{ ml: 1 }}>
                       {user?.name || "Guest"}
                     </Typography>
                   </Box>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                    PaperProps={{
-                      sx: {
-                        borderRadius: "16px",
-                        mt: 1,
-                        minWidth: 200,
-                      },
-                    }}
-                  >
+                  <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}>
                     <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
                     {user?.roles?.includes("ADMIN") && (
                       <>
@@ -247,21 +154,13 @@ function App() {
                       </>
                     )}
                     {user ? (
-                      <MenuItem onClick={logout}>Logout</MenuItem>
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     ) : (
                       <>
-                        <MenuItem
-                          component={Link}
-                          to="/register"
-                          onClick={handleMenuClose}
-                        >
+                        <MenuItem component={Link} to="/register" onClick={handleMenuClose}>
                           Register
                         </MenuItem>
-                        <MenuItem
-                          component={Link}
-                          to="/login"
-                          onClick={handleMenuClose}
-                        >
+                        <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
                           Login
                         </MenuItem>
                       </>
@@ -271,7 +170,6 @@ function App() {
               </Toolbar>
             </Container>
           </AppBar>
-
           <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
             <Routes>
               <Route path="/" element={<Home />} />

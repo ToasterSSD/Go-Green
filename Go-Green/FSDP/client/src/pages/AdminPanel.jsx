@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -14,7 +15,16 @@ import { Person } from '@mui/icons-material';
 import SideNavbar from '../components/SideNavbar';
 
 const AdminPanel = () => {
-  const [clickCount, setClickCount] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  const [clickCount, setClickCount] = React.useState(0);
 
   const handleClick = () => {
     setClickCount(prevCount => prevCount + 1);
