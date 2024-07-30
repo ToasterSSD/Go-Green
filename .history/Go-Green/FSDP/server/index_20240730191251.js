@@ -33,6 +33,7 @@ const quizRoute = require('./routes/quiz');
 const userviewRoute = require('./routes/userview');
 
 app.use('/quiz', quizRoute);
+app.use("/tutorial", tutorialRoute);
 app.use("/user", userRoute);
 app.use("/feedback", feedbackRoutes);
 app.use("/file", fileRoute);
