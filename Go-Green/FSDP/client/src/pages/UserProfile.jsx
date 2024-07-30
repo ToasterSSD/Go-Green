@@ -28,7 +28,11 @@ const UserProfile = () => {
         http.delete(`/userview/${userId}`)
             .then(response => {
                 toast.success(response.data.message);
-                setAllUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+                // Re-index the user IDs after deletion
+                setAllUsers(prevUsers => prevUsers.filter(user => user.id !== userId).map((user, index) => ({
+                    ...user,
+                    id: index + 1
+                })));
             })
             .catch(err => toast.error(`Error deleting user: ${err.message}`));
     };
@@ -55,9 +59,9 @@ const UserProfile = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {allUsers.map((user) => (
-                                    <TableRow key={user.id} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
-                                        <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.id}</TableCell>
+                                {allUsers.map((user, index) => (
+                                    <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
+                                        <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{index + 1}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.name}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.email}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.password}</TableCell>
