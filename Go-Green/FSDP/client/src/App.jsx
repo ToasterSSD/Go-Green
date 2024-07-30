@@ -115,7 +115,7 @@ function App() {
             >
               <Container sx={{ padding: 0 }}>
                 <Toolbar disableGutters>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", width: 'auto', whiteSpace: 'nowrap' }}>
                     <Link
                       to="/"
                       style={{
