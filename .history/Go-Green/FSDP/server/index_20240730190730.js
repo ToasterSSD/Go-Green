@@ -18,10 +18,11 @@ app.use(cors({
 
 // Simple Route
 app.get("/", (req, res) => {
-    res.send("Welcome to Go Green!");
+    res.send("Welcome to the learning space.");
 });
 
 // Routes
+const tutorialRoute = require('./routes/tutorial');
 const userRoute = require('./routes/user');
 const feedbackRoutes = require('./routes/feedback');
 const fileRoute = require('./routes/file');
@@ -33,6 +34,7 @@ const quizRoute = require('./routes/quiz');
 const userviewRoute = require('./routes/userview');
 
 app.use('/quiz', quizRoute);
+app.use("/tutorial", tutorialRoute);
 app.use("/user", userRoute);
 app.use("/feedback", feedbackRoutes);
 app.use("/file", fileRoute);
