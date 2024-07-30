@@ -29,7 +29,7 @@ function AddFeedback() {
         .trim()
         .email()
         .min(3, "Email must be at least 3 characters")
-        .max(20, "Email must be at most 20 characters")
+        .max(50, "Email must be at most 50 characters")
         .required("Email is required"),
       feedback: yup
         .string()
