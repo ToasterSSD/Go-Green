@@ -102,7 +102,7 @@ function App() {
             <AppBar position="static" className="AppBar" sx={{ backgroundColor: "#9CBA9A" }}>
               <Container sx={{ padding: 0 }}>
                 <Toolbar disableGutters>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", width: 'auto', whiteSpace: 'nowrap' }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
                       <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
