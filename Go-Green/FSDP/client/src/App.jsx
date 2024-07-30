@@ -94,7 +94,7 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar position="static" className="AppBar" sx={{ backgroundColor: "#A7A7A7" }}>
+          <AppBar position="static" className="AppBar" sx={{ backgroundColor: "#9CBA9A" }}>
             <Container sx={{ padding: 0 }}>
               <Toolbar disableGutters>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -107,25 +107,25 @@ function App() {
                 </Box>
                 <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
                   <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Tutorials
+                    Asher
                   </MuiLink>
                   <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Articles
+                    NewsAdmin
                   </MuiLink>
                   <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Public Articles
+                    News
                   </MuiLink>
                   <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Announcements
                   </MuiLink>
                   <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Chat Area
+                    Chat
                   </MuiLink>
                   <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Learning
+                    LearningAdmin
                   </MuiLink>
                   <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
-                    Public Learning
+                    Learning
                   </MuiLink>
                   <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
                     Games
