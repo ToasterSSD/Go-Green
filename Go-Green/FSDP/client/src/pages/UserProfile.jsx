@@ -40,33 +40,32 @@ const AdminPanel = () => {
           },
         });
 
-        console.log('Response Data:', response.data); // Log response for debugging
+        
 
         // Check if response data is an array, if not, set it to an empty array
         if (Array.isArray(response.data)) {
           setUsers(response.data);
         } else {
-          console.error('Unexpected response format:', response.data);
+          
           setUsers([]); // Set empty array as a fallback
           toast.error('Unexpected response format from server');
         }
       } catch (error) {
         if (error.response) {
           // The request was made, but the server responded with a status code outside the range of 2xx
-          console.error('Server Response Error:', error.response.data);
+          
           toast.error(
             error.response.data.message ||
               'Error fetching users from the server'
           );
         } else if (error.request) {
           // The request was made, but no response was received
-          console.error('No Response Received:', error.request);
           toast.error(
             'No response from the server. Check your network or server status.'
           );
         } else {
           // Something happened in setting up the request
-          console.error('Request Setup Error:', error.message);
+          
           toast.error('Error setting up the request: ' + error.message);
         }
       }
