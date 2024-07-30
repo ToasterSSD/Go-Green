@@ -117,9 +117,7 @@ function AnnouncementCard({ announcement, user }) {
           <Box className="aspect-ratio-container">
             <img
               alt="announcement"
-              src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                announcement.imageFile
-              }`}
+              src={`${import.meta.env.VITE_FILE_BASE_URL}${announcement.imageFile}`}
             ></img>
           </Box>
         )}
@@ -128,8 +126,7 @@ function AnnouncementCard({ announcement, user }) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               {announcement.title || "No Title"}
             </Typography>
-            {(user?.roles?.includes("ADMIN") ||
-              user?.id === announcement.userId) && (
+            {(user?.roles?.includes("ADMIN") || user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
@@ -155,23 +152,13 @@ function AnnouncementCard({ announcement, user }) {
                 : "Unknown Date"}
             </Typography>
           </Box>
-          <Typography component="div" sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: isExpanded
-                  ? announcement.content
-                  : `${announcement.content?.substring(0, 500)}${
-                      announcement.content?.length > 500 ? "..." : ""
-                    }`,
-              }}
-            />
+          <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
+            {isExpanded
+              ? announcement.content
+              : `${announcement.content?.substring(0, 500)}${
+                  announcement.content?.length > 500 ? "..." : ""
+                }` || "No Content"}
           </Typography>
-
-          {announcement.content?.length > 500 && (
-            <Button onClick={toggleExpanded}>
-              {isExpanded ? "Show Less" : "Show More"}
-            </Button>
-          )}
 
           {announcement.link && (
             <Typography>

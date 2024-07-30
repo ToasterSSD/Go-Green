@@ -115,7 +115,7 @@ function AddAnnouncement() {
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
             />
-            <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>
+            <Typography variant="body1" sx={{ mt: 2, mb: 3 }}>
               Content
             </Typography>
             <Editor
@@ -157,7 +157,7 @@ function AddAnnouncement() {
               onChange={formik.handleChange}
               error={formik.touched.link && Boolean(formik.errors.link)}
               helperText={formik.touched.link && formik.errors.link}
-              sx={{ mt:2, mb: 2 }}
+              sx={{ mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
