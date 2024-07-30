@@ -11,6 +11,7 @@ import {
   Avatar,
   Divider,
   Link as MuiLink,
+  CssBaseline
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -96,275 +97,131 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <AppBar
-            position="static"
-            className="AppBar"
-            sx={{ backgroundColor: "#9CBA9A" }}
-          >
-            <Container sx={{ padding: 0 }}>
-              <Toolbar disableGutters>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    width: "auto",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <Link
-                    to="/"
-                    style={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <img
-                      src="/uploads/New logo.png"
-                      alt="Go-Green Logo"
-                      style={{ height: "40px", marginRight: "10px" }}
-                    />
-                    <Typography variant="h6" component="div">
-                      Go <span style={{ color: "#06F92D" }}>Green</span>!
-                    </Typography>
-                  </Link>
-                </Box>
-                <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
-                  <MuiLink
-                    component={Link}
-                    to="/tutorials"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Tutorials
-                  </MuiLink>
-                  {user?.roles?.includes("ADMIN") && (
-                    <MuiLink
-                      component={Link}
-                      to="/articles"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      NewsAdmin
-                    </MuiLink>
-                  )}
-                  <MuiLink
-                    component={Link}
-                    to="/public-articles"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    News
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/announcement"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Announcements
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/chatarea"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Chat
-                  </MuiLink>
-                  {user?.roles?.includes("ADMIN") && (
-                    <MuiLink
-                      component={Link}
-                      to="/learning"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      LearningAdmin
-                    </MuiLink>
-                  )}
-                  <MuiLink
-                    component={Link}
-                    to="/public-learning"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Learning
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/games"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Games
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/donations"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Donations
-                  </MuiLink>
-                  <MuiLink
-                    component={Link}
-                    to="/feedback"
-                    underline="none"
-                    color="inherit"
-                    sx={{ mx: 2 }}
-                  >
-                    Feedback
-                  </MuiLink>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Box
-                    onClick={handleMenuOpen}
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <Avatar
-                      alt={user?.name || "Guest"}
-                      src={user ? "/static/images/avatar/1.jpg" : ""}
-                      sx={{ width: 40, height: 40 }}
-                    />
-                    <Typography sx={{ ml: 1 }}>
-                      {user?.name || "Guest"}
-                    </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+            <CssBaseline />
+            <AppBar position="static" className="AppBar" sx={{ backgroundColor: "#9CBA9A" }}>
+              <Container sx={{ padding: 0 }}>
+                <Toolbar disableGutters>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
+                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
+                      <Typography variant="h6" component="div">
+                        Go <span style={{ color: "#06F92D" }}>Green</span>!
+                      </Typography>
+                    </Link>
                   </Box>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleMenuClose}
-                    PaperProps={{
-                      sx: { borderRadius: "16px", mt: 1, minWidth: 200 },
-                    }}
-                  >
-                    <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                  <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
+                    <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Tutorials
+                    </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
-                      <>
-                        <MenuItem
-                          component={Link}
-                          to="/admin"
-                          onClick={handleMenuClose}
-                        >
-                          Admin Panel
-                        </MenuItem>
-                        <Divider />
-                      </>
+                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
+                        NewsAdmin
+                      </MuiLink>
                     )}
-                    {user ? (
-                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                    ) : (
-                      <>
-                        <MenuItem
-                          component={Link}
-                          to="/register"
-                          onClick={handleMenuClose}
-                        >
-                          Register
-                        </MenuItem>
-                        <MenuItem
-                          component={Link}
-                          to="/login"
-                          onClick={handleMenuClose}
-                        >
-                          Login
-                        </MenuItem>
-                      </>
+                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      News
+                    </MuiLink>
+                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Announcements
+                    </MuiLink>
+                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Chat
+                    </MuiLink>
+                    {user?.roles?.includes("ADMIN") && (
+                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
+                        LearningAdmin
+                      </MuiLink>
                     )}
-                  </Menu>
-                </Box>
-              </Toolbar>
-            </Container>
-          </AppBar>
-          <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/tutorials" element={<Tutorials />} />
-              <Route path="/announcement" element={<Announcement />} />
-              <Route path="/addtutorial" element={<AddTutorial />} />
-              <Route path="/edittutorial/:id" element={<EditTutorial />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/form" element={<MyForm />} />
-              <Route path="/chatarea" element={<ChatArea />} />
-              <Route path="/addannouncement" element={<AddAnnouncement />} />
-              <Route
-                path="/editannouncement/:id"
-                element={<EditAnnouncement />}
-              />
-              <Route path="/feedback" element={<Feedback />} />
-              <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
-              <Route path="/addfeedback" element={<AddFeedback />} />
-              <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
-              <Route path="/articles" element={<Articles />} />
-              <Route path="/public-articles" element={<PublicArticles />} />
-              <Route path="/addarticle" element={<AddArticle />} />
-              <Route path="/editarticle/:id" element={<EditArticle />} />
-              <Route path="/public-article/:id" element={<ArticleDetails />} />
-              <Route path="/learning" element={<LearningTopics />} />
-              <Route
-                path="/add-learning-topic"
-                element={<AddLearningTopic />}
-              />
-              <Route
-                path="/edit-learning-topic/:id"
-                element={<EditLearningTopic />}
-              />
-              <Route path="/learning/:id" element={<LearningTopicDetails />} />
-              <Route
-                path="/public-learning"
-                element={<PublicLearningTopics />}
-              />
-              <Route path="/quiz" element={<QuizPage />} />
-              <Route
-                path="/admin"
-                element={
-                  <PrivateRoute user={user}>
-                    <AdminPanel />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/profile"
-                element={
-                  <PrivateRoute user={user}>
-                    <UserProfile />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="/announcement/:id" element={<MoreAnnouncement />} />
-              <Route
-                path="/announcement-signup-step1/:id"
-                element={<SignUpStep1 />}
-              />
-              <Route
-                path="/announcement-signup-step2/:id"
-                element={<SignUpStep2 />}
-              />
-            </Routes>
-          </Container>
-          <Footer />
+                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Learning
+                    </MuiLink>
+                    <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Games
+                    </MuiLink>
+                    <MuiLink component={Link} to="/donations" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Donations
+                    </MuiLink>
+                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      Feedback
+                    </MuiLink>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center", ml: 4 }}>
+                    <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer", ml: 2 }}>
+                      <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
+                      <Typography sx={{ ml: 1 }}>
+                        {user?.name || "Guest"}
+                      </Typography>
+                    </Box>
+                    <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}>
+                      <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                      {user?.roles?.includes("ADMIN") && (
+                        <>
+                          <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
+                            Admin Panel
+                          </MenuItem>
+                          <Divider />
+                        </>
+                      )}
+                      {user ? (
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      ) : (
+                        <>
+                          <MenuItem component={Link} to="/register" onClick={handleMenuClose}>
+                            Register
+                          </MenuItem>
+                          <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
+                            Login
+                          </MenuItem>
+                        </>
+                      )}
+                    </Menu>
+                  </Box>
+                </Toolbar>
+              </Container>
+            </AppBar>
+            <Box sx={{ flex: 1 }}>
+              <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/tutorials" element={<Tutorials />} />
+                  <Route path="/announcement" element={<Announcement />} />
+                  <Route path="/addtutorial" element={<AddTutorial />} />
+                  <Route path="/edittutorial/:id" element={<EditTutorial />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/form" element={<MyForm />} />
+                  <Route path="/chatarea" element={<ChatArea />} />
+                  <Route path="/addannouncement" element={<AddAnnouncement />} />
+                  <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
+                  <Route path="/feedback" element={<Feedback />} />
+                  <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
+                  <Route path="/addfeedback" element={<AddFeedback />} />
+                  <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
+                  <Route path="/articles" element={<Articles />} />
+                  <Route path="/public-articles" element={<PublicArticles />} />
+                  <Route path="/addarticle" element={<AddArticle />} />
+                  <Route path="/editarticle/:id" element={<EditArticle />} />
+                  <Route path="/public-article/:id" element={<ArticleDetails />} />
+                  <Route path="/learning" element={<LearningTopics />} />
+                  <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+                  <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+                  <Route path="/learning/:id" element={<LearningTopicDetails />} />
+                  <Route path="/public-learning" element={<PublicLearningTopics />} />
+                  <Route path="/quiz" element={<QuizPage />} />
+                  <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
+                  <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
+                  <Route path="/announcement/:id" element={<MoreAnnouncement />} />
+                  <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
+                  <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+                </Routes>
+              </Container>
+            </Box>
+            <Footer />
+          </Box>
         </ThemeProvider>
       </Router>
-      <SettingsModel
-        open={settingsOpen}
-        onClose={handleSettingsClose}
-        user={user}
-      />
+      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }
