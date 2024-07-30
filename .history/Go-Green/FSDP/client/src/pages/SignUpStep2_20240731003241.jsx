@@ -48,7 +48,7 @@ function SignUpStep2() {
           "service_pbdfzv1", // Replace with your EmailJS service ID
           "template_i3fkrtf", // Replace with your EmailJS template ID
           emailParams,
-          "mlJgwaEoZKRYU2Yv3" // Replace with your EmailJS user ID
+          "your_user_id" // Replace with your EmailJS user ID
         )
         .then((response) => {
           console.log("SUCCESS!", response.status, response.text);
