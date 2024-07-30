@@ -71,7 +71,7 @@ router.put("/:id", validateToken, async (req, res) => {
     // Validate request body
     let validationSchema = yup.object({
       title: yup.string().trim().min(3).max(100),
-      content: yup.string().trim().min(3).max(5000),
+      content: yup.string().trim().min(3).max(2000),
       link: yup.string().trim().url(),
     });
     try {

@@ -51,7 +51,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Content must be at least 3 characters")
-        .max(5000, "Content must be at most 5000 characters")
+        .max(2000, "Content must be at most 2000 characters")
         .required("Content is required"),
       link: yup.string().url("Must be a valid URL"),
     }),
@@ -149,7 +149,7 @@ function EditAnnouncement() {
                 apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
                 value={formik.values.content}
                 init={{
-                  height: 500,
+                  height: 2000,
                   menubar: true,
                   plugins: [
                     "advlist autolink lists link image charmap print preview anchor",
