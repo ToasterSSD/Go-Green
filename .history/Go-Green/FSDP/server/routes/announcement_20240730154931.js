@@ -23,7 +23,6 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
-
 // Show all announcements
 router.get("/", async (req, res) => {
   let condition = {};
@@ -72,6 +71,7 @@ router.put("/:id", validateToken, async (req, res) => {
     let validationSchema = yup.object({
       title: yup.string().trim().min(3).max(100),
       content: yup.string().trim().min(3).max(5000),
+      link: yup.string().trim().url(),
     });
     try {
       data = await validationSchema.validate(data, { abortEarly: false });

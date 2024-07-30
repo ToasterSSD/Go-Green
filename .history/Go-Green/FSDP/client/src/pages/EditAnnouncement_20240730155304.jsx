@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  Checkbox,
-  FormControlLabel,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import {
   Dialog,
   DialogTitle,
@@ -33,7 +25,6 @@ function EditAnnouncement() {
     title: "",
     content: "",
     link: "",
-    signUpButton: false,
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -54,7 +45,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Title must be at least 3 characters")
-        .max(200, "Title must be at most 200 characters")
+        .max(100, "Title must be at most 100 characters")
         .required("Title is required"),
       content: yup
         .string()
@@ -167,9 +158,9 @@ function EditAnnouncement() {
                   ],
                   toolbar:
                     "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
-                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
-                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
-                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl",
+                                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl",
                   autosave_interval: "30s",
                   autosave_retention: "2m",
                 }}
@@ -182,16 +173,16 @@ function EditAnnouncement() {
                   {formik.errors.content}
                 </Typography>
               ) : null}
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={formik.values.signUpButton}
-                    onChange={formik.handleChange}
-                    name="signUpButton"
-                    color="primary"
-                  />
-                }
-                label="Display Sign Up Button"
+              <TextField
+                fullWidth
+                id="link"
+                name="link"
+                label="Link"
+                value={formik.values.link}
+                onChange={formik.handleChange}
+                error={formik.touched.link && Boolean(formik.errors.link)}
+                helperText={formik.touched.link && formik.errors.link}
+                sx={{ mt:2, mb: 2 }}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

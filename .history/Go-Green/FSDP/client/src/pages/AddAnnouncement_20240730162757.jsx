@@ -43,7 +43,7 @@ function AddAnnouncement() {
       title: "",
       content: "",
       link: "",
-      showSignUp: false, // Add this field
+      showSignUp: false,
     },
     validationSchema: yup.object({
       title: yup
@@ -70,8 +70,6 @@ function AddAnnouncement() {
         toast.error("Content must be at most 5000 characters.");
         return;
       }
-
-      data.signUpButton = data.showSignUp; // Ensure this field is correctly set
 
       console.log("Form data being sent:", data);
       http

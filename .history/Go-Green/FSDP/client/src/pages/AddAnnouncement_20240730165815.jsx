@@ -71,8 +71,6 @@ function AddAnnouncement() {
         return;
       }
 
-      data.signUpButton = data.showSignUp; // Ensure this field is correctly set
-
       console.log("Form data being sent:", data);
       http
         .post("/announcement", data)

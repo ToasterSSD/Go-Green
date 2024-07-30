@@ -97,15 +97,13 @@ function AnnouncementCard({ announcement, user }) {
             {announcement.content?.length > 500 && (
               <Button onClick={toggleExpanded}>Read More</Button>
             )}
-            {announcement.signUpButton && ( // Ensure this field is correctly read
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSignUpRedirect}
-              >
-                Sign Up
-              </Button>
-            )}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSignUpRedirect}
+            >
+              Sign Up
+            </Button>
           </Box>
         </CardContent>
       </Card>
@@ -154,7 +152,10 @@ function Announcement() {
     getAnnouncements();
   }, []);
 
-  
+  signUpButton: {
+  type: Sequelize.BOOLEAN,
+  defaultValue: false,
+}
 
   return (
     <Box>

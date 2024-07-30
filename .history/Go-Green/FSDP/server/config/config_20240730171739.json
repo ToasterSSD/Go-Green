@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "jason_t",
-    "password": "mysql", 
+    "password": "your_password_here", // replace with your actual password
     "database": "jason_t",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "jason_t",
-    "password": "mysql", 
+    "password": "your_password_here", // replace with your actual password
     "database": "jason_t",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "jason_t",
-    "password": "mysql", 
+    "password": "your_password_here", // replace with your actual password
     "database": "jason_t",
     "host": "127.0.0.1",
     "dialect": "mysql"

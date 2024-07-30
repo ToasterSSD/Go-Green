@@ -23,6 +23,18 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
+router.get("/signups", async (req, res) => {
+  try {
+    const announcements = await Announcement.findAll({
+      where: { signUpButton: true },
+    });
+    res.json(announcements);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch announcements with sign-up button" });
+  }
+});
 
 // Show all announcements
 router.get("/", async (req, res) => {

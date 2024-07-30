@@ -97,7 +97,7 @@ function AnnouncementCard({ announcement, user }) {
             {announcement.content?.length > 500 && (
               <Button onClick={toggleExpanded}>Read More</Button>
             )}
-            {announcement.signUpButton && ( // Ensure this field is correctly read
+            {announcement.showSignUp && (
               <Button
                 variant="contained"
                 color="primary"

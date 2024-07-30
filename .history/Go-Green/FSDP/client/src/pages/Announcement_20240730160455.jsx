@@ -7,22 +7,20 @@ import {
   Card,
   CardContent,
   IconButton,
-  Input,
   Button,
 } from "@mui/material";
-import { AccountCircle, AccessTime, Search, Clear, Edit } from "@mui/icons-material";
+import { AccountCircle, AccessTime, Edit } from "@mui/icons-material";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
-import HeaderWithBackground from "../components/HeaderWithBackground";
 import global from "../global";
-import http from "../http";
+
 
 function AnnouncementCard({ announcement, user }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
 
   const toggleExpanded = () => {
-    navigate(`/announcement/${announcement.id}`);
+    setIsExpanded(!isExpanded);
   };
 
   const handleSignUpRedirect = () => {
@@ -86,33 +84,24 @@ function AnnouncementCard({ announcement, user }) {
               }}
             />
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: 1,
-            }}
+          {announcement.content?.length > 500 && (
+            <Button onClick={toggleExpanded}>
+              {isExpanded ? "Show Less" : "Read More"}
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSignUpRedirect}
+            sx={{ mt: 2 }}
           >
-            {announcement.content?.length > 500 && (
-              <Button onClick={toggleExpanded}>Read More</Button>
-            )}
-            {announcement.signUpButton && ( // Ensure this field is correctly read
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSignUpRedirect}
-              >
-                Sign Up
-              </Button>
-            )}
-          </Box>
+            Sign Up
+          </Button>
         </CardContent>
       </Card>
     </Grid>
   );
 }
-
 
 function Announcement() {
   const [announcementList, setAnnouncementList] = useState([]);
@@ -153,8 +142,6 @@ function Announcement() {
   useEffect(() => {
     getAnnouncements();
   }, []);
-
-  
 
   return (
     <Box>

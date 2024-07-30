@@ -54,7 +54,6 @@ import Footer from "./components/Footer";
 import AdminPanel from "./pages/AdminPanel";
 import UserProfile from "./pages/UserProfile";
 import MoreAnnouncement from "./pages/More_Announcement"; // Correctly imported MoreAnnouncement
-import AnnouncementSignUp from "./pages/AnnouncementSignUp";
 
 
 function App() {
@@ -117,7 +116,7 @@ function App() {
             >
               <Container sx={{ padding: 0 }}>
                 <Toolbar disableGutters>
-                  <Box sx={{ display: "flex", alignItems: "center", width: 'auto', whiteSpace: 'nowrap' }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Link
                       to="/"
                       style={{
@@ -372,10 +371,6 @@ function App() {
                   <Route
                     path="/announcement/:id"
                     element={<MoreAnnouncement />}
-                  />
-                  <Route
-                    path="/announcement-signup"
-                    element={<AnnouncementSignUp />}
                   />
                 </Routes>
               </Container>

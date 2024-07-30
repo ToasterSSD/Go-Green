@@ -23,7 +23,6 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
-
 // Show all announcements
 router.get("/", async (req, res) => {
   let condition = {};

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -7,15 +7,16 @@ import {
   Card,
   CardContent,
   IconButton,
-  Input,
   Button,
 } from "@mui/material";
-import { AccountCircle, AccessTime, Search, Clear, Edit } from "@mui/icons-material";
+import {
+  AccountCircle,
+  AccessTime,
+  Edit,
+} from "@mui/icons-material";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
-import HeaderWithBackground from "../components/HeaderWithBackground";
 import global from "../global";
-import http from "../http";
 
 function AnnouncementCard({ announcement, user }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -26,7 +27,7 @@ function AnnouncementCard({ announcement, user }) {
   };
 
   const handleSignUpRedirect = () => {
-    navigate("/announcement-signup");
+    navigate('/announcement-signup');
   };
 
   return (
@@ -36,9 +37,7 @@ function AnnouncementCard({ announcement, user }) {
           <Box className="aspect-ratio-container">
             <img
               alt="announcement"
-              src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                announcement.imageFile
-              }`}
+              src={`${import.meta.env.VITE_FILE_BASE_URL}${announcement.imageFile}`}
               style={{ width: "100%" }}
             />
           </Box>
@@ -48,8 +47,7 @@ function AnnouncementCard({ announcement, user }) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               {announcement.title || "No Title"}
             </Typography>
-            {(user?.roles?.includes("ADMIN") ||
-              user?.id === announcement.userId) && (
+            {(user?.roles?.includes("ADMIN") || user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
@@ -86,33 +84,24 @@ function AnnouncementCard({ announcement, user }) {
               }}
             />
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              gap: 1,
-            }}
+          {announcement.content?.length > 500 && (
+            <Button onClick={toggleExpanded}>
+              Read More
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSignUpRedirect}
+            sx={{ mt: 2 }}
           >
-            {announcement.content?.length > 500 && (
-              <Button onClick={toggleExpanded}>Read More</Button>
-            )}
-            {announcement.signUpButton && ( // Ensure this field is correctly read
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSignUpRedirect}
-              >
-                Sign Up
-              </Button>
-            )}
-          </Box>
+            Sign Up
+          </Button>
         </CardContent>
       </Card>
     </Grid>
   );
 }
-
 
 function Announcement() {
   const [announcementList, setAnnouncementList] = useState([]);
@@ -153,8 +142,6 @@ function Announcement() {
   useEffect(() => {
     getAnnouncements();
   }, []);
-
-  
 
   return (
     <Box>

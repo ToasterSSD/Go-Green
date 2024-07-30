@@ -1,14 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import http from "../http";
@@ -43,7 +35,6 @@ function AddAnnouncement() {
       title: "",
       content: "",
       link: "",
-      showSignUp: false, // Add this field
     },
     validationSchema: yup.object({
       title: yup
@@ -70,8 +61,6 @@ function AddAnnouncement() {
         toast.error("Content must be at most 5000 characters.");
         return;
       }
-
-      data.signUpButton = data.showSignUp; // Ensure this field is correctly set
 
       console.log("Form data being sent:", data);
       http
@@ -169,17 +158,16 @@ function AddAnnouncement() {
                 {formik.errors.content}
               </Typography>
             ) : null}
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="showSignUp"
-                  color="primary"
-                  checked={formik.values.showSignUp}
-                  onChange={formik.handleChange}
-                />
-              }
-              label="Display Sign Up Button"
-              sx={{ mt: 2 }}
+            <TextField
+              fullWidth
+              id="link"
+              name="link"
+              label="Link"
+              value={formik.values.link}
+              onChange={formik.handleChange}
+              error={formik.touched.link && Boolean(formik.errors.link)}
+              helperText={formik.touched.link && formik.errors.link}
+              sx={{ mt: 2, mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>

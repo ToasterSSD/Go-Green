@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       imageFile: {
         type: DataTypes.STRING(20),
       },
+      // In your Sequelize model definition
       signUpButton: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

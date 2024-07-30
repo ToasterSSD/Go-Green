@@ -8,14 +8,14 @@
   },
   "test": {
     "username": "jason_t",
-    "password": "mysql", 
+    "password": "your_password_here", 
     "database": "jason_t",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "jason_t",
-    "password": "mysql", 
+    "password": "your_password_here", 
     "database": "jason_t",
     "host": "127.0.0.1",
     "dialect": "mysql"

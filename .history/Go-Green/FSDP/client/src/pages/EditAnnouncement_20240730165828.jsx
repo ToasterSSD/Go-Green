@@ -6,8 +6,8 @@ import {
   TextField,
   Button,
   Grid,
-  Checkbox,
   FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import {
   Dialog,
@@ -33,7 +33,7 @@ function EditAnnouncement() {
     title: "",
     content: "",
     link: "",
-    signUpButton: false,
+    showSignUp: false, // Add this field
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -54,7 +54,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Title must be at least 3 characters")
-        .max(200, "Title must be at most 200 characters")
+        .max(100, "Title must be at most 100 characters")
         .required("Title is required"),
       content: yup
         .string()
@@ -167,9 +167,9 @@ function EditAnnouncement() {
                   ],
                   toolbar:
                     "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
-                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
-                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
-                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl",
+                                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl",
                   autosave_interval: "30s",
                   autosave_retention: "2m",
                 }}
@@ -185,13 +185,14 @@ function EditAnnouncement() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={formik.values.signUpButton}
-                    onChange={formik.handleChange}
-                    name="signUpButton"
+                    name="showSignUp"
                     color="primary"
+                    checked={formik.values.showSignUp}
+                    onChange={formik.handleChange}
                   />
                 }
                 label="Display Sign Up Button"
+                sx={{ mt: 2 }}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

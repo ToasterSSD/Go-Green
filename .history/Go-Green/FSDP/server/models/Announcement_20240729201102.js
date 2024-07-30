@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       imageFile: {
         type: DataTypes.STRING(20),
       },
-      signUpButton: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
     },
     {
       tableName: "announcement",
