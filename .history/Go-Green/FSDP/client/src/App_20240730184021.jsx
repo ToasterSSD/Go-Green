@@ -205,7 +205,7 @@ function App() {
               <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
               <Route path="/announcement/:id" element={<MoreAnnouncement />} />
               <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
-              <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+              <Route path="/announcement-signup-step2" element={<SignUpStep2 />} />
             </Routes>
           </Container>
           <Footer />

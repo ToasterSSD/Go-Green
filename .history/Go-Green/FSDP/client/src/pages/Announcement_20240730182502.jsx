@@ -94,7 +94,7 @@ function AnnouncementCard({ announcement, user }) {
             {announcement.signUpButton && (
               <Button
                 component={Link}
-                to={`/announcement-signup-step1/${announcement.id}`}
+                to={`/announcement-signup/${announcement.id}`}
                 variant="contained"
                 color="success"
                 sx={{ mb: 2 }}

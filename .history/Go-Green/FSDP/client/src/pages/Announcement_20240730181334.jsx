@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -10,13 +10,7 @@ import {
   Input,
   Button,
 } from "@mui/material";
-import {
-  AccountCircle,
-  AccessTime,
-  Search,
-  Clear,
-  Edit,
-} from "@mui/icons-material";
+import { AccountCircle, AccessTime, Search, Clear, Edit } from "@mui/icons-material";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import HeaderWithBackground from "../components/HeaderWithBackground";
@@ -76,60 +70,52 @@ function AnnouncementCard({ announcement, user }) {
             </Typography>
           </Box>
           <Typography sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
-            {isExpanded ? (
-              <div dangerouslySetInnerHTML={{ __html: announcement.content }} />
-            ) : (
-              (
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: `${announcement.content?.substring(0, 500)}${
-                      announcement.content?.length > 500 ? "..." : ""
-                    }`,
-                  }}
-                />
-              ) || "No Content"
-            )}
+            {isExpanded
+              ? announcement.content
+              : `${announcement.content?.substring(0, 500)}${
+                  announcement.content?.length > 500 ? "..." : ""
+                }` || "No Content"}
           </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            {announcement.signUpButton && (
-              <Button
-                component={Link}
-                to={`/announcement-signup-step1/${announcement.id}`}
-                variant="contained"
-                color="success"
-                sx={{ mb: 2 }}
-              >
-                Sign Up
-              </Button>
-            )}
-            {announcement.link && (
-              <Typography>
-                Link:
-                <Box component="span" sx={{ ml: 1 }}>
-                  <a
-                    href={announcement.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {announcement.link}
-                  </a>
-                </Box>
-              </Typography>
-            )}
+
+          {announcement.signUpButton && (
             <Button
               component={Link}
-              to={`/announcement/${announcement.id}`}
-              variant="text"
-              color="primary"
+              to={`/announcement-signup/${announcement.id}`}
+              variant="contained"
+              color="success"
+              sx={{ mb: 2 }}
             >
-              Read More
+              Sign Up
             </Button>
-          </Box>
+          )}
+          {announcement.link && (
+            <Typography>
+              Link:
+              <Box component="span" sx={{ ml: 1 }}>
+                <a
+                  href={announcement.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {announcement.link}
+                </a>
+              </Box>
+            </Typography>
+          )}
+          <Button
+            component={Link}
+            to={`/announcement/${announcement.id}`}
+            variant="text"
+            color="primary"
+          >
+            Read More
+          </Button>
         </CardContent>
       </Card>
     </Grid>
   );
 }
+
 
 function Announcement() {
   const [announcementList, setAnnouncementList] = useState([]);
@@ -170,6 +156,8 @@ function Announcement() {
   useEffect(() => {
     getAnnouncements();
   }, []);
+
+  
 
   return (
     <Box>
