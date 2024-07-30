@@ -47,7 +47,7 @@ import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 import AdminPanel from './pages/AdminPanel';
 import UserProfile from './pages/UserProfile';
-import MoreAnnouncement from './pages/MoreAnnouncement'; // Correctly imported MoreAnnouncement
+import MoreAnnouncement from './pages/More_Announcement'; // Correctly imported MoreAnnouncement
 
 function App() {
   const [user, setUser] = useState(null);
@@ -218,3 +218,4 @@ const PrivateRoute = ({ children, user }) => {
 };
 
 export default App;
+
