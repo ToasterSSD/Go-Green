@@ -49,7 +49,6 @@ import AdminPanel from './pages/AdminPanel';
 import UserProfile from './pages/UserProfile';
 import SignUpStep1 from './pages/SignUpStep1';
 import SignUpStep2 from './pages/SignUpStep2';
-import MoreAnnouncement from "./pages/More_Announcement";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -204,8 +203,8 @@ function App() {
               <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
               <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
               <Route path="/announcement/:id" element={<MoreAnnouncement />} />
-              <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
-              <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+              <Route path="/announcement-signup-step1" element={<SignUpStep1 />} />
+              <Route path="/announcement-signup-step2" element={<SignUpStep2 />} />
             </Routes>
           </Container>
           <Footer />
