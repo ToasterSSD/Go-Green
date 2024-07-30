@@ -51,7 +51,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Content must be at least 3 characters")
-        .max(500, "Content must be at most 500 characters")
+        .max(2000, "Content must be at most 2000 characters")
         .required("Content is required"),
       link: yup.string().url("Must be a valid URL"),
     }),

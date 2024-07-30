@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../contexts/UserContext";
+import { Editor } from "@tinymce/tinymce-react";
 
 function EditAnnouncement() {
   const { id } = useParams();
@@ -50,7 +51,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Content must be at least 3 characters")
-        .max(500, "Content must be at most 500 characters")
+        .max(5000, "Content must be at most 5000 characters")
         .required("Content is required"),
       link: yup.string().url("Must be a valid URL"),
     }),
@@ -183,7 +184,7 @@ function EditAnnouncement() {
                 onChange={formik.handleChange}
                 error={formik.touched.link && Boolean(formik.errors.link)}
                 helperText={formik.touched.link && formik.errors.link}
-                sx={{ mb: 2 }}
+                sx={{ mt:2, mb: 2 }}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>

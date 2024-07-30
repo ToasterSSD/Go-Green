@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -27,6 +27,7 @@ function Announcement() {
   const [announcementList, setAnnouncementList] = useState([]);
   const [search, setSearch] = useState("");
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const onSearchChange = (e) => {
     setSearch(e.target.value);
@@ -96,6 +97,7 @@ function Announcement() {
             key={announcement.id}
             announcement={announcement}
             user={user}
+            navigate={navigate}
           />
         ))}
       </Grid>
@@ -103,11 +105,14 @@ function Announcement() {
   );
 }
 
-function AnnouncementCard({ announcement, user }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+function AnnouncementCard({ announcement, user, navigate }) {
+  const truncatedContent =
+    announcement.content?.length > 500
+      ? `${announcement.content.substring(0, 500)}...`
+      : announcement.content;
 
-  const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+  const handleReadMore = () => {
+    navigate(`/announcement/${announcement.id}`);
   };
 
   return (
@@ -156,21 +161,11 @@ function AnnouncementCard({ announcement, user }) {
             </Typography>
           </Box>
           <Typography component="div" sx={{ whiteSpace: "pre-wrap", pb: 2 }}>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: isExpanded
-                  ? announcement.content
-                  : `${announcement.content?.substring(0, 500)}${
-                      announcement.content?.length > 500 ? "..." : ""
-                    }`,
-              }}
-            />
+            <div dangerouslySetInnerHTML={{ __html: truncatedContent }} />
           </Typography>
 
           {announcement.content?.length > 500 && (
-            <Button onClick={toggleExpanded}>
-              {isExpanded ? "Show Less" : "Show More"}
-            </Button>
+            <Button onClick={handleReadMore}>Read More</Button>
           )}
 
           {announcement.link && (

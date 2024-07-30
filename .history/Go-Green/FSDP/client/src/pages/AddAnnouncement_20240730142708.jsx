@@ -47,7 +47,7 @@ function AddAnnouncement() {
         .string()
         .trim()
         .min(3, "Content must be at least 3 characters")
-        .max(500, "Content must be at most 500 characters")
+        .max(5000, "Content must be at most 2000 characters")
         .required("Content is required"),
       link: yup.string().url("Must be a valid URL"),
     }),
@@ -58,11 +58,22 @@ function AddAnnouncement() {
       data.title = data.title.trim();
       data.content = data.content.trim();
       data.link = formik.values.link.trim();
+
+      if (data.content.length > 2000) {
+        toast.error("Content must be at most 2000 characters.");
+        return;
+      }
+
       console.log("Form data being sent:", data);
-      http.post("/announcement", data).then((res) => {
-        console.log(res.data);
-        navigate("/announcement");
-      });
+      http
+        .post("/announcement", data)
+        .then((res) => {
+          console.log(res.data);
+          navigate("/announcement");
+        })
+        .catch((error) => {
+          toast.error("Failed to add announcement.");
+        });
     },
   });
 
@@ -85,8 +96,9 @@ function AddAnnouncement() {
         .then((res) => {
           setImageFile(res.data.filename);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error.response);
+          toast.error("Failed to upload image.");
         });
     }
   };
@@ -157,7 +169,7 @@ function AddAnnouncement() {
               onChange={formik.handleChange}
               error={formik.touched.link && Boolean(formik.errors.link)}
               helperText={formik.touched.link && formik.errors.link}
-              sx={{ mb: 2 }}
+              sx={{ mt: 2, mb: 2 }}
             />
           </Grid>
           <Grid item xs={12} md={6} lg={4}>
@@ -177,7 +189,8 @@ function AddAnnouncement() {
                   <img
                     alt="announcement"
                     src={`${import.meta.env.VITE_FILE_BASE_URL}${imageFile}`}
-                  ></img>
+                    style={{ width: "100%", height: "auto" }}
+                  />
                 </Box>
               )}
             </Box>

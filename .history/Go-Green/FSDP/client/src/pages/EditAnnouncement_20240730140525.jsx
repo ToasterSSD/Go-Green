@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../contexts/UserContext";
+import { Editor } from "@tinymce/tinymce-react";
 
 function EditAnnouncement() {
   const { id } = useParams();
@@ -50,7 +51,7 @@ function EditAnnouncement() {
         .string()
         .trim()
         .min(3, "Content must be at least 3 characters")
-        .max(500, "Content must be at most 500 characters")
+        .max(2000, "Content must be at most 2000 characters")
         .required("Content is required"),
       link: yup.string().url("Must be a valid URL"),
     }),
@@ -141,20 +142,39 @@ function EditAnnouncement() {
                 error={formik.touched.title && Boolean(formik.errors.title)}
                 helperText={formik.touched.title && formik.errors.title}
               />
-              <TextField
-                fullWidth
-                margin="dense"
-                autoComplete="off"
-                multiline
-                minRows={2}
-                label="Content"
-                name="content"
+              <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>
+                Content
+              </Typography>
+              <Editor
+                apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
                 value={formik.values.content}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={formik.touched.content && Boolean(formik.errors.content)}
-                helperText={formik.touched.content && formik.errors.content}
+                init={{
+                  height: 500,
+                  menubar: true,
+                  plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table paste code help wordcount",
+                    "autosave format insert",
+                    "emoticons hr pagebreak save",
+                  ],
+                  toolbar:
+                    "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
+                                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl",
+                  autosave_interval: "30s",
+                  autosave_retention: "2m",
+                }}
+                onEditorChange={(content) =>
+                  formik.setFieldValue("content", content)
+                }
               />
+              {formik.touched.content && formik.errors.content ? (
+                <Typography color="error" variant="body2">
+                  {formik.errors.content}
+                </Typography>
+              ) : null}
               <TextField
                 fullWidth
                 id="link"
@@ -164,7 +184,7 @@ function EditAnnouncement() {
                 onChange={formik.handleChange}
                 error={formik.touched.link && Boolean(formik.errors.link)}
                 helperText={formik.touched.link && formik.errors.link}
-                sx={{ mb: 2 }}
+                sx={{ mt:2, mb: 2 }}
               />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
