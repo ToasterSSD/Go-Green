@@ -24,6 +24,8 @@ router.post("/register", async (req, res) => {
 
         // Hash password
         data.password = await bcrypt.hash(data.password, 10);
+        // Assign the role
+        data.roles = 'USER';
         // Create user
         let result = await User.create(data);
         res.json({
