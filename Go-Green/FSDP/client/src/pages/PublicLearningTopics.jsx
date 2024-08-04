@@ -126,8 +126,11 @@ function PublicLearningTopics() {
             </Grid>
 
             <Box sx={{ mt: 4 }}>
-                <Typography variant="h5" sx={{ my: 2 }}>
-                    Quiz!
+                <Typography variant="h5" sx={{ my: 1 }}>
+                    Quiz
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mb: 2,   }}>
+                    Challenge Your Eco-Wisdom!
                 </Typography>
                 <Link to="/quiz" style={{ textDecoration: 'none' }}>
                     <Button variant="contained">Take the Quiz</Button>
