@@ -49,7 +49,9 @@ function Register() {
             data.name = data.name.trim();
             data.email = data.email.trim().toLowerCase();
             data.password = data.password.trim();
-            http.post(isAdmin ? "/admin/register" : "/user/register", data)
+            const endpoint = isAdmin ? "/user/adminregister" : "/user/register";
+            data.roles = isAdmin ? 'ADMIN' : 'USER';
+            http.post(endpoint, data)
                 .then((res) => {
                     navigate("/login");
                 })

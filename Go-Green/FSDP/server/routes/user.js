@@ -7,25 +7,25 @@ const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middlewares/auth');
 require('dotenv').config();
 
-router.post("/register", async (req, res) => {
+const validationSchema = yup.object({
+    name: yup.string().trim().min(3).max(50).required()
+        .matches(/^[a-zA-Z '-,.]+$/,
+            "Name only allows letters, spaces, and characters: ' - , ."),
+    email: yup.string().trim().lowercase().email().max(50).required(),
+    password: yup.string().trim().min(8).max(50).required()
+        .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
+            "Password must contain at least 1 letter and 1 number")
+});
+
+async function registerUser(req, res, role) {
     let data = req.body;
-    // Validate request body
-    let validationSchema = yup.object({
-        name: yup.string().trim().min(3).max(50).required()
-            .matches(/^[a-zA-Z '-,.]+$/,
-                "Name only allows letters, spaces, and characters: ' - , ."),
-        email: yup.string().trim().lowercase().email().max(50).required(),
-        password: yup.string().trim().min(8).max(50).required()
-            .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                "Password must contain at least 1 letter and 1 number")
-    });
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
         // Hash password
         data.password = await bcrypt.hash(data.password, 10);
         // Assign the role
-        data.roles = 'USER';
+        data.roles = role;
         // Create user
         let result = await User.create(data);
         res.json({
@@ -34,6 +34,14 @@ router.post("/register", async (req, res) => {
     } catch (err) {
         res.status(400).json({ errors: err.errors });
     }
+}
+
+router.post("/register", (req, res) => {
+    registerUser(req, res, 'USER');
+});
+
+router.post("/adminregister", (req, res) => {
+    registerUser(req, res, 'ADMIN');
 });
 
 router.post("/login", async (req, res) => {
