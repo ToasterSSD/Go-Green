@@ -158,7 +158,7 @@ function AddAnnouncement() {
               Content
             </Typography>
             <Editor
-              apiKey="cs4qd53jal9cfhagqejsavnjreib4rxp8fjetmervpkma4b5"
+              apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
               value={formik.values.content}
               init={{
                 height: 500,
