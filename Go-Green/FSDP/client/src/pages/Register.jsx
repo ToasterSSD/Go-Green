@@ -204,9 +204,6 @@ function Register() {
                             Register
                         </Button>
                     </Box>
-                    <Button fullWidth variant="text" sx={{ mt: 2, color: '#000' }} onClick={() => navigate("/forgot-password")}>
-                        Forgot Password?
-                    </Button>
                 </CardContent>
             </Card>
             <ToastContainer />
