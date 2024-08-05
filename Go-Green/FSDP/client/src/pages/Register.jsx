@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Dialog, DialogTitle, DialogContent, DialogActions, Grid } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -13,6 +13,9 @@ function Register() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [adminCode, setAdminCode] = useState(Array(6).fill(""));
+    const [adminCodeError, setAdminCodeError] = useState("");
 
     const validationSchema = yup.object({
         name: yup.string().trim()
@@ -71,6 +74,40 @@ function Register() {
 
     const handleAdminToggle = () => {
         setIsAdmin(!isAdmin);
+        if (!isAdmin) {
+            setIsModalOpen(true);
+        }
+    };
+
+    const handleAdminCodeChange = (index, value) => {
+        const newCode = [...adminCode];
+        newCode[index] = value;
+        setAdminCode(newCode);
+
+        // Move to the next input field if the value is not empty
+        if (value !== "" && index < 5) {
+            const nextInput = document.getElementById(`admin-code-${index + 1}`);
+            if (nextInput) nextInput.focus();
+        }
+
+        // Check if the complete code is correct
+        const code = newCode.join("");
+        if (code === "030605") {
+            setIsModalOpen(false);
+            setAdminCode(Array(6).fill(""));
+            setAdminCodeError("");
+        }
+    };
+
+    const handleAdminCodeSubmit = () => {
+        const code = adminCode.join("");
+        if (code === "030605") {
+            setIsModalOpen(false);
+            setAdminCode(Array(6).fill(""));
+            setAdminCodeError("");
+        } else {
+            setAdminCodeError("Incorrect code. Please try again.");
+        }
     };
 
     return (
@@ -209,6 +246,38 @@ function Register() {
                 </CardContent>
             </Card>
             <ToastContainer />
+
+            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                <DialogTitle>Admin Registration Code</DialogTitle>
+                <DialogContent>
+                    <Grid container spacing={1}>
+                        {adminCode.map((digit, index) => (
+                            <Grid item xs={2} key={index}>
+                                <TextField
+                                    id={`admin-code-${index}`}
+                                    value={digit}
+                                    onChange={(e) => handleAdminCodeChange(index, e.target.value)}
+                                    inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
+                                    error={Boolean(adminCodeError)}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                    {adminCodeError && (
+                        <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+                            {adminCodeError}
+                        </Typography>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleAdminCodeSubmit} color="primary">
+                        Submit
+                    </Button>
+                    <Button onClick={() => setIsModalOpen(false)} color="secondary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
