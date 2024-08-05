@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -13,18 +13,33 @@ import {
 } from '@mui/material';
 import { Person } from '@mui/icons-material';
 import SideNavbar from '../components/SideNavbar';
+import http from '../http';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [clickCount, setClickCount] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       navigate('/login');
+    } else {
+      fetchUserDetails(token);
     }
   }, [navigate]);
 
-  const [clickCount, setClickCount] = React.useState(0);
+  const fetchUserDetails = async (token) => {
+    try {
+      const response = await http.get('/user/auth', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUser(response.data.user);
+    } catch (error) {
+      console.error("Failed to fetch user details", error);
+      navigate('/login');
+    }
+  };
 
   const handleClick = () => {
     setClickCount(prevCount => prevCount + 1);
@@ -40,7 +55,7 @@ const AdminPanel = () => {
       >
         <Container maxWidth="lg">
           <Typography variant="h4" gutterBottom>
-            Welcome, Admin
+            Welcome, {user ? user.name : 'Admin'}
           </Typography>
           <Grid container spacing={3} alignItems="center">
             <Grid item>
