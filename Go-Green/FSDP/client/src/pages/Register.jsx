@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, Switch, FormControlLabel, Checkbox, IconButton, InputAdornment } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -14,6 +14,27 @@ function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const validationSchema = yup.object({
+        name: yup.string().trim()
+            .min(3, 'Name must be at least 3 characters')
+            .max(50, 'Name must be at most 50 characters')
+            .required('Name is required')
+            .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+        email: yup.string().trim()
+            .email('Enter a valid email')
+            .max(50, 'Email must be at most 50 characters')
+            .required('Email is required'),
+        password: yup.string().trim()
+            .min(8, 'Password must be at least 8 characters')
+            .max(50, 'Password must be at most 50 characters')
+            .required('Password is required')
+            .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must have at least 1 letter and 1 number"),
+        confirmPassword: yup.string().trim()
+            .required('Confirm password is required')
+            .oneOf([yup.ref('password')], 'Passwords must match'),
+        rememberMe: yup.boolean()
+    });
+
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -22,26 +43,8 @@ function Register() {
             confirmPassword: "",
             rememberMe: false
         },
-        validationSchema: yup.object({
-            name: yup.string().trim()
-                .min(3, 'Name must be at least 3 characters')
-                .max(50, 'Name must be at most 50 characters')
-                .required('Name is required')
-                .matches(/^[a-zA-Z '-,.]+$/, "Name only allow letters, spaces and characters: ' - , ."),
-            email: yup.string().trim()
-                .email('Enter a valid email')
-                .max(50, 'Email must be at most 50 characters')
-                .required('Email is required'),
-            password: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
-                .max(50, 'Password must be at most 50 characters')
-                .required('Password is required')
-                .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must have at least 1 letter and 1 number"),
-            confirmPassword: yup.string().trim()
-                .required('Confirm password is required')
-                .oneOf([yup.ref('password')], 'Passwords must match'),
-            rememberMe: yup.boolean()
-        }),
+        validationSchema: validationSchema,
+        validateOnChange: true,
         onSubmit: (data) => {
             data.name = data.name.trim();
             data.email = data.email.trim().toLowerCase();
@@ -64,15 +67,20 @@ function Register() {
         setShowConfirmPassword(!showConfirmPassword);
     };
 
+    const handleAdminToggle = () => {
+        setIsAdmin(!isAdmin);
+    };
+
     return (
         <Box sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             height: '100vh',
-            backgroundColor: '#f4f6f8'
+            backgroundColor: isAdmin ? '#808080' : '#f4f6f8',
+            padding: '20px'
         }}>
-            <Card sx={{ maxWidth: 500, p: 2 }}>
+            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3, backgroundColor: isAdmin ? '#A9A9A9' : '#fff', color: '#000' }}>
                 <CardMedia
                     component="img"
                     height="140"
@@ -83,6 +91,20 @@ function Register() {
                     <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
                         {isAdmin ? 'Admin Register' : 'User Register'}
                     </Typography>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            mb: 2,
+                            bgcolor: isAdmin ? 'blue' : 'grey',
+                            color: '#fff',
+                            transition: 'background-color 0.3s ease',
+                            '&:hover': { bgcolor: isAdmin ? 'darkblue' : 'darkgrey' }
+                        }}
+                        onClick={handleAdminToggle}
+                    >
+                        {isAdmin ? 'Admin Register' : 'User Register'}
+                    </Button>
                     <Box component="form" onSubmit={formik.handleSubmit} noValidate>
                         <TextField
                             fullWidth margin="dense" autoComplete="off"
@@ -93,6 +115,12 @@ function Register() {
                             onBlur={formik.handleBlur}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             helperText={formik.touched.name && formik.errors.name}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                            }}
                         />
                         <TextField
                             fullWidth margin="dense" autoComplete="off"
@@ -103,6 +131,12 @@ function Register() {
                             onBlur={formik.handleBlur}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             helperText={formik.touched.email && formik.errors.email}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                            }}
                         />
                         <TextField
                             fullWidth margin="dense" autoComplete="off"
@@ -113,13 +147,18 @@ function Register() {
                             onBlur={formik.handleBlur}
                             error={formik.touched.password && Boolean(formik.errors.password)}
                             helperText={formik.touched.password && formik.errors.password}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
                             InputProps={{
+                                style: { color: '#000' },
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowPassword}
                                             edge="end"
+                                            style={{ color: '#000' }}
                                         >
                                             {showPassword ? <VisibilityOff /> : <Visibility />}
                                         </IconButton>
@@ -136,13 +175,18 @@ function Register() {
                             onBlur={formik.handleBlur}
                             error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
                             helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
                             InputProps={{
+                                style: { color: '#000' },
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
                                             onClick={handleClickShowConfirmPassword}
                                             edge="end"
+                                            style={{ color: '#000' }}
                                         >
                                             {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                         </IconButton>
@@ -153,19 +197,14 @@ function Register() {
                         <FormControlLabel
                             control={<Checkbox name="rememberMe" checked={formik.values.rememberMe} onChange={formik.handleChange} />}
                             label="Remember Me"
-                            sx={{ mt: 2 }}
+                            sx={{ mt: 2, color: '#000' }}
                         />
-                        <Button fullWidth variant="contained" sx={{ mt: 2 }}
+                        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: isAdmin ? '#555' : '#1976d2', color: '#fff' }}
                             type="submit">
                             Register
                         </Button>
                     </Box>
-                    <FormControlLabel
-                        control={<Switch checked={isAdmin} onChange={() => setIsAdmin(!isAdmin)} />}
-                        label="Register as Admin"
-                        sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
-                    />
-                    <Button fullWidth variant="text" sx={{ mt: 2 }} onClick={() => navigate("/forgot-password")}>
+                    <Button fullWidth variant="text" sx={{ mt: 2, color: '#000' }} onClick={() => navigate("/forgot-password")}>
                         Forgot Password?
                     </Button>
                 </CardContent>
