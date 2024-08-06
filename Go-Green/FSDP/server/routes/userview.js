@@ -38,7 +38,8 @@ async function registerUser(req, res, role) {
         // Create user
         let result = await User.create(data);
         res.json({
-            message: `Email ${result.email} was registered successfully.`
+            message: `Email ${result.email} was registered successfully.`,
+            user: result
         });
     } catch (err) {
         res.status(400).json({ errors: err.errors || err.message });
@@ -51,6 +52,12 @@ router.post("/register", (req, res) => {
 
 router.post("/adminregister", (req, res) => {
     registerUser(req, res, 'ADMIN');
+});
+
+router.post("/users/add", validateToken, (req, res) => {
+    const { roles } = req.body;
+    const role = roles ? roles.toUpperCase() : 'USER';
+    registerUser(req, res, role);
 });
 
 router.post("/login", async (req, res) => {
@@ -109,7 +116,7 @@ router.get("/auth", validateToken, (req, res) => {
 // Get all users
 router.get("/", validateToken, async (req, res) => {
     try {
-        const users = await User.findAll({ attributes: ['id', 'name', 'email', 'roles', 'password'] });
+        const users = await User.findAll({ attributes: ['id', 'name', 'email', 'roles'] });
         res.json(users);
     } catch (err) {
         res.status(500).json({ errors: err.message });
@@ -119,7 +126,7 @@ router.get("/", validateToken, async (req, res) => {
 // Get user by ID
 router.get("/:id", validateToken, async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id, { attributes: ['id', 'name', 'email', 'roles', 'password'] });
+        const user = await User.findByPk(req.params.id, { attributes: ['id', 'name', 'email', 'roles'] });
         if (!user) return res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (err) {

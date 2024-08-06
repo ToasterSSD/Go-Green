@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box, Typography, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, CssBaseline, Button, Avatar } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import { Box, Typography, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, CssBaseline, Button, Avatar, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Delete } from '@mui/icons-material';
 import http from '../http';
 import UserContext from '../contexts/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
@@ -10,6 +10,13 @@ import SideNavbar from '../components/SideNavbar';
 const UserProfile = () => {
     const { user } = useContext(UserContext);
     const [allUsers, setAllUsers] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [newUser, setNewUser] = useState({
+        name: '',
+        email: '',
+        password: '',
+        roles: 'USER'
+    });
 
     useEffect(() => {
         if (user) {
@@ -42,14 +49,42 @@ const UserProfile = () => {
             .catch(err => toast.error(`Error deleting user: ${err.message}`));
     };
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewUser({ ...newUser, [name]: value });
+    };
+
+    const handleAddUser = () => {
+        http.post('/userview/users/add', newUser)
+            .then(response => {
+                toast.success(response.data.message);
+                setAllUsers([...allUsers, response.data.user]);
+                handleClose();
+            })
+            .catch(err => toast.error(`Error adding user: ${err.message}`));
+    };
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <SideNavbar />
             <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="h5" sx={{ my: 2, textAlign: 'center' }}>
-                    All Users
-                </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
+                    <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                        All Users
+                    </Typography>
+                    <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                        Add User
+                    </Button>
+                </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                     <TableContainer component={Paper} sx={{ width: '100%', maxWidth: '1400px', borderRadius: 2, boxShadow: 3, maxHeight: '70vh', overflowY: 'auto' }}>
                         <Table sx={{ minWidth: 1200 }}>
@@ -95,6 +130,60 @@ const UserProfile = () => {
                     </TableContainer>
                 </Box>
                 <ToastContainer />
+
+                {/* Add User Modal */}
+                <Dialog open={open} onClose={handleClose}>
+                    <DialogTitle>Add New User</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            name="name"
+                            label="Name"
+                            type="text"
+                            fullWidth
+                            value={newUser.name}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            name="email"
+                            label="Email"
+                            type="email"
+                            fullWidth
+                            value={newUser.email}
+                            onChange={handleInputChange}
+                        />
+                        <TextField
+                            margin="dense"
+                            name="password"
+                            label="Password"
+                            type="password"
+                            fullWidth
+                            value={newUser.password}
+                            onChange={handleInputChange}
+                        />
+                        <FormControl fullWidth margin="dense">
+                            <InputLabel>Role</InputLabel>
+                            <Select
+                                name="roles"
+                                value={newUser.roles}
+                                onChange={handleInputChange}
+                            >
+                                <MenuItem value="USER">User</MenuItem>
+                                <MenuItem value="ADMIN">Admin</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="secondary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleAddUser} color="primary">
+                            Add User
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
         </Box>
     );
