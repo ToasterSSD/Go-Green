@@ -7,6 +7,8 @@ const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middlewares/auth');
 require('dotenv').config();
 
+const PEPPER = process.env.PEPPER;
+
 const validationSchema = yup.object({
     name: yup.string().trim().min(3).max(50).required()
         .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
@@ -26,10 +28,13 @@ async function registerUser(req, res, role) {
             return res.status(400).json({ message: 'Email is already in use.' });
         }
 
-        // Hash password
-        data.password = await bcrypt.hash(data.password, 10);
+        // Pepper and hash password
+        const pepperedPassword = data.password + PEPPER;
+        data.password = await bcrypt.hash(pepperedPassword, 10);
+        
         // Assign the role
         data.roles = role;
+        
         // Create user
         let result = await User.create(data);
         res.json({
@@ -50,7 +55,6 @@ router.post("/adminregister", (req, res) => {
 
 router.post("/login", async (req, res) => {
     let data = req.body;
-    // Validate request body
     let validationSchema = yup.object({
         email: yup.string().trim().lowercase().email().max(50).required(),
         password: yup.string().trim().min(8).max(50).required()
@@ -58,14 +62,16 @@ router.post("/login", async (req, res) => {
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
 
-        // Check email and password
         let errorMsg = "Email or password is not correct.";
         let user = await User.findOne({ where: { email: data.email } });
         if (!user) {
             res.status(400).json({ message: errorMsg });
             return;
         }
-        let match = await bcrypt.compare(data.password, user.password);
+        
+        // Add pepper to password before comparing
+        const pepperedPassword = data.password + PEPPER;
+        let match = await bcrypt.compare(pepperedPassword, user.password);
         if (!match) {
             res.status(400).json({ message: errorMsg });
             return;
