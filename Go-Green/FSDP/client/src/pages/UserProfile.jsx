@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Box, Typography, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, CssBaseline } from '@mui/material';
+import { Box, Typography, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, CssBaseline, Button, Avatar } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import http from '../http';
 import UserContext from '../contexts/UserContext';
@@ -19,8 +19,15 @@ const UserProfile = () => {
         }
     }, [user]);
 
-    const handleUpdate = (userId) => {
-        console.log(`Update user with ID: ${userId}`);
+    const handleUpdateRole = (userId, role) => {
+        http.put(`/userview/${userId}/role`, { role })
+            .then(response => {
+                toast.success(response.data.message);
+                setAllUsers(prevUsers => prevUsers.map(user => 
+                    user.id === userId ? { ...user, roles: role } : user
+                ));
+            })
+            .catch(err => toast.error(`Error updating user role: ${err.message}`));
     };
 
     const handleDelete = (userId) => {
@@ -49,9 +56,9 @@ const UserProfile = () => {
                             <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
                                 <TableRow>
                                     <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>ID</TableCell>
+                                    <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>Profile</TableCell>
                                     <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>Name</TableCell>
                                     <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>Email</TableCell>
-                                    <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>Password</TableCell>
                                     <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>Roles</TableCell>
                                     <TableCell sx={{ padding: '16px', fontSize: '1rem' }} align="center">Actions</TableCell>
                                 </TableRow>
@@ -60,21 +67,26 @@ const UserProfile = () => {
                                 {allUsers.map((user, index) => (
                                     <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{index + 1}</TableCell>
+                                        <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>
+                                            <Avatar src="/path/to/profile/pic" alt={user.name} />
+                                        </TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.name}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.email}</TableCell>
-                                        <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.password}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{user.roles}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }} align="center">
-                                            <Tooltip title="Update">
-                                                <IconButton onClick={() => handleUpdate(user.id)}>
-                                                    <Edit />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Delete">
-                                                <IconButton color="error" onClick={() => handleDelete(user.id)}>
-                                                    <Delete />
-                                                </IconButton>
-                                            </Tooltip>
+                                            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                                                <Button onClick={() => handleUpdateRole(user.id, 'ADMIN')} variant="contained" color="primary" size="small">
+                                                    Admin
+                                                </Button>
+                                                <Button onClick={() => handleUpdateRole(user.id, 'USER')} variant="contained" color="secondary" size="small">
+                                                    User
+                                                </Button>
+                                                <Tooltip title="Delete">
+                                                    <IconButton color="error" onClick={() => handleDelete(user.id)}>
+                                                        <Delete />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            </Box>
                                         </TableCell>
                                     </TableRow>
                                 ))}
