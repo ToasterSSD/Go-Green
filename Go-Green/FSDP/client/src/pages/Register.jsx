@@ -59,7 +59,11 @@ function Register() {
                     navigate("/login");
                 })
                 .catch((err) => {
-                    toast.error(`${err.response.data.message}`);
+                    if (err.response && err.response.data.message === 'Email is already in use.') {
+                        toast.error('Email is already in use.');
+                    } else {
+                        toast.error(`${err.response.data.message}`);
+                    }
                 });
         }
     });

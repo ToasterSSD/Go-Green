@@ -9,18 +9,22 @@ require('dotenv').config();
 
 const validationSchema = yup.object({
     name: yup.string().trim().min(3).max(50).required()
-        .matches(/^[a-zA-Z '-,.]+$/,
-            "Name only allows letters, spaces, and characters: ' - , ."),
+        .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
     email: yup.string().trim().lowercase().email().max(50).required(),
     password: yup.string().trim().min(8).max(50).required()
-        .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-            "Password must contain at least 1 letter and 1 number")
+        .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must contain at least 1 letter and 1 number")
 });
 
 async function registerUser(req, res, role) {
     let data = req.body;
     try {
         data = await validationSchema.validate(data, { abortEarly: false });
+
+        // Check if email already exists
+        let existingUser = await User.findOne({ where: { email: data.email } });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email is already in use.' });
+        }
 
         // Hash password
         data.password = await bcrypt.hash(data.password, 10);
@@ -32,7 +36,7 @@ async function registerUser(req, res, role) {
             message: `Email ${result.email} was registered successfully.`
         });
     } catch (err) {
-        res.status(400).json({ errors: err.errors });
+        res.status(400).json({ errors: err.errors || err.message });
     }
 }
 
@@ -80,7 +84,7 @@ router.post("/login", async (req, res) => {
             user: userInfo
         });
     } catch (err) {
-        res.status(400).json({ errors: err.errors });
+        res.status(400).json({ errors: err.errors || err.message });
     }
 });
 
