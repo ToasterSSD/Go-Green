@@ -20,7 +20,6 @@ const UserProfile = () => {
     }, [user]);
 
     const handleUpdate = (userId) => {
-        // Handle update logic here, you may want to navigate to a different page or open a modal for update
         console.log(`Update user with ID: ${userId}`);
     };
 
@@ -28,7 +27,6 @@ const UserProfile = () => {
         http.delete(`/userview/${userId}`)
             .then(response => {
                 toast.success(response.data.message);
-                // Re-index the user IDs after deletion
                 setAllUsers(prevUsers => prevUsers.filter(user => user.id !== userId).map((user, index) => ({
                     ...user,
                     id: index + 1
@@ -46,7 +44,7 @@ const UserProfile = () => {
                     All Users
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                    <TableContainer component={Paper} sx={{ width: '100%', maxWidth: '1400px', borderRadius: 2, boxShadow: 3, overflowX: 'auto' }}>
+                    <TableContainer component={Paper} sx={{ width: '100%', maxWidth: '1400px', borderRadius: 2, boxShadow: 3, maxHeight: '70vh', overflowY: 'auto' }}>
                         <Table sx={{ minWidth: 1200 }}>
                             <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
                                 <TableRow>
