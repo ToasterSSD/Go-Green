@@ -1,5 +1,23 @@
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Dialog, DialogTitle, DialogContent, DialogActions, Grid } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  FormControlLabel,
+  Checkbox,
+  IconButton,
+  InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grid,
+  Link as MuiLink
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -16,6 +34,7 @@ function Register() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [adminCode, setAdminCode] = useState(Array(6).fill(""));
     const [adminCodeError, setAdminCodeError] = useState("");
+    const adminCodeInputRefs = useRef([]);
 
     const validationSchema = yup.object({
         name: yup.string().trim()
@@ -77,11 +96,15 @@ function Register() {
     };
 
     const handleAdminToggle = () => {
-        setIsAdmin(!isAdmin);
-        if (!isAdmin) {
-            setIsModalOpen(true);
-        }
+        setIsAdmin(true);
+        setIsModalOpen(true);
     };
+
+    useEffect(() => {
+        if (isModalOpen && adminCodeInputRefs.current[0]) {
+            adminCodeInputRefs.current[0].focus();
+        }
+    }, [isModalOpen]);
 
     const handleAdminCodeChange = (index, value) => {
         const newCode = [...adminCode];
@@ -90,7 +113,7 @@ function Register() {
 
         // Move to the next input field if the value is not empty
         if (value !== "" && index < 5) {
-            const nextInput = document.getElementById(`admin-code-${index + 1}`);
+            const nextInput = adminCodeInputRefs.current[index + 1];
             if (nextInput) nextInput.focus();
         }
 
@@ -112,6 +135,12 @@ function Register() {
         } else {
             setAdminCodeError("Incorrect code. Please try again.");
         }
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setIsAdmin(false);
+        toast.error('Please input the correct admin code.');
     };
 
     return (
@@ -247,11 +276,16 @@ function Register() {
                             Register
                         </Button>
                     </Box>
+                    <Box sx={{ textAlign: 'center', mt: 2 }}>
+                        <Typography variant="body2">
+                            If you have an account, <MuiLink component="button" variant="body2" onClick={() => navigate('/login')}>login now!</MuiLink>
+                        </Typography>
+                    </Box>
                 </CardContent>
             </Card>
             <ToastContainer />
 
-            <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+            <Dialog open={isModalOpen} onClose={handleModalClose}>
                 <DialogTitle>Admin Registration Code</DialogTitle>
                 <DialogContent>
                     <Grid container spacing={1}>
@@ -263,6 +297,7 @@ function Register() {
                                     onChange={(e) => handleAdminCodeChange(index, e.target.value)}
                                     inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
                                     error={Boolean(adminCodeError)}
+                                    inputRef={(el) => adminCodeInputRefs.current[index] = el}
                                 />
                             </Grid>
                         ))}
@@ -277,7 +312,7 @@ function Register() {
                     <Button onClick={handleAdminCodeSubmit} color="primary">
                         Submit
                     </Button>
-                    <Button onClick={() => setIsModalOpen(false)} color="secondary">
+                    <Button onClick={handleModalClose} color="secondary">
                         Cancel
                     </Button>
                 </DialogActions>
