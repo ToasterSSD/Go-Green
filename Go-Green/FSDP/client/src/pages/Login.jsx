@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -118,6 +118,11 @@ function Login() {
                     <Button fullWidth variant="text" sx={{ mt: 2 }} onClick={() => navigate("/forgot-password")}>
                         Forgot Password?
                     </Button>
+                    <Box sx={{ textAlign: 'center', mt: 2 }}>
+                        <Typography variant="body2">
+                            If you don't have an account, <MuiLink component="button" variant="body2" onClick={() => navigate('/register')}>create one here!</MuiLink>
+                        </Typography>
+                    </Box>
                 </CardContent>
             </Card>
             <ToastContainer />
