@@ -125,10 +125,7 @@ function App() {
                     <Link
                       to="/"
                       style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        display: "flex",
-                        alignItems: "center",
+                        
                       }}
                     >
                       <img
@@ -142,7 +139,15 @@ function App() {
                     </Link>
                   </Box>
                   <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
-                    
+                    <MuiLink
+                      component={Link}
+                      to="/tutorials"
+                      underline="none"
+                      color="inherit"
+                      sx={{ mx: 2 }}
+                    >
+                      Tutorials
+                    </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
                       <MuiLink
                         component={Link}
