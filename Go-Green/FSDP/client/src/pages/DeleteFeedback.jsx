@@ -30,8 +30,8 @@ function DeleteFeedback() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     // Redirect non-admin users
-    if (user.role !== "ADMIN") {
-      navigate("/unauthorized");
+    if (user && user.role !== "ADMIN") {
+      navigate("/");
       return;
     }
   });

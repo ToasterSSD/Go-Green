@@ -30,6 +30,7 @@ const chatareaRoute = require('./routes/chatarea');
 const articleRoute = require('./routes/article');
 const learningRoute = require('./routes/learning');
 const quizRoute = require('./routes/quiz');
+const gameRoutes = require('./routes/game');
 const userviewRoute = require('./routes/userview');
 
 app.use('/quiz', quizRoute);
@@ -41,6 +42,7 @@ app.use("/chatarea", chatareaRoute);
 app.use("/article", articleRoute);
 app.use("/learning", learningRoute);
 app.use("/userview", userviewRoute);
+app.use('/game', gameRoutes);
 
 // Route for public learning topics
 app.get('/public-learning-topics', (req, res) => {
