@@ -23,7 +23,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Name"
       name="name"
-      value={user?.name}
+      value={user?.name || ''}
       variant="outlined"
       sx={{ mb: 2 }}
       // onChange event handler for updating user information
@@ -34,7 +34,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Email"
       name="email"
-      value={user?.email}
+      value={user?.email || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -45,7 +45,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Display Name"
       name="displayName"
-      value={user?.extraInfo?.displayName}
+      value={user?.extraInfo?.displayName || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -56,7 +56,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Phone Number"
       name="phoneNumber"
-      value={user?.extraInfo?.phoneNumber}
+      value={user?.extraInfo?.phoneNumber || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -67,7 +67,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Gender"
       name="gender"
-      value={user?.extraInfo?.gender}
+      value={user?.extraInfo?.gender || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -78,7 +78,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Home Address"
       name="homeAddress"
-      value={user?.extraInfo?.homeAddress}
+      value={user?.extraInfo?.homeAddress || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -89,7 +89,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Payment Information"
       name="paymentInformation"
-      value={user?.extraInfo?.paymentInformation}
+      value={user?.extraInfo?.paymentInformation || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -100,7 +100,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Age"
       name="age"
-      value={user?.extraInfo?.age}
+      value={user?.extraInfo?.age || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -111,7 +111,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Date of Birth"
       name="dateOfBirth"
-      value={user?.extraInfo?.dateOfBirth}
+      value={user?.extraInfo?.dateOfBirth || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -122,7 +122,7 @@ const AccountTab = ({ user }) => (
       margin="dense"
       label="Social Media"
       name="socialMedia"
-      value={user?.extraInfo?.socialMedia}
+      value={user?.extraInfo?.socialMedia || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
       // onChange event handler for updating user information
@@ -137,7 +137,7 @@ const ProfileTab = ({ user }) => (
       margin="dense"
       label="Profile Picture URL"
       name="profilePicture"
-      value={user?.extraInfo?.profilePicture}
+      value={user?.extraInfo?.profilePicture || ''}
       variant="outlined"
       sx={{ mb: 2 }}
       // onChange event handler for updating user information
