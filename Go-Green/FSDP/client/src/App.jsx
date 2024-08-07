@@ -24,7 +24,6 @@ import Footer from "./components/Footer";
 
 // Lazy loading pages
 const Home = lazy(() => import('./pages/Home'));
-const Tutorials = lazy(() => import('./pages/Tutorials'));
 const AddTutorial = lazy(() => import('./pages/AddTutorial'));
 const EditTutorial = lazy(() => import('./pages/EditTutorial'));
 const MyForm = lazy(() => import('./pages/MyForm'));
@@ -105,12 +104,13 @@ function App() {
               display: "flex",
               flexDirection: "column",
               minHeight: "100vh",
+              overflow: "hidden" // Prevent scrolling
             }}
           >
             <CssBaseline />
             <AppBar
               position="static"
-              sx={{ backgroundColor: "#9CBA9A", width: "100vw" }}
+              sx={{ backgroundColor: "#9CBA9A", width: "100vw", overflow: "hidden" }} // Ensure no overflow
             >
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
@@ -142,15 +142,6 @@ function App() {
                     </Link>
                   </Box>
                   <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
-                    <MuiLink
-                      component={Link}
-                      to="/tutorials"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
-                      Tutorials
-                    </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
                       <MuiLink
                         component={Link}
@@ -323,7 +314,6 @@ function App() {
                 <Suspense fallback={<CircularProgress />}>
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/tutorials" element={<Tutorials />} />
                     <Route path="/announcement" element={<Announcement />} />
                     <Route path="/addtutorial" element={<AddTutorial />} />
                     <Route
