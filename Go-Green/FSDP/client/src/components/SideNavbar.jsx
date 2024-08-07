@@ -27,7 +27,10 @@ const SideNavbar = () => {
           boxSizing: 'border-box', 
           bgcolor: '#333', 
           color: '#fff', 
-          overflowX: 'hidden' 
+          overflowX: 'hidden',
+          position: 'fixed', // Ensure the drawer stays fixed
+          height: '100vh', // Full height of the viewport
+          zIndex: 1400, // Higher z-index to stay above the dialog
         },
       }}
     >

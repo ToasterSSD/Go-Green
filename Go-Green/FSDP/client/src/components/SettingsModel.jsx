@@ -26,7 +26,6 @@ const AccountTab = ({ user }) => (
       value={user?.name || ''}
       variant="outlined"
       sx={{ mb: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -37,7 +36,6 @@ const AccountTab = ({ user }) => (
       value={user?.email || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -48,7 +46,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.displayName || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -59,7 +56,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.phoneNumber || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -70,7 +66,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.gender || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -81,7 +76,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.homeAddress || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -92,7 +86,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.paymentInformation || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -103,7 +96,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.age || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -114,7 +106,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.dateOfBirth || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     <TextField
@@ -125,7 +116,6 @@ const AccountTab = ({ user }) => (
       value={user?.extraInfo?.socialMedia || ''}
       variant="outlined"
       sx={{ mb: 2, mt: 2 }}
-      // onChange event handler for updating user information
     />
   </Box>
 );
@@ -140,7 +130,6 @@ const ProfileTab = ({ user }) => (
       value={user?.extraInfo?.profilePicture || ''}
       variant="outlined"
       sx={{ mb: 2 }}
-      // onChange event handler for updating user information
     />
     <Divider />
     {/* Add more profile-related fields if needed */}
@@ -155,7 +144,7 @@ function SettingsModel({ open, onClose, user }) {
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" sx={{ zIndex: 1300 }}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <Card sx={{ display: 'flex', minHeight: 300, p: 2 }}>
@@ -169,14 +158,18 @@ function SettingsModel({ open, onClose, user }) {
             >
               <Tab 
                 icon={<AccountCircleIcon />} 
-                label={<Typography variant="h6">Account</Typography>} 
-                sx={{ flexDirection: 'row' }} 
+                label={<Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h6">Account</Typography>
+                      </Box>} 
+                sx={{ flexDirection: 'row', justifyContent: 'center' }}
               />
               <Divider />
               <Tab 
                 icon={<PersonIcon />} 
-                label={<Typography variant="h6">Profile</Typography>} 
-                sx={{ flexDirection: 'row' }} 
+                label={<Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Typography variant="h6">Profile</Typography>
+                      </Box>} 
+                sx={{ flexDirection: 'row', justifyContent: 'center' }}
               />
               <Divider />
               {/* Add more tabs as needed */}
