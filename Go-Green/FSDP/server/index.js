@@ -76,6 +76,10 @@ app.use("/learning", (req, res, next) => {
 app.use("/userview", (req, res, next) => {
     require('./routes/userview')(req, res, next);
 });
+app.use("/game", (req, res, next) => {
+    require('./routes/game')(req, res, next);
+});
+
 
 // Route for public learning topics
 app.get('/public-learning-topics', cache(10), (req, res) => {

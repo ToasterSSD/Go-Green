@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: true
         }
-    })};
+    })
+    return GamePart;
+};
 
-module.exports = GamePart;
+
