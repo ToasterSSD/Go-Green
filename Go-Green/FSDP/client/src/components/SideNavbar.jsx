@@ -52,7 +52,7 @@ const SideNavbar = () => {
           to="/admin" 
           sx={{ 
             bgcolor: isActive('/admin') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'action.hover' },
+            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
             color: '#fff',
             justifyContent: isCollapsed ? 'center' : 'initial',
             px: isCollapsed ? 2 : 3,
@@ -69,7 +69,7 @@ const SideNavbar = () => {
           to="/profile" 
           sx={{ 
             bgcolor: isActive('/profile') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'action.hover' },
+            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
             color: '#fff',
             justifyContent: isCollapsed ? 'center' : 'initial',
             px: isCollapsed ? 2 : 3,
@@ -86,7 +86,7 @@ const SideNavbar = () => {
           to="/categories" 
           sx={{ 
             bgcolor: isActive('/categories') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'action.hover' },
+            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
             color: '#fff',
             justifyContent: isCollapsed ? 'center' : 'initial',
             px: isCollapsed ? 2 : 3,
@@ -103,7 +103,7 @@ const SideNavbar = () => {
           to="/feedback" 
           sx={{ 
             bgcolor: isActive('/feedback') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'action.hover' },
+            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
             color: '#fff',
             justifyContent: isCollapsed ? 'center' : 'initial',
             px: isCollapsed ? 2 : 3,
