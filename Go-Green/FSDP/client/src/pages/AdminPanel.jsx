@@ -21,6 +21,22 @@ const AdminPanel = () => {
   const [clickCount, setClickCount] = useState(0);
 
   useEffect(() => {
+    const fetchUserDetails = async (token) => {
+      try {
+        const response = await http.get('/user/auth', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUser(response.data.user);
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+        if (error.response && error.response.status === 401) {
+          // If unauthorized, remove token and navigate to login
+          localStorage.removeItem('accessToken');
+          navigate('/login');
+        }
+      }
+    };
+
     const token = localStorage.getItem('accessToken');
     if (!token) {
       navigate('/login');
@@ -28,18 +44,6 @@ const AdminPanel = () => {
       fetchUserDetails(token);
     }
   }, [navigate]);
-
-  const fetchUserDetails = async (token) => {
-    try {
-      const response = await http.get('/user/auth', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setUser(response.data.user);
-    } catch (error) {
-      console.error("Failed to fetch user details", error);
-      navigate('/login');
-    }
-  };
 
   const handleClick = () => {
     setClickCount(prevCount => prevCount + 1);
