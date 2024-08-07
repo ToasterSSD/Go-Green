@@ -154,7 +154,9 @@ function App() {
                       </Typography>
                     </Box>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}>
-                      <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                      {((user?.roles?.includes("ADMIN") || user?.roles?.includes("USER")) && (
+                        <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                      ))}
                       {user?.roles?.includes("ADMIN") && (
                         <>
                           <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
