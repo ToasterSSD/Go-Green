@@ -94,6 +94,10 @@ function App() {
     setSettingsOpen(false);
   };
 
+  const hasRole = (role) => {
+    return user?.roles?.includes(role);
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
@@ -115,7 +119,7 @@ function App() {
                     <MuiLink component={Link} to="/tutorials" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Tutorials
                     </MuiLink>
-                    {user?.roles?.includes("ADMIN") && (
+                    {hasRole("ADMIN") && (
                       <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                         NewsAdmin
                       </MuiLink>
@@ -129,7 +133,7 @@ function App() {
                     <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Chat
                     </MuiLink>
-                    {user?.roles?.includes("ADMIN") && (
+                    {hasRole("ADMIN") && (
                       <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                         LearningAdmin
                       </MuiLink>
@@ -155,8 +159,10 @@ function App() {
                       </Typography>
                     </Box>
                     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}>
-                      <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
-                      {user?.roles?.includes("ADMIN") && (
+                      {(hasRole("ADMIN") || hasRole("USER")) && (
+                        <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>
+                      )}
+                      {hasRole("ADMIN") && (
                         <>
                           <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
                             Admin Panel
