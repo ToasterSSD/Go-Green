@@ -1,5 +1,4 @@
-import "./App.css";
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Suspense, lazy } from "react";
 import {
   Container,
   AppBar,
@@ -16,41 +15,43 @@ import {
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import MyTheme from "./themes/MyTheme";
-import Tutorials from "./pages/Tutorials";
-import AddTutorial from "./pages/AddTutorial";
-import EditTutorial from "./pages/EditTutorial";
-import MyForm from "./pages/MyForm";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
 import http from "./http";
-import Home from "./pages/Home";
 import UserContext from "./contexts/UserContext";
-import Announcement from "./pages/Announcement";
-import ChatArea from "./pages/ChatArea";
-import AddAnnouncement from "./pages/AddAnnouncement";
-import EditAnnouncement from "./pages/EditAnnouncement";
-import Feedback from "./pages/Feedback";
-import FeedbackAdmin from "./pages/FeedbackAdmin";
-import AddFeedback from "./pages/AddFeedback";
-import DeleteFeedback from "./pages/DeleteFeedback";
-import Articles from './pages/Articles';
-import AddArticle from './pages/AddArticle';
-import EditArticle from './pages/EditArticle';
-import PublicArticles from './pages/PublicArticles';
-import ArticleDetails from './pages/ArticleDetails';
-import LearningTopics from './pages/LearningTopics';
-import AddLearningTopic from './pages/AddLearningTopic';
-import EditLearningTopic from './pages/EditLearningTopic';
-import LearningTopicDetails from './pages/LearningTopicDetails';
-import PublicLearningTopics from './pages/PublicLearningTopics';
-import QuizPage from './pages/QuizPage';
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
-import AdminPanel from './pages/AdminPanel';
-import UserProfile from './pages/UserProfile';
-import SignUpStep1 from './pages/SignUpStep1';
-import SignUpStep2 from './pages/SignUpStep2';
-import MoreAnnouncement from "./pages/More_Announcement";
+
+// Lazy load pages
+const Home = lazy(() => import('./pages/Home'));
+const Tutorials = lazy(() => import('./pages/Tutorials'));
+const AddTutorial = lazy(() => import('./pages/AddTutorial'));
+const EditTutorial = lazy(() => import('./pages/EditTutorial'));
+const MyForm = lazy(() => import('./pages/MyForm'));
+const Register = lazy(() => import('./pages/Register'));
+const Login = lazy(() => import('./pages/Login'));
+const Announcement = lazy(() => import('./pages/Announcement'));
+const ChatArea = lazy(() => import('./pages/ChatArea'));
+const AddAnnouncement = lazy(() => import('./pages/AddAnnouncement'));
+const EditAnnouncement = lazy(() => import('./pages/EditAnnouncement'));
+const Feedback = lazy(() => import('./pages/Feedback'));
+const FeedbackAdmin = lazy(() => import('./pages/FeedbackAdmin'));
+const AddFeedback = lazy(() => import('./pages/AddFeedback'));
+const DeleteFeedback = lazy(() => import('./pages/DeleteFeedback'));
+const Articles = lazy(() => import('./pages/Articles'));
+const AddArticle = lazy(() => import('./pages/AddArticle'));
+const EditArticle = lazy(() => import('./pages/EditArticle'));
+const PublicArticles = lazy(() => import('./pages/PublicArticles'));
+const ArticleDetails = lazy(() => import('./pages/ArticleDetails'));
+const LearningTopics = lazy(() => import('./pages/LearningTopics'));
+const AddLearningTopic = lazy(() => import('./pages/AddLearningTopic'));
+const EditLearningTopic = lazy(() => import('./pages/EditLearningTopic'));
+const LearningTopicDetails = lazy(() => import('./pages/LearningTopicDetails'));
+const PublicLearningTopics = lazy(() => import('./pages/PublicLearningTopics'));
+const QuizPage = lazy(() => import('./pages/QuizPage'));
+const AdminPanel = lazy(() => import('./pages/AdminPanel'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const SignUpStep1 = lazy(() => import('./pages/SignUpStep1'));
+const SignUpStep2 = lazy(() => import('./pages/SignUpStep2'));
+const MoreAnnouncement = lazy(() => import('./pages/More_Announcement'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -182,39 +183,41 @@ function App() {
             </AppBar>
             <Box sx={{ flex: 1 }}>
               <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/tutorials" element={<Tutorials />} />
-                  <Route path="/announcement" element={<Announcement />} />
-                  <Route path="/addtutorial" element={<AddTutorial />} />
-                  <Route path="/edittutorial/:id" element={<EditTutorial />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/form" element={<MyForm />} />
-                  <Route path="/chatarea" element={<ChatArea />} />
-                  <Route path="/addannouncement" element={<AddAnnouncement />} />
-                  <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
-                  <Route path="/feedback" element={<Feedback />} />
-                  <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
-                  <Route path="/addfeedback" element={<AddFeedback />} />
-                  <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
-                  <Route path="/articles" element={<Articles />} />
-                  <Route path="/public-articles" element={<PublicArticles />} />
-                  <Route path="/addarticle" element={<AddArticle />} />
-                  <Route path="/editarticle/:id" element={<EditArticle />} />
-                  <Route path="/public-article/:id" element={<ArticleDetails />} />
-                  <Route path="/learning" element={<LearningTopics />} />
-                  <Route path="/add-learning-topic" element={<AddLearningTopic />} />
-                  <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
-                  <Route path="/learning/:id" element={<LearningTopicDetails />} />
-                  <Route path="/public-learning" element={<PublicLearningTopics />} />
-                  <Route path="/quiz" element={<QuizPage />} />
-                  <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
-                  <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
-                  <Route path="/announcement/:id" element={<MoreAnnouncement />} />
-                  <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
-                  <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
-                </Routes>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/tutorials" element={<Tutorials />} />
+                    <Route path="/announcement" element={<Announcement />} />
+                    <Route path="/addtutorial" element={<AddTutorial />} />
+                    <Route path="/edittutorial/:id" element={<EditTutorial />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/form" element={<MyForm />} />
+                    <Route path="/chatarea" element={<ChatArea />} />
+                    <Route path="/addannouncement" element={<AddAnnouncement />} />
+                    <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
+                    <Route path="/feedback" element={<Feedback />} />
+                    <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
+                    <Route path="/addfeedback" element={<AddFeedback />} />
+                    <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
+                    <Route path="/articles" element={<Articles />} />
+                    <Route path="/public-articles" element={<PublicArticles />} />
+                    <Route path="/addarticle" element={<AddArticle />} />
+                    <Route path="/editarticle/:id" element={<EditArticle />} />
+                    <Route path="/public-article/:id" element={<ArticleDetails />} />
+                    <Route path="/learning" element={<LearningTopics />} />
+                    <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+                    <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+                    <Route path="/learning/:id" element={<LearningTopicDetails />} />
+                    <Route path="/public-learning" element={<PublicLearningTopics />} />
+                    <Route path="/quiz" element={<QuizPage />} />
+                    <Route path="/admin" element={<PrivateRoute user={user}><AdminPanel /></PrivateRoute>} />
+                    <Route path="/profile" element={<PrivateRoute user={user}><UserProfile /></PrivateRoute>} />
+                    <Route path="/announcement/:id" element={<MoreAnnouncement />} />
+                    <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
+                    <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+                  </Routes>
+                </Suspense>
               </Container>
             </Box>
             <Footer />
