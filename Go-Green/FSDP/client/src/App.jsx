@@ -54,6 +54,7 @@ const UserProfile = lazy(() => import('./pages/UserProfile'));
 const SignUpStep1 = lazy(() => import('./pages/SignUpStep1'));
 const SignUpStep2 = lazy(() => import('./pages/SignUpStep2'));
 const MoreAnnouncement = lazy(() => import('./pages/More_Announcement'));
+const Donation = lazy(() => import('./pages/Donation'));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -141,6 +142,7 @@ function App() {
                 <Route path="/announcement/:id" element={<MoreAnnouncement />} />
                 <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
                 <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+                <Route path="/donation" element={<Donation />} />
               </Routes>
             </Suspense>
           </Container>
@@ -192,7 +194,7 @@ function App() {
                     <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Games
                     </MuiLink>
-                    <MuiLink component={Link} to="/donations" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Donations
                     </MuiLink>
                     <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
