@@ -5,11 +5,13 @@ import http from '../http';
 import UserContext from '../contexts/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SideNavbar from '../components/SideNavbar';
 
 const UserProfile = () => {
     const { user } = useContext(UserContext);
-    const [allUsers, setAllUsers] = useState([]);
+    const [allUsers, setAllUsers] = useState(() => {
+        const savedUsers = localStorage.getItem('allUsers');
+        return savedUsers ? JSON.parse(savedUsers) : [];
+    });
     const [open, setOpen] = useState(false);
     const [newUser, setNewUser] = useState({
         name: '',
@@ -21,7 +23,10 @@ const UserProfile = () => {
     useEffect(() => {
         if (user) {
             http.get('/userview')
-                .then(response => setAllUsers(response.data))
+                .then(response => {
+                    setAllUsers(response.data);
+                    localStorage.setItem('allUsers', JSON.stringify(response.data));
+                })
                 .catch(err => toast.error(`Error fetching all users: ${err.message}`));
         }
     }, [user]);
@@ -30,9 +35,11 @@ const UserProfile = () => {
         http.put(`/userview/${userId}/role`, { role })
             .then(response => {
                 toast.success(response.data.message);
-                setAllUsers(prevUsers => prevUsers.map(user => 
-                    user.id === userId ? { ...user, roles: role } : user
-                ));
+                const updatedUsers = allUsers.map(u =>
+                    u.id === userId ? { ...u, roles: role } : u
+                );
+                setAllUsers(updatedUsers);
+                localStorage.setItem('allUsers', JSON.stringify(updatedUsers));
             })
             .catch(err => toast.error(`Error updating user role: ${err.message}`));
     };
@@ -41,10 +48,9 @@ const UserProfile = () => {
         http.delete(`/userview/${userId}`)
             .then(response => {
                 toast.success(response.data.message);
-                setAllUsers(prevUsers => prevUsers.filter(user => user.id !== userId).map((user, index) => ({
-                    ...user,
-                    id: index + 1
-                })));
+                const updatedUsers = allUsers.filter(u => u.id !== userId);
+                setAllUsers(updatedUsers);
+                localStorage.setItem('allUsers', JSON.stringify(updatedUsers));
             })
             .catch(err => toast.error(`Error deleting user: ${err.message}`));
     };
@@ -66,7 +72,9 @@ const UserProfile = () => {
         http.post('/userview/users/add', newUser)
             .then(response => {
                 toast.success(response.data.message);
-                setAllUsers([...allUsers, response.data.user]);
+                const updatedUsers = [...allUsers, response.data.user];
+                setAllUsers(updatedUsers);
+                localStorage.setItem('allUsers', JSON.stringify(updatedUsers));
                 handleClose();
             })
             .catch(err => toast.error(`Error adding user: ${err.message}`));
@@ -75,7 +83,6 @@ const UserProfile = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <SideNavbar />
             <Box sx={{ flexGrow: 1, p: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%', mb: 2 }}>
                     <Typography variant="h5" sx={{ textAlign: 'center' }}>
@@ -100,7 +107,7 @@ const UserProfile = () => {
                             </TableHead>
                             <TableBody>
                                 {allUsers.map((user, index) => (
-                                    <TableRow key={index} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
+                                    <TableRow key={user.id} sx={{ '&:nth-of-type(odd)': { backgroundColor: '#f9f9f9' } }}>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>{index + 1}</TableCell>
                                         <TableCell sx={{ padding: '16px', fontSize: '1rem' }}>
                                             <Avatar src="/path/to/profile/pic" alt={user.name} />

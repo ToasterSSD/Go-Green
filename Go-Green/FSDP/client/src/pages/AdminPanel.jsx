@@ -12,7 +12,6 @@ import {
   Button,
 } from '@mui/material';
 import { Person } from '@mui/icons-material';
-import SideNavbar from '../components/SideNavbar';
 import http from '../http';
 
 const AdminPanel = () => {
@@ -52,7 +51,6 @@ const AdminPanel = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <SideNavbar />
       <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}

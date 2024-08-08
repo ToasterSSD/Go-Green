@@ -14,13 +14,14 @@ import {
   CssBaseline,
   CircularProgress
 } from "@mui/material";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import MyTheme from "./themes/MyTheme";
 import http from "./http";
 import UserContext from "./contexts/UserContext";
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
+import SideNavbar from "./components/SideNavbar";
 
 // Lazy loading pages
 const Home = lazy(() => import('./pages/Home'));
@@ -95,47 +96,71 @@ function App() {
     setSettingsOpen(false);
   };
 
+  const PrivateRoute = ({ children }) => {
+    return user && user.roles?.includes("ADMIN") ? children : <Navigate to="/login" />;
+  };
+
+  const MainContent = () => {
+    const location = useLocation();
+    const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname.startsWith('/profile') || location.pathname.startsWith('/categories') || location.pathname.startsWith('/feedback');
+    
+    return (
+      <>
+        {isAdminRoute && <SideNavbar />}
+        <Box sx={{ flex: 1, ml: isAdminRoute ? { sm: '240px', xs: '60px' } : '0px' }}>
+          <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
+            <Suspense fallback={<CircularProgress />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/announcement" element={<Announcement />} />
+                <Route path="/addtutorial" element={<AddTutorial />} />
+                <Route path="/edittutorial/:id" element={<EditTutorial />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/form" element={<MyForm />} />
+                <Route path="/chatarea" element={<ChatArea />} />
+                <Route path="/addannouncement" element={<AddAnnouncement />} />
+                <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
+                <Route path="/addfeedback" element={<AddFeedback />} />
+                <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
+                <Route path="/articles" element={<Articles />} />
+                <Route path="/public-articles" element={<PublicArticles />} />
+                <Route path="/addarticle" element={<AddArticle />} />
+                <Route path="/editarticle/:id" element={<EditArticle />} />
+                <Route path="/public-article/:id" element={<ArticleDetails />} />
+                <Route path="/learning" element={<LearningTopics />} />
+                <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+                <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+                <Route path="/learning/:id" element={<LearningTopicDetails />} />
+                <Route path="/public-learning" element={<PublicLearningTopics />} />
+                <Route path="/quiz" element={<QuizPage />} />
+                <Route path="/admin" element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+                <Route path="/announcement/:id" element={<MoreAnnouncement />} />
+                <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
+                <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+              </Routes>
+            </Suspense>
+          </Container>
+        </Box>
+      </>
+    );
+  };
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={MyTheme}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              minHeight: "100vh",
-              overflow: "hidden" // Prevent scrolling
-            }}
-          >
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", overflow: "hidden" }}>
             <CssBaseline />
-            <AppBar
-              position="static"
-              sx={{ backgroundColor: "#9CBA9A", width: "100vw", overflow: "hidden" }} // Ensure no overflow
-            >
+            <AppBar position="static" sx={{ backgroundColor: "#9CBA9A", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      width: "auto",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <Link
-                      to="/"
-                      style={{
-                        textDecoration: "none",
-                        color: "inherit",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src="/uploads/New logo.png"
-                        alt="Go-Green Logo"
-                        style={{ height: "40px", marginRight: "10px" }}
-                      />
+                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
+                    <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
+                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
                         Go <span style={{ color: "#06F92D" }}>Green</span>!
                       </Typography>
@@ -143,139 +168,47 @@ function App() {
                   </Box>
                   <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink
-                        component={Link}
-                        to="/articles"
-                        underline="none"
-                        color="inherit"
-                        sx={{ mx: 2 }}
-                      >
+                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                         NewsAdmin
                       </MuiLink>
                     )}
-                    <MuiLink
-                      component={Link}
-                      to="/public-articles"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                       News
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/announcement"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Announcements
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/chatarea"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Chat
                     </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink
-                        component={Link}
-                        to="/learning"
-                        underline="none"
-                        color="inherit"
-                        sx={{ mx: 2 }}
-                      >
+                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                         LearningAdmin
                       </MuiLink>
                     )}
-                    <MuiLink
-                      component={Link}
-                      to="/public-learning"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Learning
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/games"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Games
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/donations"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/donations" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Donations
                     </MuiLink>
-                    <MuiLink
-                      component={Link}
-                      to="/feedback"
-                      underline="none"
-                      color="inherit"
-                      sx={{ mx: 2 }}
-                    >
+                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Feedback
                     </MuiLink>
                   </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      ml: 4,
-                      width: "auto",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    <Box
-                      onClick={handleMenuOpen}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                        ml: 2,
-                      }}
-                    >
-                      <Avatar
-                        alt={user?.name || "Guest"}
-                        src={user ? "/static/images/avatar/1.jpg" : ""}
-                        sx={{ width: 40, height: 40 }}
-                      />
-                      <Typography sx={{ ml: 1 }}>
-                        {user?.name || "Guest"}
-                      </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", ml: 4, width: "auto", whiteSpace: "nowrap" }}>
+                    <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer", ml: 2 }}>
+                      <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
+                      <Typography sx={{ ml: 1 }}>{user?.name || "Guest"}</Typography>
                     </Box>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
-                      onClose={handleMenuClose}
-                      PaperProps={{
-                        sx: { borderRadius: "16px", mt: 1, minWidth: 200 },
-                      }}
-                    >
-                      {(user?.roles?.includes("ADMIN") ||
-                        user?.roles?.includes("USER")) && (
-                        <MenuItem onClick={handleSettingsOpen}>
-                          Settings
-                        </MenuItem>
-                      )}
+                    <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose} PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}>
+                      {(user?.roles?.includes("ADMIN") || user?.roles?.includes("USER")) && <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>}
                       {user?.roles?.includes("ADMIN") && (
                         <>
-                          <MenuItem
-                            component={Link}
-                            to="/admin"
-                            onClick={handleMenuClose}
-                          >
+                          <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
                             Admin Panel
                           </MenuItem>
                           <Divider />
@@ -285,18 +218,10 @@ function App() {
                         <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       ) : (
                         <>
-                          <MenuItem
-                            component={Link}
-                            to="/register"
-                            onClick={handleMenuClose}
-                          >
+                          <MenuItem component={Link} to="/register" onClick={handleMenuClose}>
                             Register
                           </MenuItem>
-                          <MenuItem
-                            component={Link}
-                            to="/login"
-                            onClick={handleMenuClose}
-                          >
+                          <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
                             Login
                           </MenuItem>
                         </>
@@ -306,116 +231,14 @@ function App() {
                 </Toolbar>
               </Container>
             </AppBar>
-            <Box sx={{ flex: 1 }}>
-              <Container
-                className={settingsOpen ? "blurred" : ""}
-                sx={{ mt: 4 }}
-              >
-                <Suspense fallback={<CircularProgress />}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/announcement" element={<Announcement />} />
-                    <Route path="/addtutorial" element={<AddTutorial />} />
-                    <Route
-                      path="/edittutorial/:id"
-                      element={<EditTutorial />}
-                    />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/form" element={<MyForm />} />
-                    <Route path="/chatarea" element={<ChatArea />} />
-                    <Route
-                      path="/addannouncement"
-                      element={<AddAnnouncement />}
-                    />
-                    <Route
-                      path="/editannouncement/:id"
-                      element={<EditAnnouncement />}
-                    />
-                    <Route path="/feedback" element={<Feedback />} />
-                    <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
-                    <Route path="/addfeedback" element={<AddFeedback />} />
-                    <Route
-                      path="/deletefeedback/:id"
-                      element={<DeleteFeedback />}
-                    />
-                    <Route path="/articles" element={<Articles />} />
-                    <Route
-                      path="/public-articles"
-                      element={<PublicArticles />}
-                    />
-                    <Route path="/addarticle" element={<AddArticle />} />
-                    <Route path="/editarticle/:id" element={<EditArticle />} />
-                    <Route
-                      path="/public-article/:id"
-                      element={<ArticleDetails />}
-                    />
-                    <Route path="/learning" element={<LearningTopics />} />
-                    <Route
-                      path="/add-learning-topic"
-                      element={<AddLearningTopic />}
-                    />
-                    <Route
-                      path="/edit-learning-topic/:id"
-                      element={<EditLearningTopic />}
-                    />
-                    <Route
-                      path="/learning/:id"
-                      element={<LearningTopicDetails />}
-                    />
-                    <Route
-                      path="/public-learning"
-                      element={<PublicLearningTopics />}
-                    />
-                    <Route path="/quiz" element={<QuizPage />} />
-                    <Route
-                      path="/admin"
-                      element={
-                        <PrivateRoute user={user}>
-                          <AdminPanel />
-                        </PrivateRoute>
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        <PrivateRoute user={user}>
-                          <UserProfile />
-                        </PrivateRoute>
-                      }
-                    />
-                    <Route
-                      path="/announcement/:id"
-                      element={<MoreAnnouncement />}
-                    />
-                    <Route
-                      path="/announcement-signup-step1/:id"
-                      element={<SignUpStep1 />}
-                    />
-                    <Route
-                      path="/announcement-signup-step2/:id"
-                      element={<SignUpStep2 />}
-                    />
-                  </Routes>
-                </Suspense>
-              </Container>
-            </Box>
+            <MainContent />
             <Footer />
           </Box>
         </ThemeProvider>
       </Router>
-      <SettingsModel
-        open={settingsOpen}
-        onClose={handleSettingsClose}
-        user={user}
-      />
+      <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
 }
-
-// Define the PrivateRoute component
-const PrivateRoute = ({ children, user }) => {
-  return user && user.roles?.includes("ADMIN") ? children : <Navigate to="/login" />;
-};
 
 export default App;

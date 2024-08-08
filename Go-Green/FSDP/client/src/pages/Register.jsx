@@ -7,8 +7,6 @@ import {
   Card,
   CardContent,
   CardMedia,
-  FormControlLabel,
-  Checkbox,
   IconButton,
   InputAdornment,
   Dialog,
@@ -54,7 +52,6 @@ function Register() {
         confirmPassword: yup.string().trim()
             .required('Confirm password is required')
             .oneOf([yup.ref('password')], 'Passwords must match'),
-        rememberMe: yup.boolean()
     });
 
     const formik = useFormik({
@@ -63,7 +60,6 @@ function Register() {
             email: "",
             password: "",
             confirmPassword: "",
-            rememberMe: false
         },
         validationSchema: validationSchema,
         validateOnChange: true,
@@ -266,11 +262,6 @@ function Register() {
                                 )
                             }}
                         />
-                        <FormControlLabel
-                            control={<Checkbox name="rememberMe" checked={formik.values.rememberMe} onChange={formik.handleChange} />}
-                            label="Remember Me"
-                            sx={{ mt: 2, color: '#000' }}
-                        />
                         <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: isAdmin ? '#555' : '#1976d2', color: '#fff' }}
                             type="submit">
                             Register
@@ -278,7 +269,7 @@ function Register() {
                     </Box>
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                         <Typography variant="body2">
-                            If you have an account, <MuiLink component="button" variant="body2" onClick={() => navigate('/login')}>login now!</MuiLink>
+                            If you have an account, <MuiLink component="button" variant="body2" onClick={() => navigate('/login')} sx={{ color: 'blue' }}>login now!</MuiLink>
                         </Typography>
                     </Box>
                 </CardContent>

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import http from '../http';
@@ -118,6 +118,9 @@ function Login() {
                     <Button fullWidth variant="text" sx={{ mt: 2 }} onClick={() => navigate("/forgot-password")}>
                         Forgot Password?
                     </Button>
+                    <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+                        {"Don't have an account? "} <MuiLink component={Link} to="/register" sx={{ color: 'blue' }}>Create one now!</MuiLink>
+                    </Typography>
                 </CardContent>
             </Card>
             <ToastContainer />
