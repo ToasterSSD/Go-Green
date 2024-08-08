@@ -92,8 +92,12 @@ function Register() {
     };
 
     const handleAdminToggle = () => {
-        setIsAdmin(true);
-        setIsModalOpen(true);
+        if (isAdmin) {
+            setIsAdmin(false);
+        } else {
+            setIsAdmin(true);
+            setIsModalOpen(true);
+        }
     };
 
     useEffect(() => {
@@ -101,6 +105,13 @@ function Register() {
             adminCodeInputRefs.current[0].focus();
         }
     }, [isModalOpen]);
+
+    useEffect(() => {
+        if (!isAdmin) {
+            const firstField = document.querySelector('input[name="name"]');
+            if (firstField) firstField.focus();
+        }
+    }, [isAdmin]);
 
     const handleAdminCodeChange = (index, value) => {
         const newCode = [...adminCode];
@@ -115,7 +126,7 @@ function Register() {
 
         // Check if the complete code is correct
         const code = newCode.join("");
-        if (code === "030605") {
+        if (code === import.meta.env.VITE_ADMIN_CODE) { // Use environment variable for Vite
             setIsModalOpen(false);
             setAdminCode(Array(6).fill(""));
             setAdminCodeError("");
@@ -124,7 +135,7 @@ function Register() {
 
     const handleAdminCodeSubmit = () => {
         const code = adminCode.join("");
-        if (code === "030605") {
+        if (code === import.meta.env.VITE_ADMIN_CODE) { // Use environment variable for Vite
             setIsModalOpen(false);
             setAdminCode(Array(6).fill(""));
             setAdminCodeError("");
@@ -188,6 +199,7 @@ function Register() {
                             }}
                             InputProps={{
                                 style: { color: '#000' },
+                                autoFocus: !isAdmin // Auto focus when switching to user registration
                             }}
                         />
                         <TextField
@@ -289,6 +301,7 @@ function Register() {
                                     inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
                                     error={Boolean(adminCodeError)}
                                     inputRef={(el) => adminCodeInputRefs.current[index] = el}
+                                    autoFocus={index === 0} // Auto focus the first input field
                                 />
                             </Grid>
                         ))}

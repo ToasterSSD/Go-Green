@@ -54,8 +54,6 @@ const UserProfile = lazy(() => import('./pages/UserProfile'));
 const SignUpStep1 = lazy(() => import('./pages/SignUpStep1'));
 const SignUpStep2 = lazy(() => import('./pages/SignUpStep2'));
 const MoreAnnouncement = lazy(() => import('./pages/More_Announcement'));
-const AddHome = lazy(() => import("./pages/AddHome"));
-const EditHome = lazy(() => import("./pages/EditHome"));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -143,8 +141,6 @@ function App() {
                 <Route path="/announcement/:id" element={<MoreAnnouncement />} />
                 <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
                 <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
-                <Route path="/add-home" element={<AddHome />} />
-                <Route path="/edithome/:id" element={<EditHome />} />
               </Routes>
             </Suspense>
           </Container>
