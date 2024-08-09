@@ -57,6 +57,9 @@ const gameRoutes = require("./routes/game");
 const extrauserinfoRoute = require("./routes/extrauserinfo");
 const HomeAddressRoute = require("./routes/HomeAddress");
 const PaymentRoute = require("./routes/Payment");
+const bookmarkRouter = require('./routes/bookmark');
+
+
 
 // Use routes
 app.use("/homepage", homepageRoutes);
@@ -74,6 +77,7 @@ app.use("/game", gameRoutes);
 app.use("/extrauserinfo", extrauserinfoRoute);
 app.use("/HomeAddress", HomeAddressRoute);
 app.use("/Payment", PaymentRoute);
+app.use('/bookmark', bookmarkRouter);
 
 // Simple route
 app.get("/", (req, res) => {
