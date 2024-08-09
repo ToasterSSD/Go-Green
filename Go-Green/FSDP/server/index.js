@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 
 // Enable CORS
 app.use(cors({
-    origin: process.env.CLIENT_URL
+    origin: process.env.CLIENT_URL,
+    credentials: true
 }));
 
 // Enable gzip compression
