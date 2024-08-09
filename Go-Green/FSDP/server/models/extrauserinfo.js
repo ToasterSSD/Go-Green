@@ -1,23 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
     const ExtraUserInfo = sequelize.define("ExtraUserInfo", {
         displayName: {
-            type: DataTypes.STRING(100),
-            allowNull: true,
+            type: DataTypes.STRING(63),
+            allowNull: false,
         },
         phoneNumber: {
             type: DataTypes.STRING(20),
-            allowNull: true,
+            allowNull: false,
         },
         gender: {
             type: DataTypes.STRING(10),
-            allowNull: true,
-        },
-        homeAddress: {
-            type: DataTypes.STRING(255),
-            allowNull: true,
-        },
-        paymentInformation: {
-            type: DataTypes.STRING(255),
             allowNull: true,
         },
         age: {
@@ -30,9 +22,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         socialMedia: {
             type: DataTypes.STRING(255),
-            allowNull: true,
+            allowNull: false,
         },
         profilePicture: {
+            type: DataTypes.STRING(255),
+            allowNull: true,
+        },bio: {
             type: DataTypes.STRING(255),
             allowNull: true,
         },
@@ -48,4 +43,4 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     return ExtraUserInfo;
-}
+};

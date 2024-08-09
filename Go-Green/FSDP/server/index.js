@@ -54,6 +54,9 @@ const articleRoutes = require("./routes/article");
 const learningRoutes = require("./routes/learning");
 const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
+const extrauserinfoRoute = require("./routes/extrauserinfo");
+const HomeAddressRoute = require("./routes/HomeAddress");
+const PaymentRoute = require("./routes/Payment");
 
 // Use routes
 app.use("/homepage", homepageRoutes);
@@ -68,6 +71,9 @@ app.use("/article", articleRoutes);
 app.use("/learning", learningRoutes);
 app.use("/userview", userviewRoutes);
 app.use("/game", gameRoutes);
+app.use("/extrauserinfo", extrauserinfoRoute);
+app.use("/HomeAddress", HomeAddressRoute);
+app.use("/Payment", PaymentRoute);
 
 // Simple route
 app.get("/", (req, res) => {
