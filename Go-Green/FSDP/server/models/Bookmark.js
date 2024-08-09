@@ -1,4 +1,3 @@
-// models/bookmark.js
 module.exports = (sequelize, DataTypes) => {
     const Bookmark = sequelize.define(
         "Bookmark",
