@@ -41,38 +41,42 @@ const cache = (duration) => {
     };
 };
 
-// Import routes
-const homepageRoutes = require("./routes/homepage");
-const registrationRoutes = require("./routes/registration");
-const quizRoutes = require("./routes/quiz");
-const userRoutes = require("./routes/user");
-const feedbackRoutes = require("./routes/feedback");
-const fileRoutes = require("./routes/file");
-const announcementRoutes = require("./routes/announcement");
-const chatareaRoutes = require("./routes/chatarea");
-const articleRoutes = require("./routes/article");
-const learningRoutes = require("./routes/learning");
-const userviewRoutes = require("./routes/userview");
-const gameRoutes = require("./routes/game");
-
-// Use routes
-app.use("/homepage", homepageRoutes);
-app.use("/api/registration", registrationRoutes);
-app.use("/quiz", quizRoutes);
-app.use("/user", userRoutes);
-app.use("/feedback", feedbackRoutes);
-app.use("/file", fileRoutes);
-app.use("/announcement", announcementRoutes);
-app.use("/chatarea", chatareaRoutes);
-app.use("/article", articleRoutes);
-app.use("/learning", learningRoutes);
-app.use("/userview", userviewRoutes);
-app.use("/game", gameRoutes);
-
-// Simple route
-app.get("/", (req, res) => {
-    res.send("Welcome to Go Green!");
+// Lazy load routes
+app.use('/api/registration', (req, res, next) => {
+    require('./routes/registration')(req, res, next);
 });
+app.use('/quiz', (req, res, next) => {
+    require('./routes/quiz')(req, res, next);
+});
+app.use("/user", (req, res, next) => {
+    require('./routes/user')(req, res, next);
+});
+
+app.use("/feedback", (req, res, next) => {
+    require('./routes/feedback')(req, res, next);
+});
+app.use("/file", (req, res, next) => {
+    require('./routes/file')(req, res, next);
+});
+app.use("/announcement", (req, res, next) => {
+    require('./routes/announcement')(req, res, next);
+});
+app.use("/chatarea", (req, res, next) => {
+    require('./routes/chatarea')(req, res, next);
+});
+app.use("/article", (req, res, next) => {
+    require('./routes/article')(req, res, next);
+});
+app.use("/learning", (req, res, next) => {
+    require('./routes/learning')(req, res, next);
+});
+app.use("/userview", (req, res, next) => {
+    require('./routes/userview')(req, res, next);
+});
+app.use("/game", (req, res, next) => {
+    require('./routes/game')(req, res, next);
+});
+
 
 // Route for public learning topics
 app.get('/public-learning-topics', cache(10), (req, res) => {
@@ -84,20 +88,15 @@ app.get('/public-articles', cache(10), (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
 });
 
-// Handle 404 for undefined routes
-app.use((req, res, next) => {
-    res.status(404).send("Route not found");
-});
-
-// Start the server
 const db = require('./models');
 db.sequelize.sync({ alter: true })
     .then(() => {
-        let port = process.env.APP_PORT || 3001;
+        let port = process.env.APP_PORT;
+
         app.listen(port, () => {
             console.log(`⚡ Server running on http://localhost:${port}`);
         });
     })
     .catch((err) => {
-        console.error("Failed to sync database:", err);
+        console.log(err);
     });

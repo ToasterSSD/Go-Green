@@ -11,7 +11,7 @@ function Home() {
   useEffect(() => {
     // Fetch the homepage from the backend
     http
-      .get("/homepage")
+      .get("/homepage/")
       .then((response) => {
         console.log("Fetched homepage:", response.data); // Log the fetched data
         setFeatures(response.data);

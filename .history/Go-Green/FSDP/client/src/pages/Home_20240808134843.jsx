@@ -9,16 +9,16 @@ function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the homepage from the backend
+    // Fetch the content from the backend
     http
-      .get("/homepage")
+      .get("/content")
       .then((response) => {
-        console.log("Fetched homepage:", response.data); // Log the fetched data
+        console.log("Fetched content:", response.data); // Log the fetched data
         setFeatures(response.data);
       })
       .catch((error) => {
-        console.error("Error fetching homepage:", error);
-        setError("Failed to fetch homepage. Please try again later.");
+        console.error("Error fetching content:", error);
+        setError("Failed to fetch content. Please try again later.");
       });
   }, []);
 

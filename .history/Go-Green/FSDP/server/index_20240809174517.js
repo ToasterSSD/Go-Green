@@ -1,44 +1,46 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const compression = require('compression');
-const mcache = require('memory-cache');
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const path = require("path");
+const compression = require("compression");
+const mcache = require("memory-cache");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(bodyParser.json());
 
 // Enable CORS
-app.use(cors({
+app.use(
+  cors({
     origin: process.env.CLIENT_URL,
-    credentials: true
-}));
+    credentials: true,
+  })
+);
 
 // Enable gzip compression
 app.use(compression());
 
 // Caching middleware
 const cache = (duration) => {
-    return (req, res, next) => {
-        let key = '__express__' + req.originalUrl || req.url;
-        let cachedBody = mcache.get(key);
-        if (cachedBody) {
-            res.send(cachedBody);
-            return;
-        } else {
-            res.sendResponse = res.send;
-            res.send = (body) => {
-                mcache.put(key, body, duration * 1000);
-                res.sendResponse(body);
-            };
-            next();
-        }
-    };
+  return (req, res, next) => {
+    let key = "__express__" + req.originalUrl || req.url;
+    let cachedBody = mcache.get(key);
+    if (cachedBody) {
+      res.send(cachedBody);
+      return;
+    } else {
+      res.sendResponse = res.send;
+      res.send = (body) => {
+        mcache.put(key, body, duration * 1000);
+        res.sendResponse(body);
+      };
+      next();
+    }
+  };
 };
 
 // Import routes
@@ -56,7 +58,7 @@ const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
 
 // Use routes
-app.use("/homepage", homepageRoutes);
+app.use("/", homepageRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/quiz", quizRoutes);
 app.use("/user", userRoutes);
@@ -71,33 +73,34 @@ app.use("/game", gameRoutes);
 
 // Simple route
 app.get("/", (req, res) => {
-    res.send("Welcome to Go Green!");
+  res.send("Welcome to Go Green!");
 });
 
 // Route for public learning topics
-app.get('/public-learning-topics', cache(10), (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
+app.get("/public-learning-topics", cache(10), (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html")); // Adjust the path as needed
 });
 
 // Route for public articles
-app.get('/public-articles', cache(10), (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Adjust the path as needed
+app.get("/public-articles", cache(10), (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html")); // Adjust the path as needed
 });
 
 // Handle 404 for undefined routes
 app.use((req, res, next) => {
-    res.status(404).send("Route not found");
+  res.status(404).send("Route not found");
 });
 
 // Start the server
-const db = require('./models');
-db.sequelize.sync({ alter: true })
-    .then(() => {
-        let port = process.env.APP_PORT || 3001;
-        app.listen(port, () => {
-            console.log(`⚡ Server running on http://localhost:${port}`);
-        });
-    })
-    .catch((err) => {
-        console.error("Failed to sync database:", err);
+const db = require("./models");
+db.sequelize
+  .sync({ alter: true })
+  .then(() => {
+    let port = process.env.APP_PORT || 3001;
+    app.listen(port, () => {
+      console.log(`⚡ Server running on http://localhost:${port}`);
     });
+  })
+  .catch((err) => {
+    console.error("Failed to sync database:", err);
+  });

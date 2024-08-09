@@ -56,7 +56,7 @@ const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
 
 // Use routes
-app.use("/homepage", homepageRoutes);
+app.use("/", homepageRoutes);
 app.use("/api/registration", registrationRoutes);
 app.use("/quiz", quizRoutes);
 app.use("/user", userRoutes);
