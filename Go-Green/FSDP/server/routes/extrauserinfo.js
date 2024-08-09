@@ -51,56 +51,28 @@ const schema = yup.object().shape({
     bio: yup.string().max(255),
 });
 
-// Create ExtraUserInfo with file upload
-router.post('/', validateToken, upload.single('profilePicture'), async (req, res) => {
+// PUT method to update all ExtraUserInfo fields by userId
+router.put('/:userId', validateToken, upload.single('profilePicture'), async (req, res) => {
     try {
-        let data = await schema.validate(req.body);
-        data.userId = req.user.id;
-
-        if (req.file) {
-            data.profilePicture = `/uploads/${req.file.filename}`; // Store the file path relative to public folder
-        }
-
-        const extraInfo = await ExtraUserInfo.create(data);
-        res.status(201).json(extraInfo);
-    } catch (error) {
-        if (error.name === 'MulterError') {
-            return res.status(400).json({ errors: [error.message] });
-        }
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Update ExtraUserInfo fields by userId
-router.put('/:userId/:field?', validateToken, upload.single('profilePicture'), async (req, res) => {
-    try {
-        const { userId, field } = req.params;
+        const { userId } = req.params;
         const extraInfo = await ExtraUserInfo.findOne({ where: { userId } });
 
         if (!extraInfo) {
             return res.status(404).json({ error: 'Extra user info not found' });
         }
 
-        const updateData = req.body;
+        let updateData = req.body;
 
-        if (field) {
-            if (field === 'profilePicture' && req.file) {
-                updateData[field] = `/uploads/${req.file.filename}`;
-            } else if (schema.fields[field]) {
-                await schema.validateAt(field, updateData); // Validate individual field
-            } else {
-                return res.status(400).json({ error: 'Invalid field' });
-            }
-
-            await extraInfo.update({ [field]: updateData[field] });
-        } else {
-            if (req.file) {
-                updateData.profilePicture = `/uploads/${req.file.filename}`;
-            }
-
-            await schema.validate(updateData);
-            await extraInfo.update(updateData);
+        // Handle file upload
+        if (req.file) {
+            updateData.profilePicture = `/uploads/${req.file.filename}`;
         }
+
+        // Validate the entire update data against the schema
+        await schema.validate(updateData);
+
+        // Update the entire record
+        await extraInfo.update(updateData);
 
         res.json(extraInfo);
     } catch (error) {
@@ -110,6 +82,8 @@ router.put('/:userId/:field?', validateToken, upload.single('profilePicture'), a
         res.status(400).json({ error: error.message });
     }
 });
+
+// Existing routes...
 
 // Get ExtraUserInfo by userId or by individual fields
 router.get('/:userId/:field?', validateToken, async (req, res) => {

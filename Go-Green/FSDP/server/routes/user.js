@@ -93,6 +93,19 @@ router.post("/login", async (req, res) => {
         res.status(400).json({ errors: err.errors || err.message });
     }
 });
+router.put('/update-email', validateToken, async (req, res) => {
+    try {
+        const { email } = await emailValidationSchema.validate(req.body);
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser && existingUser.id !== req.user.id) {
+            return res.status(400).json({ message: 'Email is already in use by another account.' });
+        }
+        await User.update({ email }, { where: { id: req.user.id } });
+        res.json({ message: 'Email updated successfully.' });
+    } catch (err) {
+        res.status(400).json({ errors: err.errors || err.message });
+    }
+});
 
 router.get("/auth", validateToken, (req, res) => {
     let userInfo = {
