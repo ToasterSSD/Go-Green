@@ -55,6 +55,9 @@ const learningRoutes = require("./routes/learning");
 const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
 const bookmarkRouter = require('./routes/bookmark');
+const extrauserinfoRoutes = require("./routes/extrauserinfo");
+const PaymentRoutes = require("./routes/Payment");
+const HomeAddressRoutes = require("./routes/HomeAddress");
 
 // Use routes
 app.use("/homepage", homepageRoutes);
@@ -69,6 +72,9 @@ app.use("/article", articleRoutes);
 app.use("/learning", learningRoutes);
 app.use("/userview", userviewRoutes);
 app.use("/game", gameRoutes);
+app.use("/extrauserinfo", extrauserinfoRoutes);
+app.use("/Payment", PaymentRoutes);
+app.use("/HomeAddress", HomeAddressRoutes);
 
 
 
