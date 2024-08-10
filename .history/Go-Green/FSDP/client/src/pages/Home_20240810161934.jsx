@@ -34,8 +34,11 @@ function HomeCard({ feature, user }) {
             flex: "1 0 auto",
             display: "flex",
             flexDirection: "column",
-            overflow: "hidden", // Ensure content doesn't overflow
-            maxWidth: "calc(100% - 260px)", // Ensure the content box respects the image width
+            whiteSpace: "normal", // Ensure text wraps
+            wordWrap: "break-word", // Break long words
+            overflow: "hidden", // Prevent overflow
+            maxWidth: "100%", // Ensure it doesn't overflow the parent
+            display: "block", // Ensure it's treated as a block-level element
           }}
         >
           <Box
@@ -46,7 +49,7 @@ function HomeCard({ feature, user }) {
               mb: 1,
             }}
           >
-            <Typography variant="h5" component="div" noWrap>
+            <Typography variant="h5" component="div">
               {feature.title}
             </Typography>
             {user?.roles.includes("ADMIN") && (
@@ -63,10 +66,11 @@ function HomeCard({ feature, user }) {
             sx={{
               mt: 1,
               mb: 2,
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              overflow: "hidden",
+              whiteSpace: "normal !important", // Force text to wrap
+              wordWrap: "break-word !important", // Break long words
+              overflow: "hidden !important", // Prevent overflow
+              maxWidth: "100% !important", // Ensure it doesn't overflow the parent
+              display: "block !important", // Ensure it's treated as a block-level element
             }}
           >
             {feature.description}

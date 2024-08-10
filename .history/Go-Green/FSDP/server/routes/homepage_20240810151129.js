@@ -111,7 +111,7 @@ router.put("/:id", validateToken, checkAdminRole, async (req, res) => {
 });
 
 // Delete homepage content via id
-router.delete("/:id", validateToken, checkAdminRole, async (req, res) => {
+router.delete("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
   let homepage = await Homepage.findByPk(id);
   if (!homepage) {

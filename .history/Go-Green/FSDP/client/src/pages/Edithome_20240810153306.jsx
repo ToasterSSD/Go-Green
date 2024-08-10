@@ -195,7 +195,7 @@
                   fullWidth
                   margin="dense"
                   autoComplete="off"
-                  label="Routing Name to selected page (caps sensitive)"
+                  label="Route to ? (caps sensitive)"
                   name="buttonText"
                   value={formik.values.buttonText}
                   onChange={formik.handleChange}

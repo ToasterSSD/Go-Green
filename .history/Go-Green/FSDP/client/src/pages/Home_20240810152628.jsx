@@ -30,51 +30,22 @@ function HomeCard({ feature, user }) {
           alt={feature.title}
         />
         <CardContent
-          sx={{
-            flex: "1 0 auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden", // Ensure content doesn't overflow
-            maxWidth: "calc(100% - 260px)", // Ensure the content box respects the image width
-          }}
+          sx={{ flex: "1 0 auto", display: "flex", flexDirection: "column" }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              mb: 1,
-            }}
-          >
-            <Typography variant="h5" component="div" noWrap>
-              {feature.title}
-            </Typography>
-            {user?.roles.includes("ADMIN") && (
-              <Link to={`/edit-home/${feature.id}`}>
-                <IconButton color="primary">
-                  <Edit />
-                </IconButton>
-              </Link>
-            )}
-          </Box>
+          <Typography variant="h5" component="div">
+            {feature.title}
+          </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{
-              mt: 1,
-              mb: 2,
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              overflow: "hidden",
-            }}
+            sx={{ mt: 1, mb: 2 }}
           >
             {feature.description}
           </Typography>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               alignItems: "center",
               mt: "auto",
             }}
@@ -88,6 +59,13 @@ function HomeCard({ feature, user }) {
             >
               {feature.buttonText || "Learn More"}
             </Button>
+            {user?.roles.includes("ADMIN") && (
+              <Link to={`/edit-home/${feature.id}`}>
+                <IconButton color="primary">
+                  <Edit />
+                </IconButton>
+              </Link>
+            )}
           </Box>
         </CardContent>
       </Card>

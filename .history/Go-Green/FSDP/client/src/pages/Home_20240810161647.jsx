@@ -15,13 +15,15 @@ import UserContext from "../contexts/UserContext";
 import HeaderWithBackground from "../components/HeaderWithBackground";
 import http from "../http";
 
-function HomeCard({ feature, user }) {
+function HomeCard({ feature, user, style }) {
   const imageUrl = feature.imageFile
     ? `${import.meta.env.VITE_FILE_BASE_URL}${feature.imageFile}`
     : "/uploads/placeholder.jpg"; // Use placeholder image if no imageFile
 
+  console.log("HomeCard rendered with feature:", feature); // Debugging log
+
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} style={style}>
       <Card sx={{ display: "flex", mb: 3 }}>
         <CardMedia
           component="img"
@@ -30,13 +32,7 @@ function HomeCard({ feature, user }) {
           alt={feature.title}
         />
         <CardContent
-          sx={{
-            flex: "1 0 auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden", // Ensure content doesn't overflow
-            maxWidth: "calc(100% - 260px)", // Ensure the content box respects the image width
-          }}
+          sx={{ flex: "1 0 auto", display: "flex", flexDirection: "column" }}
         >
           <Box
             sx={{
@@ -46,7 +42,7 @@ function HomeCard({ feature, user }) {
               mb: 1,
             }}
           >
-            <Typography variant="h5" component="div" noWrap>
+            <Typography variant="h5" component="div">
               {feature.title}
             </Typography>
             {user?.roles.includes("ADMIN") && (
@@ -60,14 +56,7 @@ function HomeCard({ feature, user }) {
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{
-              mt: 1,
-              mb: 2,
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              overflow: "hidden",
-            }}
+            sx={{ mt: 1, mb: 2 }}
           >
             {feature.description}
           </Typography>
@@ -111,7 +100,9 @@ function Home() {
         title="Home Page"
         backgroundImage="/uploads/homepage.jpg" // Path to your background image
       />
-      <Box sx={{ textAlign: "center", mt: 5 }}>
+      <Box sx={{ textAlign: "center", mt: 5, backgroundColor: "yellow" }}>
+        {" "}
+        {/* Test background color */}
         <Typography variant="h2" gutterBottom>
           About Go <span style={{ color: "green" }}>Green</span>
         </Typography>
@@ -138,7 +129,12 @@ function Home() {
       )}
       <Grid container spacing={4} sx={{ mt: 5 }}>
         {features.map((feature) => (
-          <HomeCard key={feature.id} feature={feature} user={user} />
+          <HomeCard
+            key={feature.id}
+            feature={feature}
+            user={user}
+            style={{ border: "5px solid red", padding: "10px" }} // Test border style
+          />
         ))}
       </Grid>
     </Box>

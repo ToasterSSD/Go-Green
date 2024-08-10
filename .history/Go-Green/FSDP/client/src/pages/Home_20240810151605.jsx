@@ -6,49 +6,45 @@ import {
   Grid,
   Card,
   CardContent,
-  CardMedia,
   IconButton,
   Button,
 } from "@mui/material";
-import { Edit, ArrowForward } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import UserContext from "../contexts/UserContext";
 import HeaderWithBackground from "../components/HeaderWithBackground";
 import http from "../http";
 
 function HomeCard({ feature, user }) {
-  const imageUrl = feature.imageFile
-    ? `${import.meta.env.VITE_FILE_BASE_URL}${feature.imageFile}`
-    : "/uploads/placeholder.jpg"; // Use placeholder image if no imageFile
-
   return (
-    <Grid item xs={12}>
-      <Card sx={{ display: "flex", mb: 3 }}>
-        <CardMedia
-          component="img"
-          sx={{ width: 250, objectFit: "cover" }}
-          image={imageUrl}
-          alt={feature.title}
-        />
-        <CardContent
-          sx={{
-            flex: "1 0 auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden", // Ensure content doesn't overflow
-            maxWidth: "calc(100% - 260px)", // Ensure the content box respects the image width
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              mb: 1,
-            }}
-          >
-            <Typography variant="h5" component="div" noWrap>
-              {feature.title}
-            </Typography>
+    <Grid item xs={12} md={6} lg={4}>
+      <Card
+        sx={{ minHeight: "300px", display: "flex", flexDirection: "column" }}
+      >
+        {feature.imageFile && (
+          <Box sx={{ flexGrow: 1, overflow: "hidden" }}>
+            <img
+              src={`${import.meta.env.VITE_FILE_BASE_URL}${feature.imageFile}`}
+              alt={feature.title}
+              style={{ width: "100%", height: "auto" }}
+            />
+          </Box>
+        )}
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {feature.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {feature.description}
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Button
+              component={Link}
+              to={`/${feature.buttonText}`}
+              variant="contained"
+              color="primary"
+            >
+              {feature.buttonText || "Learn More"}
+            </Button>
             {user?.roles.includes("ADMIN") && (
               <Link to={`/edit-home/${feature.id}`}>
                 <IconButton color="primary">
@@ -56,38 +52,6 @@ function HomeCard({ feature, user }) {
                 </IconButton>
               </Link>
             )}
-          </Box>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              mt: 1,
-              mb: 2,
-              whiteSpace: "normal",
-              wordWrap: "break-word",
-              overflowWrap: "break-word",
-              overflow: "hidden",
-            }}
-          >
-            {feature.description}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              mt: "auto",
-            }}
-          >
-            <Button
-              component={Link}
-              to={`/${feature.buttonText}`}
-              variant="contained"
-              color="primary"
-              endIcon={<ArrowForward />}
-            >
-              {feature.buttonText || "Learn More"}
-            </Button>
           </Box>
         </CardContent>
       </Card>
