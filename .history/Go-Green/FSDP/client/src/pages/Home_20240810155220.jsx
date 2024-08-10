@@ -22,7 +22,7 @@ function HomeCard({ feature, user }) {
 
   return (
     <Grid item xs={12}>
-      <Card sx={{ display: "flex", mb: 3 }}>
+      <Card sx={{ display: "flex", mb: 3, position: "relative" }}>
         <CardMedia
           component="img"
           sx={{ width: 250, objectFit: "cover" }}
@@ -30,13 +30,7 @@ function HomeCard({ feature, user }) {
           alt={feature.title}
         />
         <CardContent
-          sx={{
-            flex: "1 0 auto",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden", // Ensure content doesn't overflow
-            maxWidth: "calc(100% - 260px)", // Ensure the content box respects the image width
-          }}
+          sx={{ flex: "1 0 auto", display: "flex", flexDirection: "column" }}
         >
           <Box
             sx={{
@@ -46,11 +40,28 @@ function HomeCard({ feature, user }) {
               mb: 1,
             }}
           >
-            <Typography variant="h5" component="div" noWrap>
+            <Typography
+              variant="h5"
+              component="div"
+              sx={{
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "calc(100% - 50px)", // Ensure the title does not overlap with the icon button
+              }}
+            >
               {feature.title}
             </Typography>
             {user?.roles.includes("ADMIN") && (
-              <Link to={`/edit-home/${feature.id}`}>
+              <Link
+                to={`/edit-home/${feature.id}`}
+                style={{
+                  textDecoration: "none",
+                  position: "absolute",
+                  top: 16,
+                  right: 16,
+                }}
+              >
                 <IconButton color="primary">
                   <Edit />
                 </IconButton>
@@ -65,8 +76,11 @@ function HomeCard({ feature, user }) {
               mb: 2,
               whiteSpace: "normal",
               wordWrap: "break-word",
-              overflowWrap: "break-word",
               overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 2, // Limits to 2 lines of text
             }}
           >
             {feature.description}
@@ -94,6 +108,7 @@ function HomeCard({ feature, user }) {
     </Grid>
   );
 }
+
 
 function Home() {
   const [features, setFeatures] = useState([]);
