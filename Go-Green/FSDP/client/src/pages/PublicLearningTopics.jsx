@@ -74,11 +74,11 @@ function PublicLearningTopics() {
                 </IconButton>
             </Box>
 
-            {isLoading ? (
+            {/* {isLoading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                     <CircularProgress />
                 </Box>
-            ) : (
+            ) : ( */}
                 <Grid container spacing={5}>
                     {learningTopicList.map((topic) => (
                         <Grid item xs={12} md={6} lg={4} key={topic.id}>
@@ -134,7 +134,7 @@ function PublicLearningTopics() {
                         </Grid>
                     ))}
                 </Grid>
-            )}
+            {/* )} */}
 
             <Box sx={{ mt: 4 }}>
                 <Typography variant="h5" sx={{ my: 1 }}>
