@@ -32,12 +32,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
     }, {
-        tableName: 'extra_user_info'
+        tableName: 'extrauserinfo'
     });
 
     ExtraUserInfo.associate = (models) => {
         ExtraUserInfo.belongsTo(models.User, {
             foreignKey: "userId",
+            as: "user",
             onDelete: "cascade"
         });
     };

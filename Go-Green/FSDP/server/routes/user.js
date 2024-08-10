@@ -93,6 +93,9 @@ router.post("/login", async (req, res) => {
         res.status(400).json({ errors: err.errors || err.message });
     }
 });
+router.get('/email', validateToken, (req, res) => {
+    res.json({ email: req.user.email });
+});
 
 router.get("/auth", validateToken, (req, res) => {
     let userInfo = {

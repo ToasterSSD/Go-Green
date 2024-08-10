@@ -12,7 +12,7 @@ router.post('/upload', validateToken, (req, res) => {
             res.status(400).json({ message: "No file uploaded" });
         }
         else {
-            res.json({ filename: req.file.filename });
+            res.json({ filename: req.file.filename, filePath: `/uploads/${req.file.filename}` });
         }
     })
 });
