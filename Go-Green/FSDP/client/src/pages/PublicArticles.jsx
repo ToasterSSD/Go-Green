@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton } from '@mui/material';
 import { AccessTime, Search, Clear } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import global from '../global';
+import HeaderWithBackground from "../components/HeaderWithBackground";
 
 function PublicArticles() {
     const [articleList, setArticleList] = useState([]);
@@ -47,8 +48,15 @@ function PublicArticles() {
 
     return (
         <Box>
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Articles
+            <HeaderWithBackground
+                title="Green News"
+                backgroundImage="/uploads/articleimage.jpg" // Path to your background image
+            />
+            <Typography variant="h4" sx={{ my: 2, fontFamily: 'Raleway, sans-serif' }}>
+                Stay Green, Stay Informed
+            </Typography>
+            <Typography variant="subtitle1" sx={{ mb: 2, fontFamily: 'open-sans, sans-serif' }}>
+                Discover and read positive news about environmentalism and sustainability revealing the latest developments in waste management technologies and sustainable practices. Stay informed with our daily updates and expert insights.
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -70,7 +78,15 @@ function PublicArticles() {
                 {articleList.map((article, i) => (
                     <Grid item xs={12} md={6} lg={4} key={article.id}>
                         <Link to={`/public-article/${article.id}`} style={{ textDecoration: 'none' }}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            <Card sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                height: '100%',
+                                transition: 'transform 0.3s ease',
+                                '&:hover': {
+                                    transform: 'scale(1.05)',
+                                },
+                            }}>
                                 {article.imageFile && (
                                     <Box className="aspect-ratio-container">
                                         <img
@@ -80,7 +96,7 @@ function PublicArticles() {
                                         />
                                     </Box>
                                 )}
-                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#F5F5F5' }}>
                                     <Box sx={{ display: 'flex', mb: 1 }}>
                                         <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
                                             {article.title}
@@ -114,6 +130,7 @@ function PublicArticles() {
 }
 
 export default PublicArticles;
+
 
 
 

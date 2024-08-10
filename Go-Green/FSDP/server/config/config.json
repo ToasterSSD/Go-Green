@@ -1,24 +1,23 @@
 {
-    "development": {
-      "username": "project",
-      "password": "project",
-      "database": "project",
-      "host": "127.0.0.1:3306",
-      "dialect": "mysql"
-    },
-    "test": {
-      "username": "project",
-      "password": "project",
-      "database": "project",
-      "host": "127.0.0.1:3306",
-      "dialect": "mysql"
-    },
-    "production": {
-      "username": "project",
-      "password": "project",
-      "database": "project",
-      "host": "127.0.0.1:3306",
-      "dialect": "mysql"
-    }
-
+  "development": {
+    "username": "jason_t",
+    "password": "mysql", 
+    "database": "jason_t",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "jason_t",
+    "password": "mysql", 
+    "database": "jason_t",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "jason_t",
+    "password": "mysql", 
+    "database": "jason_t",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   }
+}

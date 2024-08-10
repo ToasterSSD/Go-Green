@@ -12,8 +12,7 @@ router.post("/", validateToken, async (req, res) => {
   // Validate request body
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
-    content: yup.string().trim().min(3).max(1000).required(),
-    link: yup.string().trim().url(),
+    content: yup.string().trim().min(3).max(5000).required(),
   });
   try {
     data = await validationSchema.validate(data, { abortEarly: false });
@@ -23,6 +22,20 @@ router.post("/", validateToken, async (req, res) => {
     res.status(400).json({ errors: err.errors });
   }
 });
+
+router.get("/signups", async (req, res) => {
+  try {
+    const announcements = await Announcement.findAll({
+      where: { signUpButton: true },
+    });
+    res.json(announcements);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch announcements with sign-up button" });
+  }
+});
+
 
 // Show all announcements
 router.get("/", async (req, res) => {
@@ -71,8 +84,7 @@ router.put("/:id", validateToken, async (req, res) => {
     // Validate request body
     let validationSchema = yup.object({
       title: yup.string().trim().min(3).max(100),
-      content: yup.string().trim().min(3).max(500),
-      link: yup.string().trim().url(),
+      content: yup.string().trim().min(3).max(5000),
     });
     try {
       data = await validationSchema.validate(data, { abortEarly: false });

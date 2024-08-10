@@ -28,10 +28,10 @@ function EditArticle() {
 
     const formik = useFormik({
         initialValues: {
-            title: "",
-            category: "",
-            author: "",
-            content: ""
+            title: article ? article.title : "",
+            category: article ? article.category : "",
+            author: article ? article.author : "",
+            content: article ? article.content : ""
         },
         enableReinitialize: true,
         validationSchema: yup.object({
@@ -153,20 +153,25 @@ function EditArticle() {
                                 />
                                 <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                                 <Editor
-                                    apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                                    apiKey="cs4qd53jal9cfhagqejsavnjreib4rxp8fjetmervpkma4b5"
                                     value={formik.values.content}
                                     init={{
                                         height: 500,
-                                        menubar: false,
+                                        menubar: true,
                                         plugins: [
                                             'advlist autolink lists link image charmap print preview anchor',
                                             'searchreplace visualblocks code fullscreen',
-                                            'insertdatetime media table paste code help wordcount'
+                                            'insertdatetime media table paste code help wordcount',
+                                            'autosave format insert',
+                                            'emoticons hr pagebreak save'
                                         ],
                                         toolbar:
-                                            'undo redo | formatselect | bold italic backcolor | \
-                                            alignleft aligncenter alignright alignjustify | \
-                                            bullist numlist outdent indent | removeformat | help'
+                                            'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
+                                            alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                            forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                            fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl',
+                                        autosave_interval: "30s",
+                                        autosave_retention: "2m"
                                     }}
                                     onEditorChange={(content) => formik.setFieldValue('content', content)}
                                 />
@@ -236,6 +241,7 @@ function EditArticle() {
 }
 
 export default EditArticle;
+
 
 
 

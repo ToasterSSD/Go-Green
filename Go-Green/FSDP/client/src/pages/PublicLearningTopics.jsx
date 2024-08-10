@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, Card, CardContent, Input, IconButton } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button } from '@mui/material';
 import { AccessTime, Search, Clear } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
-import DOMPurify from 'dompurify';
 import global from '../global';
 
 function PublicLearningTopics() {
@@ -51,8 +50,11 @@ function PublicLearningTopics() {
             <Typography variant="h5" sx={{ my: 2 }}>
                 Learning Topics
             </Typography>
+            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                Dive into our exciting range of sustainability topics and discover how you can make a real difference for our planet—let's learn and grow together!
+            </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
                 <Input
                     value={search}
                     placeholder="Search"
@@ -71,7 +73,26 @@ function PublicLearningTopics() {
                 {learningTopicList.map((topic) => (
                     <Grid item xs={12} md={6} lg={4} key={topic.id}>
                         <Link to={`/learning/${topic.id}`} style={{ textDecoration: 'none' }}>
-                            <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                            <Card sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                height: '100%',
+                                position: 'relative',
+                                overflow: 'hidden',
+                                '&::after': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    left: 0,
+                                    bottom: 0,
+                                    width: '0%',
+                                    height: '4px',
+                                    backgroundColor: '#93DAAB',
+                                    transition: 'width 0.3s ease',
+                                },
+                                '&:hover::after': {
+                                    width: '100%',
+                                },
+                            }}>
                                 {topic.videoFile && (
                                     <Box className="aspect-ratio-container">
                                         <video controls style={{ width: '100%', height: '100%' }}>
@@ -80,7 +101,7 @@ function PublicLearningTopics() {
                                         </video>
                                     </Box>
                                 )}
-                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#E2F0E8' }}>
                                     <Box sx={{ display: 'flex', mb: 1 }}>
                                         <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold' }}>
                                             {topic.title}
@@ -103,10 +124,26 @@ function PublicLearningTopics() {
                     </Grid>
                 ))}
             </Grid>
+
+            <Box sx={{ mt: 4 }}>
+                <Typography variant="h5" sx={{ my: 1 }}>
+                    Quiz
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mb: 2,   }}>
+                    Challenge Your Eco-Wisdom!
+                </Typography>
+                <Link to="/quiz" style={{ textDecoration: 'none' }}>
+                    <Button variant="contained">Take the Quiz</Button>
+                </Link>
+            </Box>
         </Box>
     );
 }
 
 export default PublicLearningTopics;
+
+
+
+
 
 

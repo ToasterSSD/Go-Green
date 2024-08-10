@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import http from '../http';
@@ -11,22 +12,27 @@ import UserContext from '../contexts/UserContext';
 function Login() {
     const navigate = useNavigate();
     const { setUser } = useContext(UserContext);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const validationSchema = yup.object({
+        email: yup.string().trim()
+            .email('Enter a valid email')
+            .max(50, 'Email must be at most 50 characters')
+            .required('Email is required'),
+        password: yup.string().trim()
+            .min(8, 'Password must be at least 8 characters')
+            .max(50, 'Password must be at most 50 characters')
+            .required('Password is required')
+    });
 
     const formik = useFormik({
         initialValues: {
             email: "",
-            password: ""
+            password: "",
+            rememberMe: false
         },
-        validationSchema: yup.object({
-            email: yup.string().trim()
-                .email('Enter a valid email')
-                .max(50, 'Email must be at most 50 characters')
-                .required('Email is required'),
-            password: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
-                .max(50, 'Password must be at most 50 characters')
-                .required('Password is required')
-        }),
+        validationSchema: validationSchema,
+        validateOnChange: true,
         onSubmit: (data) => {
             data.email = data.email.trim().toLowerCase();
             data.password = data.password.trim();
@@ -42,44 +48,81 @@ function Login() {
         }
     });
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <Box sx={{
-            marginTop: 8,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: '#f4f6f8',
+            padding: '20px'
         }}>
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Login
-            </Typography>
-            <Box component="form" sx={{ maxWidth: '500px' }}
-                onSubmit={formik.handleSubmit}>
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Email"
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
+            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3 }}>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image="https://via.placeholder.com/500x140"
+                    alt="Card Image"
                 />
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Password"
-                    name="password" type="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
-                />
-                <Button fullWidth variant="contained" sx={{ mt: 2 }}
-                    type="submit">
-                    Login
-                </Button>
-            </Box>
-
+                <CardContent>
+                    <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
+                        Login
+                    </Typography>
+                    <Box component="form" onSubmit={formik.handleSubmit} noValidate>
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Email"
+                            name="email"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Password"
+                            name="password" type={showPassword ? "text" : "password"}
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox name="rememberMe" checked={formik.values.rememberMe} onChange={formik.handleChange} />}
+                            label="Remember Me"
+                            sx={{ mt: 2 }}
+                        />
+                        <Button fullWidth variant="contained" sx={{ mt: 2 }} type="submit">
+                            Login
+                        </Button>
+                    </Box>
+                    <Button fullWidth variant="text" sx={{ mt: 2 }} onClick={() => navigate("/forgot-password")}>
+                        Forgot Password?
+                    </Button>
+                    <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+                        {"Don't have an account? "} <MuiLink component={Link} to="/register" sx={{ color: 'blue' }}>Create one now!</MuiLink>
+                    </Typography>
+                </CardContent>
+            </Card>
             <ToastContainer />
         </Box>
     );

@@ -5,6 +5,7 @@ import { AccessTime, Search, Clear, Edit } from '@mui/icons-material';
 import http from '../http';
 import dayjs from 'dayjs';
 import global from '../global';
+import HeaderWithBackground from "../components/HeaderWithBackground";
 
 function Articles() {
     const [articleList, setArticleList] = useState([]);
@@ -54,6 +55,10 @@ function Articles() {
 
     return (
         <Box>
+         <HeaderWithBackground
+        title="News"
+        backgroundImage="/uploads/articleimage.jpg" // Path to your background image
+      />
             <Typography variant="h5" sx={{ my: 2 }}>
                 Articles
             </Typography>

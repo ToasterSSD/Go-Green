@@ -81,13 +81,25 @@ function AddLearningTopic() {
                         />
                         <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                         <Editor
-                            apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                            apiKey="cs4qd53jal9cfhagqejsavnjreib4rxp8fjetmervpkma4b5"
                             value={formik.values.content}
                             init={{
                                 height: 500,
-                                menubar: false,
-                                plugins: 'advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code fullscreen insertdatetime media table paste code help wordcount'.split(' '),
-                                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help'
+                                menubar: true,
+                                plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount',
+                                    'autosave format insert',
+                                    'emoticons hr pagebreak save'
+                                ],
+                                toolbar:
+                                    'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
+                                    alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                    forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                    fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl',
+                                autosave_interval: "30s",
+                                autosave_retention: "2m"
                             }}
                             onEditorChange={(content) => formik.setFieldValue('content', content)}
                         />
@@ -96,10 +108,15 @@ function AddLearningTopic() {
                                 {formik.errors.content}
                             </Typography>
                         ) : null}
-                        <Button variant="contained" component="label" sx={{ mt: 2 }}>
-                            Upload Video
-                            <input hidden accept="video/*" type="file" onChange={onFileChange} />
-                        </Button>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                            <Button variant="contained" component="label">
+                                Upload Video
+                                <input hidden accept="video/*" type="file" onChange={onFileChange} />
+                            </Button>
+                            <Button variant="contained" type="submit" sx={{ ml: 2 }}>
+                                Add
+                            </Button>
+                        </Box>
                         {videoFile && (
                             <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                                 <video controls style={{ width: '100%', height: 'auto' }}>
@@ -110,11 +127,6 @@ function AddLearningTopic() {
                         )}
                     </Grid>
                 </Grid>
-                <Box sx={{ mt: 2 }}>
-                    <Button variant="contained" type="submit">
-                        Add
-                    </Button>
-                </Box>
             </Box>
 
             <ToastContainer />
@@ -123,6 +135,7 @@ function AddLearningTopic() {
 }
 
 export default AddLearningTopic;
+
 
 
 

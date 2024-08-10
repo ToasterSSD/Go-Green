@@ -1,5 +1,22 @@
-import React from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  InputAdornment,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grid,
+  Link as MuiLink
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,109 +26,301 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
     const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [adminCode, setAdminCode] = useState(Array(6).fill(""));
+    const [adminCodeError, setAdminCodeError] = useState("");
+    const adminCodeInputRefs = useRef([]);
+
+    const validationSchema = yup.object({
+        name: yup.string().trim()
+            .min(3, 'Name must be at least 3 characters')
+            .max(50, 'Name must be at most 50 characters')
+            .required('Name is required')
+            .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+        email: yup.string().trim()
+            .email('Enter a valid email')
+            .max(50, 'Email must be at most 50 characters')
+            .required('Email is required'),
+        password: yup.string().trim()
+            .min(8, 'Password must be at least 8 characters')
+            .max(50, 'Password must be at most 50 characters')
+            .required('Password is required')
+            .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must have at least 1 letter and 1 number"),
+        confirmPassword: yup.string().trim()
+            .required('Confirm password is required')
+            .oneOf([yup.ref('password')], 'Passwords must match'),
+    });
 
     const formik = useFormik({
         initialValues: {
             name: "",
             email: "",
             password: "",
-            confirmPassword: ""
+            confirmPassword: "",
         },
-        validationSchema: yup.object({
-            name: yup.string().trim()
-                .min(3, 'Name must be at least 3 characters')
-                .max(50, 'Name must be at most 50 characters')
-                .required('Name is required')
-                .matches(/^[a-zA-Z '-,.]+$/,
-                    "Name only allow letters, spaces and characters: ' - , ."),
-            email: yup.string().trim()
-                .email('Enter a valid email')
-                .max(50, 'Email must be at most 50 characters')
-                .required('Email is required'),
-            password: yup.string().trim()
-                .min(8, 'Password must be at least 8 characters')
-                .max(50, 'Password must be at most 50 characters')
-                .required('Password is required')
-                .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                    "Password at least 1 letter and 1 number"),
-            confirmPassword: yup.string().trim()
-                .required('Confirm password is required')
-                .oneOf([yup.ref('password')], 'Passwords must match')
-        }),
+        validationSchema: validationSchema,
+        validateOnChange: true,
         onSubmit: (data) => {
             data.name = data.name.trim();
             data.email = data.email.trim().toLowerCase();
             data.password = data.password.trim();
-            http.post("/user/register", data)
+            const endpoint = isAdmin ? "/user/adminregister" : "/user/register";
+            data.roles = isAdmin ? 'ADMIN' : 'USER';
+            http.post(endpoint, data)
                 .then((res) => {
-                    console.log(res.data);
                     navigate("/login");
                 })
-                .catch(function (err) {
-                    toast.error(`${err.response.data.message}`);
+                .catch((err) => {
+                    if (err.response && err.response.data.message === 'Email is already in use.') {
+                        toast.error('Email is already in use.');
+                    } else {
+                        toast.error(`${err.response.data.message}`);
+                    }
                 });
         }
     });
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleClickShowConfirmPassword = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleAdminToggle = () => {
+        if (isAdmin) {
+            setIsAdmin(false);
+        } else {
+            setIsAdmin(true);
+            setIsModalOpen(true);
+        }
+    };
+
+    useEffect(() => {
+        if (isModalOpen && adminCodeInputRefs.current[0]) {
+            adminCodeInputRefs.current[0].focus();
+        }
+    }, [isModalOpen]);
+
+    useEffect(() => {
+        if (!isAdmin) {
+            const firstField = document.querySelector('input[name="name"]');
+            if (firstField) firstField.focus();
+        }
+    }, [isAdmin]);
+
+    const handleAdminCodeChange = (index, value) => {
+        const newCode = [...adminCode];
+        newCode[index] = value;
+        setAdminCode(newCode);
+
+        // Move to the next input field if the value is not empty
+        if (value !== "" && index < 5) {
+            const nextInput = adminCodeInputRefs.current[index + 1];
+            if (nextInput) nextInput.focus();
+        }
+
+        // Check if the complete code is correct
+        const code = newCode.join("");
+        if (code === import.meta.env.VITE_ADMIN_CODE) { // Use environment variable for Vite
+            setIsModalOpen(false);
+            setAdminCode(Array(6).fill(""));
+            setAdminCodeError("");
+        }
+    };
+
+    const handleAdminCodeSubmit = () => {
+        const code = adminCode.join("");
+        if (code === import.meta.env.VITE_ADMIN_CODE) { // Use environment variable for Vite
+            setIsModalOpen(false);
+            setAdminCode(Array(6).fill(""));
+            setAdminCodeError("");
+        } else {
+            setAdminCodeError("Incorrect code. Please try again.");
+        }
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setIsAdmin(false);
+        toast.error('Please input the correct admin code.');
+    };
+
     return (
         <Box sx={{
-            marginTop: 8,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center'
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: isAdmin ? '#808080' : '#f4f6f8',
+            padding: '20px'
         }}>
-            <Typography variant="h5" sx={{ my: 2 }}>
-                Register
-            </Typography>
-            <Box component="form" sx={{ maxWidth: '500px' }}
-                onSubmit={formik.handleSubmit}>
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Name"
-                    name="name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
+            <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3, backgroundColor: isAdmin ? '#A9A9A9' : '#fff', color: '#000' }}>
+                <CardMedia
+                    component="img"
+                    height="140"
+                    image="https://via.placeholder.com/500x140"
+                    alt="Card Image"
                 />
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Email"
-                    name="email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                />
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Password"
-                    name="password" type="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.password && Boolean(formik.errors.password)}
-                    helperText={formik.touched.password && formik.errors.password}
-                />
-                <TextField
-                    fullWidth margin="dense" autoComplete="off"
-                    label="Confirm Password"
-                    name="confirmPassword" type="password"
-                    value={formik.values.confirmPassword}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-                    helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-                />
-                <Button fullWidth variant="contained" sx={{ mt: 2 }}
-                    type="submit">
-                    Register
-                </Button>
-            </Box>
-
+                <CardContent>
+                    <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
+                        {isAdmin ? 'Admin Register' : 'User Register'}
+                    </Typography>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        sx={{
+                            mb: 2,
+                            bgcolor: isAdmin ? 'blue' : 'grey',
+                            color: '#fff',
+                            transition: 'background-color 0.3s ease',
+                            '&:hover': { bgcolor: isAdmin ? 'darkblue' : 'darkgrey' }
+                        }}
+                        onClick={handleAdminToggle}
+                    >
+                        {isAdmin ? 'Admin Register' : 'User Register'}
+                    </Button>
+                    <Box component="form" onSubmit={formik.handleSubmit} noValidate>
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Name"
+                            name="name"
+                            value={formik.values.name}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.name && Boolean(formik.errors.name)}
+                            helperText={formik.touched.name && formik.errors.name}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                                autoFocus: !isAdmin // Auto focus when switching to user registration
+                            }}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Email"
+                            name="email"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.email && Boolean(formik.errors.email)}
+                            helperText={formik.touched.email && formik.errors.email}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                            }}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Password"
+                            name="password" type={showPassword ? "text" : "password"}
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                            style={{ color: '#000' }}
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                        <TextField
+                            fullWidth margin="dense" autoComplete="off"
+                            label="Confirm Password"
+                            name="confirmPassword" type={showConfirmPassword ? "text" : "password"}
+                            value={formik.values.confirmPassword}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                            InputLabelProps={{
+                                style: { color: '#000' },
+                            }}
+                            InputProps={{
+                                style: { color: '#000' },
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowConfirmPassword}
+                                            edge="end"
+                                            style={{ color: '#000' }}
+                                        >
+                                            {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                        <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: isAdmin ? '#555' : '#1976d2', color: '#fff' }}
+                            type="submit">
+                            Register
+                        </Button>
+                    </Box>
+                    <Box sx={{ textAlign: 'center', mt: 2 }}>
+                        <Typography variant="body2">
+                            If you have an account, <MuiLink component="button" variant="body2" onClick={() => navigate('/login')} sx={{ color: 'blue' }}>login now!</MuiLink>
+                        </Typography>
+                    </Box>
+                </CardContent>
+            </Card>
             <ToastContainer />
+
+            <Dialog open={isModalOpen} onClose={handleModalClose}>
+                <DialogTitle>Admin Registration Code</DialogTitle>
+                <DialogContent>
+                    <Grid container spacing={1}>
+                        {adminCode.map((digit, index) => (
+                            <Grid item xs={2} key={index}>
+                                <TextField
+                                    id={`admin-code-${index}`}
+                                    value={digit}
+                                    onChange={(e) => handleAdminCodeChange(index, e.target.value)}
+                                    inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
+                                    error={Boolean(adminCodeError)}
+                                    inputRef={(el) => adminCodeInputRefs.current[index] = el}
+                                    autoFocus={index === 0} // Auto focus the first input field
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                    {adminCodeError && (
+                        <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+                            {adminCodeError}
+                        </Typography>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleAdminCodeSubmit} color="primary">
+                        Submit
+                    </Button>
+                    <Button onClick={handleModalClose} color="secondary">
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

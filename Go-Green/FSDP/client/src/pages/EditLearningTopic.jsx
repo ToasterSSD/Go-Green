@@ -90,10 +90,6 @@ function EditLearningTopic() {
         setVideoLinks(newVideoLinks);
     };
 
-    const addVideoLinkField = () => {
-        setVideoLinks([...videoLinks, '']);
-    };
-
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
@@ -138,20 +134,25 @@ function EditLearningTopic() {
                                 />
                                 <Typography variant="body1" sx={{ mt: 2, mb: 1 }}>Content</Typography>
                                 <Editor
-                                    apiKey="kehqc691ze20c4gfvdx0ygcfxqj44cnvihun8288yuumakuy"
+                                    apiKey="cs4qd53jal9cfhagqejsavnjreib4rxp8fjetmervpkma4b5"
                                     value={formik.values.content}
                                     init={{
                                         height: 500,
-                                        menubar: false,
+                                        menubar: true,
                                         plugins: [
                                             'advlist autolink lists link image charmap print preview anchor',
                                             'searchreplace visualblocks code fullscreen',
-                                            'insertdatetime media table paste code help wordcount'
+                                            'insertdatetime media table paste code help wordcount',
+                                            'autosave format insert',
+                                            'emoticons hr pagebreak save'
                                         ],
                                         toolbar:
-                                            'undo redo | formatselect | bold italic backcolor | \
-                                            alignleft aligncenter alignright alignjustify | \
-                                            bullist numlist outdent indent | removeformat | help'
+                                            'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | \
+                                            alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | \
+                                            forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | \
+                                            fullscreen preview save print | insertfile image media pageembed template link anchor codesample | ltr rtl',
+                                        autosave_interval: "30s",
+                                        autosave_retention: "2m"
                                     }}
                                     onEditorChange={(content) => formik.setFieldValue('content', content)}
                                 />
@@ -172,16 +173,22 @@ function EditLearningTopic() {
                                         helperText={formik.touched.videoLinks && formik.errors.videoLinks}
                                     />
                                 ))}
-                                <Button variant="contained" onClick={addVideoLinkField} sx={{ mt: 2 }}>
-                                    Add Another Video Link
-                                </Button>
 
-                                <Button variant="contained" component="label" sx={{ mt: 2 }}>
-                                    Upload Video
-                                    <input hidden accept="video/*" type="file" onChange={onFileChange} />
-                                </Button>
+                                <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                                    <Button variant="contained" component="label">
+                                        Upload Video
+                                        <input hidden accept="video/*" type="file" onChange={onFileChange} />
+                                    </Button>
+                                    <Button variant="contained" type="submit" sx={{ ml: 2 }}>
+                                        Update
+                                    </Button>
+                                    <Button variant="contained" sx={{ ml: 2 }} color="error"
+                                        onClick={handleOpen}>
+                                        Delete
+                                    </Button>
+                                </Box>
                                 {videoFile && (
-                                    <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
+                                    <Box className="aspect-ratio-container" sx={{ mt: 1, mb: 1 }}>
                                         <video controls style={{ width: '100%', height: 'auto' }}>
                                             <source src={URL.createObjectURL(videoFile)} type="video/mp4" />
                                             Your browser does not support the video tag.
@@ -190,15 +197,6 @@ function EditLearningTopic() {
                                 )}
                             </Grid>
                         </Grid>
-                        <Box sx={{ mt: 2 }}>
-                            <Button variant="contained" type="submit">
-                                Update
-                            </Button>
-                            <Button variant="contained" sx={{ ml: 2 }} color="error"
-                                onClick={handleOpen}>
-                                Delete
-                            </Button>
-                        </Box>
                     </Box>
                 )
             }
@@ -230,6 +228,11 @@ function EditLearningTopic() {
 }
 
 export default EditLearningTopic;
+
+
+
+
+
 
 
 

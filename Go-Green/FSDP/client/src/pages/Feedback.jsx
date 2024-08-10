@@ -21,6 +21,8 @@ import http from "../http";
 import dayjs from "dayjs";
 import UserContext from "../contexts/UserContext";
 import global from "../global";
+import HeaderWithBackground from "../components/HeaderWithBackground";
+
 
 function Feedback() {
   const [feedbackList, setFeedbackList] = useState([]);
@@ -61,6 +63,10 @@ function Feedback() {
 
   return (
     <Box>
+      <HeaderWithBackground
+        title="Feedback"
+        backgroundImage="/uploads/test.jpg" 
+      />
       <Typography variant="h5" sx={{ my: 2 }}>
         Feedback
       </Typography>

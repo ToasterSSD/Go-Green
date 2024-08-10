@@ -38,7 +38,8 @@ async function registerUser(req, res, role) {
         // Create user
         let result = await User.create(data);
         res.json({
-            message: `Email ${result.email} was registered successfully.`
+            message: `Email ${result.email} was registered successfully.`,
+            user: result
         });
     } catch (err) {
         res.status(400).json({ errors: err.errors || err.message });
@@ -51,6 +52,12 @@ router.post("/register", (req, res) => {
 
 router.post("/adminregister", (req, res) => {
     registerUser(req, res, 'ADMIN');
+});
+
+router.post("/users/add", validateToken, (req, res) => {
+    const { roles } = req.body;
+    const role = roles ? roles.toUpperCase() : 'USER';
+    registerUser(req, res, role);
 });
 
 router.post("/login", async (req, res) => {
@@ -104,6 +111,73 @@ router.get("/auth", validateToken, (req, res) => {
     res.json({
         user: userInfo
     });
+});
+
+// Get all users
+router.get("/", validateToken, async (req, res) => {
+    try {
+        const users = await User.findAll({ attributes: ['id', 'name', 'email', 'roles'] });
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ errors: err.message });
+    }
+});
+
+// Get user by ID
+router.get("/:id", validateToken, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.id, { attributes: ['id', 'name', 'email', 'roles'] });
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ errors: err.message });
+    }
+});
+
+// Update user by ID
+router.put("/:id", validateToken, async (req, res) => {
+    const data = req.body;
+    let validationSchema = yup.object({
+        name: yup.string().trim().min(3).max(50)
+            .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+        email: yup.string().trim().lowercase().email().max(50),
+        password: yup.string().trim().min(8).max(50)
+            .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must contain at least 1 letter and 1 number")
+    });
+    try {
+        const validData = await validationSchema.validate(data, { abortEarly: false });
+        if (validData.password) {
+            validData.password = await bcrypt.hash(validData.password + PEPPER, 10);
+        }
+        await User.update(validData, { where: { id: req.params.id } });
+        res.json({ message: "User updated successfully" });
+    } catch (err) {
+        res.status(400).json({ errors: err.errors });
+    }
+});
+
+// Update user role by ID
+router.put("/:id/role", validateToken, async (req, res) => {
+    const { role } = req.body;
+    if (!['USER', 'ADMIN'].includes(role)) {
+        return res.status(400).json({ message: 'Invalid role.' });
+    }
+    try {
+        await User.update({ roles: role }, { where: { id: req.params.id } });
+        res.json({ message: "User role updated successfully" });
+    } catch (err) {
+        res.status(400).json({ errors: err.message });
+    }
+});
+
+// Delete user by ID
+router.delete("/:id", validateToken, async (req, res) => {
+    try {
+        await User.destroy({ where: { id: req.params.id } });
+        res.json({ message: "User deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ errors: err.message });
+    }
 });
 
 module.exports = router;

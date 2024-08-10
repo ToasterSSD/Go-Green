@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Grid } from "@mui/material";
 import {
@@ -13,10 +13,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../contexts/UserContext";
+
 
 function DeleteFeedback() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const [feedback, setFeedback] = useState({
     name: "",
@@ -25,6 +28,21 @@ function DeleteFeedback() {
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    // Redirect non-admin users
+    if (user.role !== "ADMIN") {
+      navigate("/unauthorized");
+      return;
+    }
+  });
+
+  useEffect(() => {
+    http.get(`/feedback/${id}`).then((res) => {
+      setFeedback(res.data);
+      setImageFile(res.data.imageFile);
+      setLoading(false);
+    });
+  }, []);
 
   useEffect(() => {
     http.get(`/feedback/${id}`).then((res) => {
