@@ -54,6 +54,7 @@ const articleRoutes = require("./routes/article");
 const learningRoutes = require("./routes/learning");
 const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
+const bookmarkRouter = require('./routes/bookmark');
 
 // Use routes
 app.use("/homepage", homepageRoutes);
@@ -74,6 +75,7 @@ app.use("/game", gameRoutes);
 
 
 app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+app.use('/bookmark', bookmarkRouter);
 // Simple route
 app.get("/", (req, res) => {
     res.send("Welcome to Go Green!");
