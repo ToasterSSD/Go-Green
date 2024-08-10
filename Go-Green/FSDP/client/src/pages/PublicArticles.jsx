@@ -8,8 +8,8 @@ import global from '../global';
 import HeaderWithBackground from "../components/HeaderWithBackground";
 
 
-import BookmarkIcon from '../assets/bookmark-icon.png';  // Replace with the path to your filled bookmark icon
-import BookmarkBorderIcon from '../assets/bookmark-border-icon.png';  // Replace with the path to your outlined bookmark icon
+import BookmarkIcon from '../assets/bookmark-icon.png';  
+import BookmarkBorderIcon from '../assets/bookmark-border-icon.png';  
 
 
 function PublicArticles() {
