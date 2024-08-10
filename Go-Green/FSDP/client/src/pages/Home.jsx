@@ -1,61 +1,57 @@
-import React from "react";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import React, { useEffect, useState, useContext } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  InputAdornment,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
 import HeaderWithBackground from "../components/HeaderWithBackground"; // Adjust the import path as needed
+import http from "../http";
+import UserContext from "../contexts/UserContext";
 
 function Home() {
-  const features = [
-    {
-      title: "Newsletter",
-      description:
-        "Stay informed with our newsletter featuring the latest environmental news, global issues, and community updates.",
-      link: "/News",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-    {
-      title: "Announcements",
-      description:
-        "Keep up-to-date with our latest announcements. Discover upcoming events and volunteer opportunities to help the environment.",
-      link: "/announcement",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-    {
-      title: "Chat Area",
-      description:
-        "Engage with like-minded individuals in our chat area. Join discussions, share ideas, and create interest groups on various environmental topics.",
-      link: "/chatarea",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-    {
-      title: "Games",
-      description:
-        "Engage in our Choose your own Adventure Game to develop your environmental knowledge in a fun and interactive way.",
-      link: "/games",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
+  const [features, setFeatures] = useState([]);
+  const [filteredFeatures, setFilteredFeatures] = useState([]);
+  const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const { user } = useContext(UserContext);
 
-    {
-      title: "Learn",
-      description:
-        "Dive into our comprehensive waste management guide featuring interactive videos and detailed information on proper waste disposal and recycling. Access local waste management facility details, participate in quizzes, and find answers to common questions about waste management.",
-      link: "/Learning",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-    {
-      title: "Donations",
-      description:
-        "Make a difference by donating. Join our mission to create a better world and support our cause for positive change.",
-      link: "/Donations",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-    {
-      title: "Feedback",
-      description:
-        "Share your thoughts and suggestions with our team. We value your feedback and will respond promptly to address any issues or improvements.",
-      link: "/Feedback",
-      image: "/uploads/placeholder.jpg", // Path to your feature image
-    },
-  ];
+  useEffect(() => {
+    // Fetch the homepage content from the backend
+    http
+      .get("/homepage")
+      .then((response) => {
+        console.log("Fetched homepage:", response.data); // Log the fetched data
+        setFeatures(response.data);
+        setFilteredFeatures(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching homepage:", error);
+        setError("Failed to fetch homepage. Please try again later.");
+      });
+  }, []);
+
+  const handleSearch = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+    const filtered = features.filter(
+      (feature) =>
+        feature.title.toLowerCase().includes(searchValue) ||
+        feature.description.toLowerCase().includes(searchValue)
+    );
+    setFilteredFeatures(filtered);
+  };
+
+  const formatButtonTextToPath = (text) => {
+    // Replace spaces and special characters with URL-friendly dashes
+    return text
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-");
+  };
 
   return (
     <Box>
@@ -79,41 +75,98 @@ function Home() {
           environmental sustainability.
         </Typography>
       </Box>
+
+      {user?.roles.includes("ADMIN") && (
+        <Box sx={{ textAlign: "right", m: 5 }}>
+          <Link to="/add-home" style={{ textDecoration: "none" }}>
+            <Button variant="contained" color="primary">
+              Add Content
+            </Button>
+          </Link>
+        </Box>
+      )}
+
+      <Box sx={{ textAlign: "center", my: 4 }}>
+        <TextField
+          variant="outlined"
+          fullWidth
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+
       <Box sx={{ mt: 5 }}>
-        {features.map((feature, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              backgroundColor: index % 2 === 0 ? "#f7f7f7" : "#e7e7e7",
-              p: 5,
-              mb: 2,
-              borderRadius: "10px",
-              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              width: "100%",
+        {error ? (
+          <Typography color="error" variant="h6">
+            {error}
+          </Typography>
+        ) : (
+          filteredFeatures.map((feature, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                backgroundColor: index % 2 === 0 ? "#f7f7f7" : "#e7e7e7",
+                p: 5,
+                mb: 2,
+                borderRadius: "10px",
+                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                width: "100%",
+              }}
+            >
+              {feature.imageFile && (
+                <Box className="aspect-ratio-container">
+                  <img
+                    alt="feature"
+                    src={`${import.meta.env.VITE_FILE_BASE_URL}uploads/${
+                      feature.imageFile
+                    }`}
+                    onError={(e) => {
+                      e.target.onerror = null; // prevents looping if fallback fails
+                      e.target.src = "/uploads/placeholder.jpg"; // set fallback image
+                    }}
+                    style={{ height: "150px", marginRight: "30px" }}
+                  />
+                </Box>
               
-            }}
-          >
-            <img
-              src={feature.image}
-              alt={feature.title}
-              style={{ height: "150px", marginRight: "30px" }}
-            />
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="h4">{feature.title}</Typography>
-              <Typography variant="body1" sx={{ fontSize: "1.2em" }}>
-                {feature.description}
-              </Typography>
-              <Link to={feature.link} style={{ textDecoration: "none" }}>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                  Learn More
-                </Button>
-              </Link>
+              )}
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h4">{feature.title}</Typography>
+                <Typography variant="body1" sx={{ fontSize: "1.2em" }}>
+                  {feature.description}
+                </Typography>
+                <Link
+                  to={`/${formatButtonTextToPath(feature.buttonText)}`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                    {feature.buttonText || "Learn More"}
+                  </Button>
+                </Link>
+                {user?.roles.includes("ADMIN") && (
+                  <Link
+                    to={`/edit-home/${feature.id}`}
+                    style={{ marginLeft: "10px", textDecoration: "none" }}
+                  >
+                    <Button variant="outlined" color="secondary">
+                      Edit
+                    </Button>
+                  </Link>
+                )}
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))
+        )}
       </Box>
     </Box>
   );
