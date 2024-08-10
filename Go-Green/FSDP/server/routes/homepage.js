@@ -6,7 +6,7 @@ const yup = require("yup");
 const { validateToken, checkAdminRole } = require("../middlewares/auth");
 
 // Create new homepage content
-router.post("/", validateToken, async (req, res) => {
+router.post("/", validateToken, checkAdminRole, async (req, res) => {
   let data = req.body;
   data.userId = req.user.id;
 
@@ -63,7 +63,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update homepage content via id
-router.put("/:id", validateToken, async (req, res) => {
+router.put("/:id", validateToken, checkAdminRole, async (req, res) => {
   let id = req.params.id;
   let homepage = await Homepage.findByPk(id);
   if (!homepage) {
@@ -111,7 +111,7 @@ router.put("/:id", validateToken, async (req, res) => {
 });
 
 // Delete homepage content via id
-router.delete("/:id", validateToken, async (req, res) => {
+router.delete("/:id", checkAdminRole, validateToken, async (req, res) => {
   let id = req.params.id;
   let homepage = await Homepage.findByPk(id);
   if (!homepage) {

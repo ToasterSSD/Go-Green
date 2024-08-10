@@ -55,6 +55,8 @@ const SignUpStep1 = lazy(() => import('./pages/SignUpStep1'));
 const SignUpStep2 = lazy(() => import('./pages/SignUpStep2'));
 const MoreAnnouncement = lazy(() => import('./pages/More_Announcement'));
 const Donation = lazy(() => import('./pages/Donation'));
+const AddHome = lazy(() => import("./pages/AddHome")); // Import AddHome component
+const EditHome = lazy(() => import("./pages/EditHome"));
 
 function App() {
   const [user, setUser] = useState(null);
@@ -108,7 +110,12 @@ function App() {
     return (
       <>
         {isAdminRoute && <SideNavbar />}
-        <Box sx={{ flex: 1, ml: isAdminRoute ? { sm: '240px', xs: '60px' } : '0px' }}>
+        <Box
+          sx={{
+            flex: 1,
+            ml: isAdminRoute ? { sm: "240px", xs: "60px" } : "0px",
+          }}
+        >
           <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
             <Suspense fallback={<CircularProgress />}>
               <Routes>
@@ -121,28 +128,89 @@ function App() {
                 <Route path="/form" element={<MyForm />} />
                 <Route path="/chatarea" element={<ChatArea />} />
                 <Route path="/addannouncement" element={<AddAnnouncement />} />
-                <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
+                <Route
+                  path="/editannouncement/:id"
+                  element={<EditAnnouncement />}
+                />
                 <Route path="/feedback" element={<Feedback />} />
                 <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
                 <Route path="/addfeedback" element={<AddFeedback />} />
-                <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
+                <Route
+                  path="/deletefeedback/:id"
+                  element={<DeleteFeedback />}
+                />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/public-articles" element={<PublicArticles />} />
                 <Route path="/addarticle" element={<AddArticle />} />
                 <Route path="/editarticle/:id" element={<EditArticle />} />
-                <Route path="/public-article/:id" element={<ArticleDetails />} />
+                <Route
+                  path="/public-article/:id"
+                  element={<ArticleDetails />}
+                />
                 <Route path="/learning" element={<LearningTopics />} />
-                <Route path="/add-learning-topic" element={<AddLearningTopic />} />
-                <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
-                <Route path="/learning/:id" element={<LearningTopicDetails />} />
-                <Route path="/public-learning" element={<PublicLearningTopics />} />
+                <Route
+                  path="/add-learning-topic"
+                  element={<AddLearningTopic />}
+                />
+                <Route
+                  path="/edit-learning-topic/:id"
+                  element={<EditLearningTopic />}
+                />
+                <Route
+                  path="/learning/:id"
+                  element={<LearningTopicDetails />}
+                />
+                <Route
+                  path="/public-learning"
+                  element={<PublicLearningTopics />}
+                />
                 <Route path="/quiz" element={<QuizPage />} />
-                <Route path="/admin" element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
-                <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
-                <Route path="/announcement/:id" element={<MoreAnnouncement />} />
-                <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
-                <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <PrivateRoute>
+                      <AdminPanel />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <PrivateRoute>
+                      <UserProfile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/announcement/:id"
+                  element={<MoreAnnouncement />}
+                />
+                <Route
+                  path="/announcement-signup-step1/:id"
+                  element={<SignUpStep1 />}
+                />
+                <Route
+                  path="/announcement-signup-step2/:id"
+                  element={<SignUpStep2 />}
+                />
                 <Route path="/donation" element={<Donation />} />
+                <Route
+                  path="/add-home"
+                  element={
+                    <PrivateRoute>
+                      <AddHome />
+                    </PrivateRoute>
+                  }
+                />{" "}
+                {/* Add Home Route */}
+                <Route
+                  path="/edit-home/:id"
+                  element={
+                    <PrivateRoute>
+                      <EditHome />
+                    </PrivateRoute>
+                  }
+                />
               </Routes>
             </Suspense>
           </Container>

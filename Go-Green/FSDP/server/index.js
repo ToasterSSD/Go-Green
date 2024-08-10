@@ -68,7 +68,7 @@ app.use("/article", articleRoutes);
 app.use("/learning", learningRoutes);
 app.use("/userview", userviewRoutes);
 app.use("/game", gameRoutes);
-
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 // Simple route
 app.get("/", (req, res) => {
     res.send("Welcome to Go Green!");

@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(200),
         allowNull: true,
       },
+      imageFile: {
+        type: DataTypes.STRING(20),
+      }
     },
     {
       tableName: "homepage",
