@@ -7,6 +7,11 @@ import {
   Card,
   CardContent,
   Input,
+  Dialog,
+  DialogActions,
+  DialogContentText,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Button,
 } from "@mui/material";
@@ -27,6 +32,8 @@ import HeaderWithBackground from "../components/HeaderWithBackground";
 function Feedback() {
   const [feedbackList, setFeedbackList] = useState([]);
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
   const { user } = useContext(UserContext);
 
   const onSearchChange = (e) => {
@@ -64,34 +71,41 @@ function Feedback() {
     getFeedback();
   }, []);
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this feedback?")) {
-      http
-        .delete(`/feedback/${id}`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`, // Ensure the token is sent
-          },
-        })
-        .then(() => {
-          setFeedbackList(feedbackList.filter((feedback) => feedback.id !== id));
-        })
-        .catch((err) => {
-          console.error("Error deleting feedback:", err);
-          if (err.response && err.response.status === 403) {
-            alert("You do not have permission to delete this feedback.");
-          } else {
-            alert("An error occurred while trying to delete the feedback. Please try again.");
-          }
-        });
+  const handleClickOpen = (id) => {
+    setSelectedFeedbackId(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedFeedbackId(null);
+  };
+
+  const deleteFeedback = () => {
+    if (!selectedFeedbackId) {
+      console.error("No feedback selected for deletion");
+      return;
     }
+
+    http
+      .delete(`/feedback/${selectedFeedbackId}`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      })
+      .then(() => {
+        setFeedbackList(feedbackList.filter((feedback) => feedback.id !== selectedFeedbackId));
+        handleClose(); // Close the dialog after deletion
+      })
+      .catch((err) => {
+        console.error("Error deleting feedback:", err);
+        alert("An error occurred while trying to delete the feedback. Please try again.");
+      });
   };
 
   return (
     <Box>
-      <HeaderWithBackground
-        title="Feedback"
-        backgroundImage="/uploads/test.jpg"
-      />
+      <HeaderWithBackground title="Feedback" backgroundImage="/uploads/test.jpg" />
       <Typography variant="h5" sx={{ my: 2 }}>
         Feedback
       </Typography>
@@ -114,6 +128,7 @@ function Feedback() {
           <Button variant="contained">Add</Button>
         </Link>
       </Box>
+
       <Grid container spacing={2}>
         {feedbackList.map((feedback, i) => (
           <Grid item xs={12} md={6} lg={4} key={feedback.id}>
@@ -136,7 +151,7 @@ function Feedback() {
                         <IconButton
                           color="error"
                           sx={{ padding: "4px" }}
-                          onClick={() => handleDelete(feedback.id)}
+                          onClick={() => handleClickOpen(feedback.id)}
                         >
                           <Delete />
                         </IconButton>
@@ -144,21 +159,13 @@ function Feedback() {
                     </Box>
                   )}
                 </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", mb: 1 }}
-                  color="text.secondary"
-                >
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary">
                   <AccountCircle sx={{ mr: 1 }} />
                   <Typography>{feedback.user?.name}</Typography>
                 </Box>
-                <Box
-                  sx={{ display: "flex", alignItems: "center", mb: 1 }}
-                  color="text.secondary"
-                >
+                <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary">
                   <AccessTime sx={{ mr: 1 }} />
-                  <Typography>
-                    {dayjs(feedback.createdAt).format(global.datetimeFormat)}
-                  </Typography>
+                  <Typography>{dayjs(feedback.createdAt).format(global.datetimeFormat)}</Typography>
                 </Box>
                 <Typography sx={{ whiteSpace: "pre-wrap" }}>
                   {feedback.feedback}
@@ -168,9 +175,23 @@ function Feedback() {
           </Grid>
         ))}
       </Grid>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Delete Feedback</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Are you sure you want to delete this feedback?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" color="inherit" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="contained" color="error" onClick={deleteFeedback}>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
 
 export default Feedback;
-
