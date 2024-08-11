@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography, Grid, Card, CardContent, Input, IconButton, Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 import { AccessTime, Search, Clear, MoreVert } from '@mui/icons-material';
@@ -12,6 +12,8 @@ function PublicLearningTopics() {
     const [isLoading, setIsLoading] = useState(true); // Loading state
     const [anchorEl, setAnchorEl] = useState(null); // State to handle menu
     const [selectedTopicId, setSelectedTopicId] = useState(null); // Track which topic is selected
+    const [cardHeight, setCardHeight] = useState('auto');
+    const cardsRef = useRef([]);
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
@@ -36,6 +38,14 @@ function PublicLearningTopics() {
     useEffect(() => {
         getLearningTopics();
     }, []);
+
+    useEffect(() => {
+        if (!isLoading && learningTopicList.length > 0) {
+            // Calculate the maximum height of all cards
+            const maxHeight = Math.max(...cardsRef.current.map(card => card.clientHeight));
+            setCardHeight(maxHeight);
+        }
+    }, [isLoading, learningTopicList]);
 
     const onSearchKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -105,13 +115,14 @@ function PublicLearningTopics() {
                 </Box>
             ) : (
                 <Grid container spacing={5}>
-                    {learningTopicList.map((topic) => (
+                    {learningTopicList.map((topic, index) => (
                         <Grid item xs={12} md={6} lg={4} key={topic.id}>
                             <Card
+                                ref={el => cardsRef.current[index] = el}
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    height: '100%',
+                                    height: cardHeight,
                                     position: 'relative',
                                     overflow: 'hidden',
                                     cursor: 'pointer',
