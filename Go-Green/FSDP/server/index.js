@@ -71,7 +71,7 @@ app.use("/chatarea", chatareaRoutes);
 app.use("/article", articleRoutes);
 app.use("/learning", learningRoutes);
 app.use("/userview", userviewRoutes);
-app.use("/game", gameRoutes);
+app.use("/api/game", gameRoutes);
 app.use("/extrauserinfo", extrauserinfoRoutes);
 app.use("/Payment", PaymentRoutes);
 app.use("/HomeAddress", HomeAddressRoutes);
