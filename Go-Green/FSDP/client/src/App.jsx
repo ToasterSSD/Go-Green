@@ -64,6 +64,7 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Addextrauserinfo = lazy(() => import("./pages/Addextrauserinfo"));
 const Editextrauserinfo = lazy(() => import("./pages/Editextrauserinfo"));
 const GamePage = lazy(() => import("./pages/Games"));
+const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));  // Import the ThankYouPage component
 
 function App() {
   const [user, setUser] = useState(null);
@@ -166,6 +167,7 @@ function App() {
                 <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
                 <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
                 <Route path="/donation" element={<Donation />} />
+                <Route path="/thank-you" element={<ThankYouPage />} />  {/* Add the Thank You page route */}
                 <Route path="/add-home" element={<PrivateRoute><AddHome /></PrivateRoute>} />
                 <Route path="/edit-home/:id" element={<PrivateRoute><EditHome /></PrivateRoute>} />
                 <Route path="/Settings" element={<Settings />} />
