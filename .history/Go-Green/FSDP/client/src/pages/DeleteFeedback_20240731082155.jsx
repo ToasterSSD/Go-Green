@@ -111,34 +111,6 @@ function DeleteFeedback() {
     }
   };
 
-  const handleCommentSubmit = async (postId) => {
-    try {
-      const res = await http.post(`/chatarea/comment/${postId}`, {
-        content: commentText,
-      });
-
-      const updatedPost = res.data;
-
-      setPostList((prevPostList) =>
-        prevPostList.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                comments: updatedPost.comments, // Update with the new list of comments
-                commentCount: updatedPost.comments.length, // Update comment count
-              }
-            : post
-        )
-      );
-
-      setCommentText(""); // Clear the comment text after submission
-      setOpenComment(null); // Close the comment box after submission
-    } catch (error) {
-      console.error("Error adding the comment:", error);
-    }
-  };
-
-
   return (
     <Box>
       <Typography variant="h5" sx={{ my: 2 }}>

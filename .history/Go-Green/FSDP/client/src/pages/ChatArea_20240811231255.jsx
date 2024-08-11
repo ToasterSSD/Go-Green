@@ -118,12 +118,9 @@ function ChatArea() {
 
   const handleCommentSubmit = async (postId) => {
     try {
-      console.log("Submitting comment for postId:", postId);
       const res = await http.post(`/chatarea/comment/${postId}`, {
         content: commentText,
       });
-
-      console.log("Response from backend:", res.data);
 
       const newComment = res.data;
 
@@ -132,14 +129,12 @@ function ChatArea() {
           post.id === postId
             ? {
                 ...post,
-                comments: [...(post.comments || []), newComment], // Properly append the new comment
-                commentCount: (post.comments?.length || 0) + 1, // Increment the comment count
+                comments: [...post.comments, newComment],
+                commentCount: post.comments.length + 1, // Update comment count
               }
             : post
         )
       );
-
-      console.log("Updated postList:", postList);
 
       setCommentText(""); // Clear the comment text after submission
       setOpenComment(null); // Close the comment box after submission
@@ -155,22 +150,21 @@ function ChatArea() {
 
   const handleReportSubmit = async () => {
     try {
-      const res = await http.post(
-        "/reports",
-        {
-          postId: reportDetails.postId,
-          type: reportDetails.type,
-          description: reportDetails.description,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      console.log("Submitting report:", {
+        postId: reportDetails.postId,
+        type: reportDetails.type,
+        description: reportDetails.description,
+      });
+
+      const res = await http.post("/reports", {
+        postId: reportDetails.postId,
+        type: reportDetails.type,
+        description: reportDetails.description,
+      });
 
       if (res.status === 200) {
-        handleReportDialogClose(); // Close the report dialog if submission is successful
+        console.log("Report submitted successfully");
+        handleReportDialogClose();
       } else {
         console.error("Failed to submit report", res);
       }
@@ -178,6 +172,7 @@ function ChatArea() {
       console.error("Error submitting report:", error);
     }
   };
+
 
   const handleReportDialogClose = () => {
     setOpenReportDialog(false);
@@ -293,25 +288,15 @@ function ChatArea() {
                       <>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html:
-                              openComment === post.id
-                                ? post.content
-                                : `${post.content.substring(0, 150)}...`,
+                            __html: `${post.content.substring(0, 150)}...`,
                           }}
                         />
-                        <Button
-                          onClick={() => toggleCommentSection(post.id)}
-                          variant="text"
-                          color="primary"
-                        >
-                          {openComment === post.id ? "Show Less" : "Read More"}
-                        </Button>
+                        <Link to={`/chatarea/${post.id}`}>Read More</Link>
                       </>
                     ) : (
                       <div dangerouslySetInnerHTML={{ __html: post.content }} />
                     )}
                   </Typography>
-
                   {post.link && (
                     <Typography sx={{ pb: 2 }}>
                       <Box component="span" sx={{ fontWeight: "bold" }}>
@@ -393,7 +378,6 @@ function ChatArea() {
                       }}
                     />
                     {post.comments &&
-                      post.comments.length > 0 &&
                       post.comments.map((comment, index) => (
                         <Box
                           key={index}
@@ -464,12 +448,7 @@ function ChatArea() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleReportDialogClose}>Cancel</Button>
-          <Button
-            onClick={handleReportSubmit}
-            color="error"
-            variant="contained"
-            sx={{ mt: 2 }}
-          >
+          <Button onClick={handleReportSubmit} color="error">
             Submit Report
           </Button>
         </DialogActions>

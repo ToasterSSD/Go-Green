@@ -58,7 +58,6 @@ const bookmarkRouter = require('./routes/bookmark');
 const extrauserinfoRoutes = require("./routes/extrauserinfo");
 const PaymentRoutes = require("./routes/Payment");
 const HomeAddressRoutes = require("./routes/HomeAddress");
-const reportsRoutes = require("./routes/reports");
 
 
 // Use routes
@@ -77,7 +76,6 @@ app.use("/api/game", gameRoutes);
 app.use("/extrauserinfo", extrauserinfoRoutes);
 app.use("/Payment", PaymentRoutes);
 app.use("/HomeAddress", HomeAddressRoutes);
-app.use("/reports", reportsRoutes);
 
 
 

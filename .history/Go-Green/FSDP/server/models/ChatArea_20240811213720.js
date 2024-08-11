@@ -59,12 +59,6 @@ module.exports = (sequelize, DataTypes) => {
     as: "comments",
     onDelete: "cascade",
   });
-  ChatArea.hasMany(models.Report, {
-    foreignKey: "postId",
-    as: "reports",
-    onDelete: "cascade", // This will delete all related reports when a ChatArea post is deleted
-  });
-
   };
 
   return ChatArea;

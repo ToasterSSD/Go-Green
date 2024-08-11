@@ -70,29 +70,35 @@ router.get("/", async (req, res) => {
   });
   res.json(list);
 });
+// Show chat post by ID
+// Show chat post by ID
 router.get("/:id", async (req, res) => {
-  try {
-    let id = req.params.id;
-    let chatPost = await ChatArea.findByPk(id, {
-      include: [
-        { model: User, as: "user", attributes: ["name"] },
-        { model: Comment, as: "comments", required: false }, // Include comments
-      ],
-    });
-    if (!chatPost) {
-      return res.sendStatus(404);
-    }
+  let id = req.params.id;
+  let chatPost = await ChatArea.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: ["name"],
+      },
+      {
+        model: Comment,
+        as: "comments",
+        include: {
+          model: User,
+          as: "user", // Include the user associated with each comment
+          attributes: ["name"],
+        },
+      },
+    ],
+  });
 
-    // Ensure comments is always an array
-    if (!chatPost.comments) {
-      chatPost.comments = [];
-    }
-
-    res.json(chatPost);
-  } catch (error) {
-    console.error("Error fetching chat post:", error);
-    res.status(500).json({ error: error.message });
+  if (!chatPost) {
+    res.sendStatus(404);
+    return;
   }
+
+  res.json(chatPost);
 });
 
 // Update chat post via ID
@@ -222,6 +228,7 @@ router.post("/dislike/:postId", validateToken, async (req, res) => {
   }
 });
 
+// Add a comment
 router.post("/comment/:postId", validateToken, async (req, res) => {
   try {
     const post = await ChatArea.findByPk(req.params.postId);
@@ -236,28 +243,14 @@ router.post("/comment/:postId", validateToken, async (req, res) => {
         content,
       });
 
-      // Fetch the full comment with user data
-      const fullComment = await Comment.findByPk(comment.id, {
-        include: {
-          model: User,
-          as: "user",
-          attributes: ["name"],
-        },
-      });
-
-      console.log("New Comment:", fullComment);
-
       post.comments = post.comments || [];
-      post.comments.push(fullComment);
-
-      console.log("Updated Post:", post);
+      post.comments.push(comment);
 
       res.json(post);
     } else {
       res.status(400).json({ error: "Comment content is required" });
     }
   } catch (error) {
-    console.error("Error adding the comment:", error);
     res.status(400).json({ error: error.message });
   }
 });

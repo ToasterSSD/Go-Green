@@ -58,7 +58,7 @@ const bookmarkRouter = require('./routes/bookmark');
 const extrauserinfoRoutes = require("./routes/extrauserinfo");
 const PaymentRoutes = require("./routes/Payment");
 const HomeAddressRoutes = require("./routes/HomeAddress");
-const reportsRoutes = require("./routes/reports");
+const reportRoutes = require("./routes/reports");
 
 
 // Use routes

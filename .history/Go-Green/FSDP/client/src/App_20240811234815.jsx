@@ -13,6 +13,7 @@ import {
   Link as MuiLink,
   CssBaseline,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -24,9 +25,6 @@ import UserContext from "./contexts/UserContext";
 import SettingsModel from "./components/SettingsModel";
 import Footer from "./components/Footer";
 import SideNavbar from "./components/SideNavbar";
-import ReportDetail from "./pages/ReportDetail";
-import Reports from "./pages/Reports";
-
 
 // Lazy loading pages
 const Home = lazy(() => import("./pages/Home"));
@@ -66,10 +64,6 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Addextrauserinfo = lazy(() => import("./pages/Addextrauserinfo"));
 const Editextrauserinfo = lazy(() => import("./pages/Editextrauserinfo"));
 const GamePage = lazy(() => import("./pages/Games"));
-const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));  // Import the ThankYouPage component
-const AddChat = lazy(() => import("./pages/AddChat"));
-const EditChat = lazy(() => import("./pages/EditChat"));
-
 
 function App() {
   const [user, setUser] = useState(null);
@@ -137,12 +131,7 @@ function App() {
     return (
       <>
         {isAdminRoute && <SideNavbar />}
-        <Box
-          sx={{
-            flex: 1,
-            ml: isAdminRoute ? { sm: "240px", xs: "60px" } : "0px",
-          }}
-        >
+        <Box sx={{ flex: 1, ml: isAdminRoute ? { sm: "240px", xs: "60px" } : "0px" }}>
           <Container className={settingsOpen ? "blurred" : ""} sx={{ mt: 4 }}>
             <Suspense fallback={<CircularProgress />}>
               <Routes>
@@ -155,106 +144,34 @@ function App() {
                 <Route path="/form" element={<MyForm />} />
                 <Route path="/chatarea" element={<ChatArea />} />
                 <Route path="/addannouncement" element={<AddAnnouncement />} />
-                <Route
-                  path="/editannouncement/:id"
-                  element={<EditAnnouncement />}
-                />
+                <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
                 <Route path="/feedback" element={<Feedback />} />
                 <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
                 <Route path="/addfeedback" element={<AddFeedback />} />
-                <Route
-                  path="/deletefeedback/:id"
-                  element={<DeleteFeedback />}
-                />
+                <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/public-articles" element={<PublicArticles />} />
                 <Route path="/addarticle" element={<AddArticle />} />
                 <Route path="/editarticle/:id" element={<EditArticle />} />
-                <Route
-                  path="/public-article/:id"
-                  element={<ArticleDetails />}
-                />
+                <Route path="/public-article/:id" element={<ArticleDetails />} />
                 <Route path="/learning" element={<LearningTopics />} />
-                <Route
-                  path="/add-learning-topic"
-                  element={<AddLearningTopic />}
-                />
-                <Route
-                  path="/edit-learning-topic/:id"
-                  element={<EditLearningTopic />}
-                />
-                <Route
-                  path="/learning/:id"
-                  element={<LearningTopicDetails />}
-                />
-                <Route
-                  path="/public-learning"
-                  element={<PublicLearningTopics />}
-                />
+                <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+                <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+                <Route path="/learning/:id" element={<LearningTopicDetails />} />
+                <Route path="/public-learning" element={<PublicLearningTopics />} />
                 <Route path="/quiz" element={<QuizPage />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <PrivateRoute>
-                      <AdminPanel />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <UserProfile />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/announcement/:id"
-                  element={<MoreAnnouncement />}
-                />
-                <Route
-                  path="/announcement-signup-step1/:id"
-                  element={<SignUpStep1 />}
-                />
-                <Route
-                  path="/announcement-signup-step2/:id"
-                  element={<SignUpStep2 />}
-                />
+                <Route path="/admin" element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+                <Route path="/announcement/:id" element={<MoreAnnouncement />} />
+                <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
+                <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
                 <Route path="/donation" element={<Donation />} />
-                <Route path="/thank-you" element={<ThankYouPage />} />
-                <Route
-                  path="/add-home"
-                  element={
-                    <PrivateRoute>
-                      <AddHome />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/edit-home/:id"
-                  element={
-                    <PrivateRoute>
-                      <EditHome />
-                    </PrivateRoute>
-                  }
-                />
+                <Route path="/add-home" element={<PrivateRoute><AddHome /></PrivateRoute>} />
+                <Route path="/edit-home/:id" element={<PrivateRoute><EditHome /></PrivateRoute>} />
                 <Route path="/Settings" element={<Settings />} />
-                <Route
-                  path="/addextrauserinfo"
-                  element={<Addextrauserinfo />}
-                />
-                <Route
-                  path="/editextrauserinfo/:id"
-                  element={<Editextrauserinfo />}
-                />
+                <Route path="/addextrauserinfo" element={<Addextrauserinfo />} />
+                <Route path="/editextrauserinfo/:id" element={<Editextrauserinfo />} />
                 <Route path="/Games" element={<GamePage />} />
-                <Route path="/addchat" element={<AddChat />} />
-                <Route path="/editchat/:id" element={<EditChat />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route
-                  path="/report-detail/:reportId"
-                  element={<ReportDetail />}
-                />
               </Routes>
             </Suspense>
           </Container>
@@ -269,53 +186,53 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={appliedTheme}>
-          <CssBaseline />
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: appliedTheme.palette.background.default }}>
-            <AppBar position="static" sx={{ backgroundColor: appliedTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", overflow: "hidden" }}>
+            <CssBaseline />
+            <AppBar position="static" sx={{ backgroundColor: "#9CBA9A", color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
                       <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
-                        Go <span style={{ color: appliedTheme.palette.secondary.main }}>Green</span>!
+                        Go <span style={{ color: "#06F92D" }}>Green</span>!
                       </Typography>
                     </Link>
                   </Box>
-                  <Box sx={{ display: "flex", flexGrow: 1 }}>
+                  <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                         NewsAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
                       News
                     </MuiLink>
-                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Announcements
                     </MuiLink>
-                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Chat
                     </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                         LearningAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Learning
                     </MuiLink>
-                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Games
                     </MuiLink>
-                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Donations
                     </MuiLink>
-                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Feedback
                     </MuiLink>
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", ml: 4, width: "auto", whiteSpace: "nowrap" }}>
                     <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                       <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                       <Typography sx={{ ml: 1 }}>{user?.name || "Guest"}</Typography>
@@ -348,7 +265,7 @@ function App() {
                         </>
                       )}
                     </Menu>
-                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  
+                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  {/* Dark Mode Toggle */}
                   </Box>
                 </Toolbar>
               </Container>

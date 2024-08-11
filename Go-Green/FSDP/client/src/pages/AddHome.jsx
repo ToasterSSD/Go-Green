@@ -172,7 +172,7 @@ function AddHome() {
               fullWidth
               margin="dense"
               autoComplete="off"
-              label="Button Text"
+              label="Route to specific page (caps sensitive!)"
               name="buttonText"
               value={formik.values.buttonText}
               onChange={formik.handleChange}

@@ -70,29 +70,35 @@ router.get("/", async (req, res) => {
   });
   res.json(list);
 });
+// Show chat post by ID
+// Show chat post by ID
 router.get("/:id", async (req, res) => {
-  try {
-    let id = req.params.id;
-    let chatPost = await ChatArea.findByPk(id, {
-      include: [
-        { model: User, as: "user", attributes: ["name"] },
-        { model: Comment, as: "comments", required: false }, // Include comments
-      ],
-    });
-    if (!chatPost) {
-      return res.sendStatus(404);
-    }
+  let id = req.params.id;
+  let chatPost = await ChatArea.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: ["name"],
+      },
+      {
+        model: Comment,
+        as: "comments",
+        include: {
+          model: User,
+          as: "user", // Include the user associated with each comment
+          attributes: ["name"],
+        },
+      },
+    ],
+  });
 
-    // Ensure comments is always an array
-    if (!chatPost.comments) {
-      chatPost.comments = [];
-    }
-
-    res.json(chatPost);
-  } catch (error) {
-    console.error("Error fetching chat post:", error);
-    res.status(500).json({ error: error.message });
+  if (!chatPost) {
+    res.sendStatus(404);
+    return;
   }
+
+  res.json(chatPost);
 });
 
 // Update chat post via ID

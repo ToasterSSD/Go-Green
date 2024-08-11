@@ -192,7 +192,7 @@ function PublicLearningTopics() {
                     Quiz
                 </Typography>
                 <Typography variant="subtitle1" sx={{ mb: 2 }}>
-                    Challenge Your Eco-Wisdom!
+                    Challenge Your Eco-Wisdom with our one-time quiz!
                 </Typography>
                 <Link to="/quiz" style={{ textDecoration: 'none' }}>
                     <Button variant="contained">Take the Quiz</Button>

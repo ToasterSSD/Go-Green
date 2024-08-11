@@ -123,17 +123,18 @@ function ChatArea() {
         content: commentText,
       });
 
-      console.log("Response from backend:", res.data);
+      console.log("Full response from backend:", res);
+      console.log("Comments in the updated post:", res.data.comments);
 
-      const newComment = res.data;
+      const updatedPost = res.data;
 
       setPostList((prevPostList) =>
         prevPostList.map((post) =>
           post.id === postId
             ? {
                 ...post,
-                comments: [...(post.comments || []), newComment], // Properly append the new comment
-                commentCount: (post.comments?.length || 0) + 1, // Increment the comment count
+                comments: updatedPost.comments, // Update with the new list of comments
+                commentCount: updatedPost.comments.length, // Update comment count
               }
             : post
         )

@@ -125,15 +125,15 @@ function ChatArea() {
 
       console.log("Response from backend:", res.data);
 
-      const newComment = res.data;
+      const updatedPost = res.data;
 
       setPostList((prevPostList) =>
         prevPostList.map((post) =>
           post.id === postId
             ? {
                 ...post,
-                comments: [...(post.comments || []), newComment], // Properly append the new comment
-                commentCount: (post.comments?.length || 0) + 1, // Increment the comment count
+                comments: updatedPost.comments, // Update with the new list of comments
+                commentCount: updatedPost.comments.length, // Update comment count
               }
             : post
         )
@@ -155,6 +155,14 @@ function ChatArea() {
 
   const handleReportSubmit = async () => {
     try {
+      // Make sure the report details have the necessary data
+      console.log("Submitting report:", {
+        postId: reportDetails.postId,
+        type: reportDetails.type,
+        description: reportDetails.description,
+      });
+
+      // This sends the POST request to your backend to create a report
       const res = await http.post(
         "/reports",
         {
@@ -170,6 +178,7 @@ function ChatArea() {
       );
 
       if (res.status === 200) {
+        console.log("Report submitted successfully");
         handleReportDialogClose(); // Close the report dialog if submission is successful
       } else {
         console.error("Failed to submit report", res);
