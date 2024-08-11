@@ -23,7 +23,7 @@ function LearningTopics() {
             <Grid container spacing={2} sx={{ mt: 2 }}>
                 {topics.map((topic) => (
                     <Grid item xs={12} md={6} lg={4} key={topic.id}>
-                        <Card>
+                        <Card sx={{ backgroundColor: '#E0FFFF' }}>
                             <CardContent>
                                 <Typography variant="h6">{topic.title}</Typography>
                                 <Box sx={{ mt: 2 }}>
