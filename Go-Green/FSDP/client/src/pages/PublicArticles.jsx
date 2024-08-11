@@ -184,7 +184,7 @@ function PublicArticles() {
                                             />
                                         </Box>
                                     )}
-                                    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#F5F5F5' }}>
+                                    <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#E0F0F8' }}>
                                         <Box sx={{ display: 'flex', mb: 1 }}>
                                             <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Roboto, sans-serif', fontWeight: 'bold', color: 'inherit' }}>
                                                 {article.title}
