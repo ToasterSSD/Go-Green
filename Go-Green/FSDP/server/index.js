@@ -56,7 +56,7 @@ const userviewRoutes = require("./routes/userview");
 const gameRoutes = require("./routes/game");
 const bookmarkRouter = require('./routes/bookmark');
 const extrauserinfoRoutes = require("./routes/extrauserinfo");
-const PaymentRoutes = require("./routes/Payment");
+const paymentRoutes = require("./routes/payment");
 const HomeAddressRoutes = require("./routes/HomeAddress");
 const reportsRoutes = require("./routes/reports");
 
@@ -75,7 +75,7 @@ app.use("/learning", learningRoutes);
 app.use("/userview", userviewRoutes);
 app.use("/api/game", gameRoutes);
 app.use("/extrauserinfo", extrauserinfoRoutes);
-app.use("/Payment", PaymentRoutes);
+app.use("/payment", paymentRoutes);
 app.use("/HomeAddress", HomeAddressRoutes);
 app.use("/reports", reportsRoutes);
 

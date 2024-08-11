@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Box,
   Button,
@@ -68,6 +68,7 @@ const detectCardType = (number) => {
 };
 
 const DonationPage = () => {
+  const { user } = useContext(UserContext);  // Get the user context
   const [donationAmount, setDonationAmount] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [donationFrequency, setDonationFrequency] = useState('One-time');
@@ -123,8 +124,16 @@ const DonationPage = () => {
     } else if (name === 'expirationDate') {
       let formattedValue = value.replace(/[^0-9]/g, ''); // Only allow digits
 
-      if (formattedValue.length > 2) {
-        formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2, 4)}`;
+      // Auto-insert slash after the second digit
+      if (formattedValue.length >= 2 && !formattedValue.includes('/')) {
+        formattedValue = `${formattedValue.slice(0, 2)}/${formattedValue.slice(2)}`;
+      }
+
+      const [month, year] = formattedValue.split('/');
+
+      // Ensure the first digit is 0 if the month does not start with 1
+      if (month && month.length === 1 && parseInt(month, 10) > 1) {
+        formattedValue = `0${month}/${year || ''}`;
       }
 
       setPaymentInfo({ ...paymentInfo, [name]: formattedValue });
@@ -133,17 +142,54 @@ const DonationPage = () => {
     }
   };
 
-  const handlePaymentSubmit = () => {
+  // Updated handlePaymentSubmit function
+  const handlePaymentSubmit = async () => {
     if (!paymentInfo.cardNumber || !paymentInfo.expirationDate || !paymentInfo.ccv) {
       toast.error('Please fill out all payment fields.');
       return;
     }
 
-    setIsPaymentDialogOpen(false);
-    toast.success(`Thank you for your ${donationFrequency} donation of $${donationAmount || customAmount}!`);
-    setTimeout(() => {
-      window.location.href = `/thank-you?amount=${donationAmount || customAmount}&frequency=${donationFrequency}`;
-    }, 2000);
+    try {
+      // Extract month and year
+      const [month, year] = paymentInfo.expirationDate.split('/');
+
+      // Validate the extracted month and year
+      if (!month || !year || month.length !== 2 || year.length !== 2) {
+        throw new Error('Invalid expiration date format.');
+      }
+
+      const monthNum = parseInt(month, 10);
+      const yearNum = parseInt(year, 10);
+
+      if (isNaN(monthNum) || isNaN(yearNum) || monthNum < 1 || monthNum > 12) {
+        throw new Error('Invalid expiration date format.');
+      }
+
+      // Convert to a valid Date object
+      const formattedExpirationDate = new Date(`20${year}-${month}-01T00:00:00Z`);
+      
+      if (isNaN(formattedExpirationDate.getTime())) {
+        throw new Error('Invalid expiration date.');
+      }
+
+      // Proceed with the payment submission
+      const response = await http.post('/payment', {
+        cardnumber: paymentInfo.cardNumber,
+        expirationDate: formattedExpirationDate.toISOString(), // Send ISO format
+        ccv: paymentInfo.ccv,
+      });
+
+      if (response.status === 201) {
+        setIsPaymentDialogOpen(false);
+        toast.success(`Thank you for your ${donationFrequency} donation of $${donationAmount || customAmount}!`);
+        setTimeout(() => {
+          window.location.href = `/thank-you?amount=${donationAmount || customAmount}&frequency=${donationFrequency}`;
+        }, 2000);
+      }
+    } catch (error) {
+      toast.error(error.message || 'There was an issue processing your payment. Please try again.');
+      console.error('Payment Error:', error); // Log the error for debugging
+    }
   };
 
   return (
@@ -185,7 +231,21 @@ const DonationPage = () => {
                 type="number"
                 fullWidth
                 sx={{ mt: 2 }}
-                inputProps={{ min: 0 }} // Prevent negative values
+                inputProps={{ 
+                  min: 0, // Prevent negative values
+                  style: { 
+                    MozAppearance: 'textfield', // Remove the spinner in Firefox
+                    appearance: 'textfield' // Ensure compatibility across all browsers
+                  },
+                }}
+                InputProps={{
+                  inputMode: 'numeric',
+                  style: {
+                    WebkitAppearance: 'none', // Remove the spinner in Chrome, Safari, and newer Edge
+                    MozAppearance: 'textfield', // Remove the spinner in Firefox
+                    appearance: 'textfield', // Ensure compatibility across all browsers
+                  },
+                }}
               />
               <FormControl component="fieldset" sx={{ mt: 2 }}>
                 <FormLabel component="legend">Donation Frequency</FormLabel>
@@ -237,8 +297,13 @@ const DonationPage = () => {
               Make a Donation
             </Typography>
             <Typography variant="body1" gutterBottom>
-              Seriously ill children have heard enough bad news for a lifetime. You have the power to give them hope. Your donation helps Make-A-Wish fund life-changing experiences for these children. Watch the video to learn more about the incredible impact your donation can make.
+              Seriously ill children have heard enough bad news for a lifetime. You have the power to give them hope. Your donation helps Make-A-Wish fund life-changing experiences for these children.
             </Typography>
+            <Typography variant="body1">
+              Watch the video to learn more about the incredible impact your donation can make.
+            </Typography>
+            {/* The following code is commented out to remove the video and buttons */}
+            {/*
             <iframe
               width="100%"
               height="315"
@@ -254,6 +319,7 @@ const DonationPage = () => {
             <Button variant="outlined" color="primary" sx={{ mt: 2, ml: 2 }}>
               Read Jon's Story
             </Button>
+            */}
           </CardContent>
         </Card>
       </Box>

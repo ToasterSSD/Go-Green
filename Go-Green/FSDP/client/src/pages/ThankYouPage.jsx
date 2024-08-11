@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import http from '../http';
+import UserContext from '../contexts/UserContext';
 
 const ThankYouPage = () => {
   const location = useLocation();
