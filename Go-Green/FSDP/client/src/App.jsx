@@ -188,48 +188,48 @@ function App() {
             <AppBar position="static" sx={{ backgroundColor: MyTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
-                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap", marginRight: "20px" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
-                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "4px" }} />
+                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
                         Go <span style={{ color: MyTheme.palette.secondary.main }}>Green</span>!
                       </Typography>
                     </Link>
                   </Box>
-                  <Box sx={{ display: "flex", flexGrow: 1 }}>
+                  <Box sx={{ display: "flex", flexGrow: 1, justifyContent: "center" }}>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                         NewsAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       News
                     </MuiLink>
-                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Announcements
                     </MuiLink>
-                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Chat
                     </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                         LearningAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Learning
                     </MuiLink>
-                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Games
                     </MuiLink>
-                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Donations
                     </MuiLink>
-                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
+                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }} className="navbar-item">
                       Feedback
                     </MuiLink>
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", whiteSpace: "nowrap", marginLeft: "26px" }}>
                     <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                       <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                       <Typography sx={{ ml: 1 }}>{user?.name || "Guest"}</Typography>
