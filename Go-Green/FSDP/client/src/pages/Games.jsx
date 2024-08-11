@@ -412,7 +412,7 @@ function GamePage() {
     setDeathCount(prevCount => {
       const newCount = prevCount + 1;
       console.log("Current Death Count:", newCount);
-      if (newCount >= 5) {  // Assuming 5 is the special ending trigger
+      if (newCount >= 20) {  // Assuming 5 is the special ending trigger
         goToSpecialEnding();
       } else {
         // Go back to last safe choice
@@ -484,7 +484,7 @@ function GamePage() {
       </Grid>
 
       <Box sx={{ mt: 3, display: "flex", gap: "8px" }}>
-        {currentPart?.id !== 101 && ( // Hide Restart button if the current part is the special ending
+        {currentPart?.id == 101 && ( // Hide Restart button if the current part is the special ending
           <Button variant="outlined" onClick={resetGame}>Restart Game</Button>
         )}
       </Box>
