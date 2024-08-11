@@ -343,7 +343,7 @@ const storyParts = [
     text: "Congratulations, you've reached the good ending! You manage to change the course of history, preventing the environmental collapse and saving the future.",
     options: [
       { text: "Restart", action: "restart" },
-      { text: "Delete Save", action: "delete" },
+      
     ],
   },
   {
@@ -351,7 +351,6 @@ const storyParts = [
     text: "You've reached the neutral ending. Your efforts prevent the worst, but the future remains uncertain. Some crises are averted, but the world still suffers.",
     options: [
       { text: "Restart", action: "restart" },
-      { text: "Delete Save", action: "delete" },
     ],
   },
   {
@@ -359,7 +358,6 @@ const storyParts = [
     text: "You've reached the bad ending. You fail to prevent the environmental collapse. The world is doomed, and the future is bleak.",
     options: [
       { text: "Restart", action: "restart" },
-      { text: "Delete Save", action: "delete" },
     ],
   },
   {
@@ -442,14 +440,12 @@ function GamePage() {
     console.log("Closing the application and deleting the progress...");
     // Here you might want to trigger a function that closes the app and deletes the progress.
     // Since this is a web app, "closing the app" could mean navigating to a "goodbye" screen or just clearing the state.
-    resetGame();
     process.exit(1);
   };
 
   const returnHomeAndDelete = () => {
     console.log("Returning to the homepage and deleting the progress...");
     // Here you might navigate back to the homepage and reset the game
-    resetGame();
     // Navigate to the homepage if you have one, for example:
     window.location.href = "/";
   };
