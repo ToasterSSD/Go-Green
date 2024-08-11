@@ -11,7 +11,7 @@ const PEPPER = process.env.PEPPER;
 
 const validationSchema = yup.object({
     name: yup.string().trim().min(3).max(50).required()
-        .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+        .matches(/^[a-zA-Z0-9\s'-,.!@#$%^&*()_+=]*$/, "Name can contain letters, numbers, spaces, and special characters like ' - , . ! @ # $ % ^ & * ( ) _ + ="),
     email: yup.string().trim().lowercase().email().max(50).required(),
     password: yup.string().trim().min(8).max(50).required()
         .matches(/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/, "Password must contain at least 1 letter and 1 number")
@@ -93,6 +93,7 @@ router.post("/login", async (req, res) => {
         res.status(400).json({ errors: err.errors || err.message });
     }
 });
+
 router.get('/email', validateToken, (req, res) => {
     res.json({ email: req.user.email });
 });

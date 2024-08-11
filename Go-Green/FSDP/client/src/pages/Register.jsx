@@ -39,7 +39,7 @@ function Register() {
             .min(3, 'Name must be at least 3 characters')
             .max(50, 'Name must be at most 50 characters')
             .required('Name is required')
-            .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+            .matches(/^[a-zA-Z0-9\s'-,.!@#$%^&*()_+=]*$/, "Name can contain letters, numbers, spaces, and special characters like ' - , . ! @ # $ % ^ & * ( ) _ + ="),
         email: yup.string().trim()
             .email('Enter a valid email')
             .max(50, 'Email must be at most 50 characters')

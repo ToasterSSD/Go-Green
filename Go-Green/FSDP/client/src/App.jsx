@@ -13,17 +13,13 @@ import {
   Link as MuiLink,
   CssBaseline,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Navigate,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
-import MyTheme from "./themes/MyTheme";
+import lightTheme from "./themes/lightTheme";  // Import light theme
+import darkTheme from "./themes/darkTheme";    // Import dark theme
+import DarkModeToggle from "./components/DarkModeToggle";  // Import DarkModeToggle component
 import http from "./http";
 import UserContext from "./contexts/UserContext";
 import SettingsModel from "./components/SettingsModel";
@@ -69,11 +65,11 @@ const Addextrauserinfo = lazy(() => import("./pages/Addextrauserinfo"));
 const Editextrauserinfo = lazy(() => import("./pages/Editextrauserinfo"));
 const GamePage = lazy(() => import("./pages/Games"));
 
-
 function App() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState("light");  // State for theme mode
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -87,7 +83,19 @@ function App() {
           localStorage.removeItem("accessToken");
         });
     }
+
+    // Load theme preference from localStorage if available
+    const savedThemeMode = localStorage.getItem("themeMode");
+    if (savedThemeMode) {
+      setThemeMode(savedThemeMode);
+    }
   }, []);
+
+  const toggleTheme = () => {
+    const newThemeMode = themeMode === "light" ? "dark" : "light";
+    setThemeMode(newThemeMode);
+    localStorage.setItem("themeMode", newThemeMode);  // Save preference
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -172,13 +180,15 @@ function App() {
     );
   };
 
+  const appliedTheme = themeMode === "light" ? lightTheme : darkTheme;
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
-        <ThemeProvider theme={MyTheme}>
+        <ThemeProvider theme={appliedTheme}>
           <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", overflow: "hidden" }}>
             <CssBaseline />
-            <AppBar position="static" sx={{ backgroundColor: "#9CBA9A", width: "100vw", overflow: "hidden" }}>
+            <AppBar position="static" sx={{ backgroundColor: "#9CBA9A", color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
@@ -223,7 +233,7 @@ function App() {
                     </MuiLink>
                   </Box>
                   <Box sx={{ display: "flex", alignItems: "center", ml: 4, width: "auto", whiteSpace: "nowrap" }}>
-                    <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer", ml: 2 }}>
+                    <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                       <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                       <Typography sx={{ ml: 1 }}>{user?.name || "Guest"}</Typography>
                     </Box>
@@ -231,9 +241,8 @@ function App() {
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
-                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200 } }}
+                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200, backgroundColor: appliedTheme.palette.background.paper, color: appliedTheme.palette.text.primary } }}
                     >
-                      {/* Display settings menu item for all logged-in users */}
                       {user && <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>}
                       {user?.roles?.includes("ADMIN") && (
                         <>
@@ -256,6 +265,7 @@ function App() {
                         </>
                       )}
                     </Menu>
+                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  {/* Dark Mode Toggle */}
                   </Box>
                 </Toolbar>
               </Container>
@@ -265,7 +275,6 @@ function App() {
           </Box>
         </ThemeProvider>
       </Router>
-      {/* The SettingsModel is now accessible to all logged-in users */}
       <SettingsModel open={settingsOpen} onClose={handleSettingsClose} user={user} />
     </UserContext.Provider>
   );
