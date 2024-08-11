@@ -14,6 +14,7 @@ router.post("/", validateToken, async (req, res) => {
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
     content: yup.string().trim().min(3).max(5000).required(),
+    signUpButton: yup.boolean().default(false), // Ensure this is included
   });
 
   try {
@@ -22,6 +23,19 @@ router.post("/", validateToken, async (req, res) => {
     res.json(result);
   } catch (err) {
     res.status(400).json({ errors: err.errors });
+  }
+});
+
+router.get("/signups", async (req, res) => {
+  try {
+    const announcements = await Announcement.findAll({
+      where: { signUpButton: true },
+    });
+    res.json(announcements);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch announcements with sign-up button" });
   }
 });
 
@@ -66,7 +80,6 @@ router.put("/:id", validateToken, async (req, res) => {
     return;
   }
 
-  // Check if user is the owner or has ADMIN role
   if (req.user.id === announcement.userId || req.user.roles.includes("ADMIN")) {
     let data = req.body;
 
@@ -74,6 +87,7 @@ router.put("/:id", validateToken, async (req, res) => {
     let validationSchema = yup.object({
       title: yup.string().trim().min(3).max(100),
       content: yup.string().trim().min(3).max(5000),
+      signUpButton: yup.boolean().default(false), // Ensure this is included
     });
 
     try {
@@ -100,7 +114,6 @@ router.put("/:id", validateToken, async (req, res) => {
       .json({ message: "You do not have the required permissions" });
   }
 });
-
 // Delete announcement via id
 router.delete("/:id", validateToken, async (req, res) => {
   let id = req.params.id;

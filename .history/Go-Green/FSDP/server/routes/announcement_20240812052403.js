@@ -9,13 +9,11 @@ const { validateToken, checkAdminRole } = require("../middlewares/auth");
 router.post("/", validateToken, async (req, res) => {
   let data = req.body;
   data.userId = req.user.id;
-
   // Validate request body
   let validationSchema = yup.object({
     title: yup.string().trim().min(3).max(200).required(),
     content: yup.string().trim().min(3).max(5000).required(),
   });
-
   try {
     data = await validationSchema.validate(data, { abortEarly: false });
     let result = await Announcement.create(data);
@@ -24,6 +22,20 @@ router.post("/", validateToken, async (req, res) => {
     res.status(400).json({ errors: err.errors });
   }
 });
+
+router.get("/signups", async (req, res) => {
+  try {
+    const announcements = await Announcement.findAll({
+      where: { signUpButton: true },
+    });
+    res.json(announcements);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch announcements with sign-up button" });
+  }
+});
+
 
 // Show all announcements
 router.get("/", async (req, res) => {
@@ -69,13 +81,11 @@ router.put("/:id", validateToken, async (req, res) => {
   // Check if user is the owner or has ADMIN role
   if (req.user.id === announcement.userId || req.user.roles.includes("ADMIN")) {
     let data = req.body;
-
     // Validate request body
     let validationSchema = yup.object({
       title: yup.string().trim().min(3).max(100),
       content: yup.string().trim().min(3).max(5000),
     });
-
     try {
       data = await validationSchema.validate(data, { abortEarly: false });
 
@@ -95,9 +105,7 @@ router.put("/:id", validateToken, async (req, res) => {
       res.status(400).json({ errors: err.errors });
     }
   } else {
-    res
-      .status(403)
-      .json({ message: "You do not have the required permissions" });
+    res.status(403).json({ message: "You do not have the required permissions" });
   }
 });
 
@@ -125,9 +133,7 @@ router.delete("/:id", validateToken, async (req, res) => {
       });
     }
   } else {
-    res
-      .status(403)
-      .json({ message: "You do not have the required permissions" });
+    res.status(403).json({ message: "You do not have the required permissions" });
   }
 });
 

@@ -9,6 +9,7 @@ import {
   IconButton,
   Input,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import {
   AccountCircle,
@@ -37,9 +38,7 @@ function AnnouncementCard({ announcement, user }) {
           <Box className="aspect-ratio-container">
             <img
               alt="announcement"
-              src={`${import.meta.env.VITE_FILE_BASE_URL}${
-                announcement.imageFile
-              }`}
+              src={`${import.meta.env.VITE_FILE_BASE_URL}${announcement.imageFile}`}
             />
           </Box>
         )}
@@ -48,8 +47,7 @@ function AnnouncementCard({ announcement, user }) {
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               {announcement.title || "No Title"}
             </Typography>
-            {(user?.roles?.includes("ADMIN") ||
-              user?.id === announcement.userId) && (
+            {(user?.roles?.includes("ADMIN") || user?.id === announcement.userId) && (
               <Link to={`/editannouncement/${announcement.id}`}>
                 <IconButton color="primary" sx={{ padding: "4px" }}>
                   <Edit />
@@ -57,17 +55,11 @@ function AnnouncementCard({ announcement, user }) {
               </Link>
             )}
           </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", mb: 1 }}
-            color="text.secondary"
-          >
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary">
             <AccountCircle sx={{ mr: 1 }} />
             <Typography>{announcement.user?.name || "Unknown User"}</Typography>
           </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", mb: 1 }}
-            color="text.secondary"
-          >
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary">
             <AccessTime sx={{ mr: 1 }} />
             <Typography>
               {announcement.createdAt
@@ -90,28 +82,41 @@ function AnnouncementCard({ announcement, user }) {
               ) || "No Content"
             )}
           </Typography>
-          {announcement.link && (
-            <Typography>
-              Link:
-              <Box component="span" sx={{ ml: 1 }}>
-                <a
-                  href={announcement.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {announcement.link}
-                </a>
-              </Box>
-            </Typography>
-          )}
-          <Button
-            component={Link}
-            to={`/announcement/${announcement.id}`}
-            variant="text"
-            color="primary"
-          >
-            Read More
-          </Button>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            {announcement.signUpButton && (
+              <Button
+                component={Link}
+                to={`/announcement-signup-step1/${announcement.id}`}
+                variant="contained"
+                color="success"
+                sx={{ mb: 2 }}
+              >
+                Sign Up
+              </Button>
+            )}
+            {announcement.link && (
+              <Typography>
+                Link:
+                <Box component="span" sx={{ ml: 1 }}>
+                  <a
+                    href={announcement.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {announcement.link}
+                  </a>
+                </Box>
+              </Typography>
+            )}
+            <Button
+              component={Link}
+              to={`/announcement/${announcement.id}`}
+              variant="text"
+              color="primary"
+            >
+              Read More
+            </Button>
+          </Box>
         </CardContent>
       </Card>
     </Grid>
@@ -121,6 +126,7 @@ function AnnouncementCard({ announcement, user }) {
 function Announcement() {
   const [announcementList, setAnnouncementList] = useState([]);
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Loading state
   const { user } = useContext(UserContext);
 
   const onSearchChange = (e) => {
@@ -128,14 +134,18 @@ function Announcement() {
   };
 
   const getAnnouncements = () => {
+    setIsLoading(true); // Start loading
     http.get("/announcement").then((res) => {
       setAnnouncementList(res.data);
+      setIsLoading(false); // End loading
     });
   };
 
   const searchAnnouncement = () => {
+    setIsLoading(true);
     http.get(`/announcement?search=${search}`).then((res) => {
       setAnnouncementList(res.data);
+      setIsLoading(false);
     });
   };
 
@@ -185,15 +195,22 @@ function Announcement() {
           </Link>
         )}
       </Box>
-      <Grid container spacing={2}>
-        {announcementList.map((announcement) => (
-          <AnnouncementCard
-            key={announcement.id}
-            announcement={announcement}
-            user={user}
-          />
-        ))}
-      </Grid>
+
+      {isLoading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Grid container spacing={2}>
+          {announcementList.map((announcement) => (
+            <AnnouncementCard
+              key={announcement.id}
+              announcement={announcement}
+              user={user}
+            />
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 }
