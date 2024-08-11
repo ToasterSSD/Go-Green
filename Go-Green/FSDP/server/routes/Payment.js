@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Payment } = require('../models');
+const { Payment, User } = require('../models');
 const yup = require("yup");
 const { validateToken } = require('../middlewares/auth');
 

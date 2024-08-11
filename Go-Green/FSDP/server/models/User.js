@@ -28,19 +28,19 @@ module.exports = (sequelize, DataTypes) => {
         });
 
         // Association with ExtraUserInfo model
-        User.hasOne(models.ExtraUserInfo, {
+        User.hasMany(models.ExtraUserInfo, {
             foreignKey: "userId",
             onDelete: "cascade"
         });
 
         // Association with Payment model
-        User.hasOne(models.Payment, {
+        User.hasMany(models.Payment, {
             foreignKey: "userId",
             onDelete: "cascade"
         });
 
         // Association with HomeAddress model
-        User.hasOne(models.HomeAddress, {
+        User.hasMany(models.HomeAddress, {
             foreignKey: "userId",
             onDelete: "cascade"
         });

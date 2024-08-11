@@ -7,9 +7,27 @@ module.exports = (sequelize, DataTypes) => {
         expirationDate: {
             type: DataTypes.DATEONLY,
             allowNull: true,
-        },ccv: {
+        },
+        ccv: {
             type: DataTypes.DATEONLY,
             allowNull: true,
+        },
+        amount: {
+            type: DataTypes.DECIMAL(10, 2), // Use DECIMAL for financial amounts
+            allowNull: false,
+        },
+        frequency: {
+            type: DataTypes.STRING(50),
+            allowNull: false,
+        }, 
+        userId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'users',
+                key: 'id',
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
         },
     }, {
         tableName: 'payments'
