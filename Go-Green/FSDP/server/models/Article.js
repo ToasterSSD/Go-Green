@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         "Article", 
         {
         title: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.STRING(30),
             allowNull: false
         },
         category: {

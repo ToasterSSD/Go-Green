@@ -37,7 +37,7 @@ function EditArticle() {
         validationSchema: yup.object({
             title: yup.string().trim()
                 .min(3, 'Title must be at least 3 characters')
-                .max(100, 'Title must be at most 100 characters')
+                .max(30, 'Title must be at most 30 characters')
                 .required('Title is required'),
             category: yup.string().trim()
                 .min(3, 'Category must be at least 3 characters')
