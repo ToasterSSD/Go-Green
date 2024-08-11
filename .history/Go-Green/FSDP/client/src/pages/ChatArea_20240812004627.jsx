@@ -118,12 +118,9 @@ function ChatArea() {
 
   const handleCommentSubmit = async (postId) => {
     try {
-      console.log("Submitting comment for postId:", postId);
       const res = await http.post(`/chatarea/comment/${postId}`, {
         content: commentText,
       });
-
-      console.log("Response from backend:", res.data);
 
       const newComment = res.data;
 
@@ -132,14 +129,12 @@ function ChatArea() {
           post.id === postId
             ? {
                 ...post,
-                comments: [...(post.comments || []), newComment], // Properly append the new comment
-                commentCount: (post.comments?.length || 0) + 1, // Increment the comment count
+                comments: [...post.comments, newComment],
+                commentCount: post.comments.length + 1, // Update comment count
               }
             : post
         )
       );
-
-      console.log("Updated postList:", postList);
 
       setCommentText(""); // Clear the comment text after submission
       setOpenComment(null); // Close the comment box after submission
@@ -155,6 +150,14 @@ function ChatArea() {
 
   const handleReportSubmit = async () => {
     try {
+      // Make sure the report details have the necessary data
+      console.log("Submitting report:", {
+        postId: reportDetails.postId,
+        type: reportDetails.type,
+        description: reportDetails.description,
+      });
+
+      // This sends the POST request to your backend to create a report
       const res = await http.post(
         "/reports",
         {
@@ -170,6 +173,7 @@ function ChatArea() {
       );
 
       if (res.status === 200) {
+        console.log("Report submitted successfully");
         handleReportDialogClose(); // Close the report dialog if submission is successful
       } else {
         console.error("Failed to submit report", res);
@@ -293,25 +297,15 @@ function ChatArea() {
                       <>
                         <div
                           dangerouslySetInnerHTML={{
-                            __html:
-                              openComment === post.id
-                                ? post.content
-                                : `${post.content.substring(0, 150)}...`,
+                            __html: `${post.content.substring(0, 150)}...`,
                           }}
                         />
-                        <Button
-                          onClick={() => toggleCommentSection(post.id)}
-                          variant="text"
-                          color="primary"
-                        >
-                          {openComment === post.id ? "Show Less" : "Read More"}
-                        </Button>
+                        <Link to={`/chatarea/${post.id}`}>Read More</Link>
                       </>
                     ) : (
                       <div dangerouslySetInnerHTML={{ __html: post.content }} />
                     )}
                   </Typography>
-
                   {post.link && (
                     <Typography sx={{ pb: 2 }}>
                       <Box component="span" sx={{ fontWeight: "bold" }}>
@@ -393,7 +387,6 @@ function ChatArea() {
                       }}
                     />
                     {post.comments &&
-                      post.comments.length > 0 &&
                       post.comments.map((comment, index) => (
                         <Box
                           key={index}

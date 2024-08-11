@@ -1,0 +1,98 @@
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+} from "@mui/material";
+import http from "../http";
+import UserContext from "../contexts/UserContext";
+
+function Reports() {
+  const [reports, setReports] = useState([]);
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user?.roles.includes("ADMIN")) {
+      fetchReports();
+    }
+  }, [user]);
+
+  const fetchReports = async () => {
+    try {
+      const res = await http.get("/reports");
+      setReports(res.data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
+
+  const handleAction = async (reportId, action) => {
+    try {
+      const res = await http.put(`/reports/${reportId}`, { status: action });
+      setReports((prevReports) =>
+        prevReports.map((report) =>
+          report.id === res.data.id ? res.data : report
+        )
+      );
+    } catch (error) {
+      console.error(`Error updating report status to ${action}:`, error);
+    }
+  };
+
+  if (!user?.roles.includes("ADMIN")) {
+    return (
+      <Typography>You do not have permission to view this page.</Typography>
+    );
+  }
+
+  return (
+    <Box>
+      <Typography variant="h4" sx={{ mb: 3 }}>
+        Reports
+      </Typography>
+      <Grid container spacing={3}>
+        {reports.map((report) => (
+          <Grid item xs={12} key={report.id}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">{report.ChatArea.title}</Typography>
+                <Typography variant="body1">
+                  <strong>Type:</strong> {report.type}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  <strong>Description:</strong> {report.description}
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 2 }}>
+                  <strong>Status:</strong> {report.status}
+                </Typography>
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleAction(report.id, "RESOLVED")}
+                    disabled={report.status !== "PENDING"}
+                  >
+                    Leave it (RESOLVED)
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleAction(report.id, "DELETED")}
+                    disabled={report.status !== "PENDING"}
+                  >
+                    Delete (DELETED)
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+}
+
+export default Reports;
