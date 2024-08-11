@@ -177,6 +177,8 @@ const DonationPage = () => {
         cardnumber: paymentInfo.cardNumber,
         expirationDate: formattedExpirationDate.toISOString(), // Send ISO format
         ccv: paymentInfo.ccv,
+        amount: donationAmount || customAmount,  // Include the amount and frequency
+        frequency: donationFrequency,
       });
 
       if (response.status === 201) {
