@@ -1,6 +1,49 @@
-// controllers/gameController.js
-const { UserProgress } = require('../models');
+const { GamePart, UserProgress } = require('../models');
 
+// Function to get the current game part by ID
+const getGamePart = async (req, res) => {
+  try {
+    const part = await GamePart.findByPk(req.params.id);
+    if (part) {
+      res.json(part);
+    } else {
+      res.status(404).send('Game part not found');
+    }
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Function to record a player's death and check for special ending conditions
+const recordDeath = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    let userProgress = await UserProgress.findOne({ where: { userId } });
+    if (!userProgress) {
+      userProgress = await UserProgress.create({ userId, currentPartId: 1, deathsCount: 1 });
+    } else {
+      userProgress.deathsCount++;
+      await userProgress.save();
+    }
+
+    // Check if the death count exceeds the special ending threshold
+    if (userProgress.deathsCount > 50) {
+      res.json({
+        message: "Why? We trusted you.",
+        options: [
+          { text: "Keep doing this", action: "closeAndDelete" },
+          { text: "Don't do anything at all", action: "returnHomeAndDelete" },
+        ],
+      });
+    } else {
+      res.send('Death recorded');
+    }
+  } catch (error) {
+    res.status(500).send('Server error');
+  }
+};
+
+// Function to save the current game progress
 const saveGameProgress = async (req, res) => {
   const { currentPartId, playerResponses, deathCount } = req.body;
   const userId = req.user.id;
@@ -22,6 +65,7 @@ const saveGameProgress = async (req, res) => {
   }
 };
 
+// Function to load the current game progress
 const loadGameProgress = async (req, res) => {
   const userId = req.user.id;
 
@@ -37,6 +81,7 @@ const loadGameProgress = async (req, res) => {
   }
 };
 
+// Function to delete the current game progress
 const deleteGameProgress = async (req, res) => {
   const userId = req.user.id;
 
@@ -48,4 +93,4 @@ const deleteGameProgress = async (req, res) => {
   }
 };
 
-module.exports = { saveGameProgress, loadGameProgress, deleteGameProgress };
+module.exports = { getGamePart, recordDeath, saveGameProgress, loadGameProgress, deleteGameProgress };
