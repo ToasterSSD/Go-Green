@@ -1,5 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-    const UserProgress = sequelize.define('UserProgress', {
+    const UserProgress = sequelize.define('UserProgress', 
+      {
       userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -16,8 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-    });
-  
+    }, 
+    {
+    tablename: "UserProgress",
+    },
+    );
     return UserProgress;
   };
   
