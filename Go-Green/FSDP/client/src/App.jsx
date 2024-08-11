@@ -15,10 +15,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import lightTheme from "./themes/lightTheme";  // Import light theme
-import darkTheme from "./themes/darkTheme";    // Import dark theme
-import DarkModeToggle from "./components/DarkModeToggle";  // Import DarkModeToggle component
+import { ThemeProvider } from "@mui/material/styles"; // Import ThemeProvider from MUI
+import MyTheme from "./themes/MyTheme";  // Import MyTheme
 import http from "./http";
 import UserContext from "./contexts/UserContext";
 import SettingsModel from "./components/SettingsModel";
@@ -26,7 +24,6 @@ import Footer from "./components/Footer";
 import SideNavbar from "./components/SideNavbar";
 import ReportDetail from "./pages/ReportDetail";
 import Reports from "./pages/Reports";
-
 
 // Lazy loading pages
 const Home = lazy(() => import("./pages/Home"));
@@ -66,16 +63,14 @@ const Settings = lazy(() => import("./pages/Settings"));
 const Addextrauserinfo = lazy(() => import("./pages/Addextrauserinfo"));
 const Editextrauserinfo = lazy(() => import("./pages/Editextrauserinfo"));
 const GamePage = lazy(() => import("./pages/Games"));
-const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));  // Import the ThankYouPage component
+const ThankYouPage = lazy(() => import("./pages/ThankYouPage"));
 const AddChat = lazy(() => import("./pages/AddChat"));
 const EditChat = lazy(() => import("./pages/EditChat"));
-
 
 function App() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [themeMode, setThemeMode] = useState("light");  // State for theme mode
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -89,19 +84,7 @@ function App() {
           localStorage.removeItem("accessToken");
         });
     }
-
-    // Load theme preference from localStorage if available
-    const savedThemeMode = localStorage.getItem("themeMode");
-    if (savedThemeMode) {
-      setThemeMode(savedThemeMode);
-    }
   }, []);
-
-  const toggleTheme = () => {
-    const newThemeMode = themeMode === "light" ? "dark" : "light";
-    setThemeMode(newThemeMode);
-    localStorage.setItem("themeMode", newThemeMode);  // Save preference
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -155,106 +138,39 @@ function App() {
                 <Route path="/form" element={<MyForm />} />
                 <Route path="/chatarea" element={<ChatArea />} />
                 <Route path="/addannouncement" element={<AddAnnouncement />} />
-                <Route
-                  path="/editannouncement/:id"
-                  element={<EditAnnouncement />}
-                />
+                <Route path="/editannouncement/:id" element={<EditAnnouncement />} />
                 <Route path="/feedback" element={<Feedback />} />
                 <Route path="/feedbackadmin" element={<FeedbackAdmin />} />
                 <Route path="/addfeedback" element={<AddFeedback />} />
-                <Route
-                  path="/deletefeedback/:id"
-                  element={<DeleteFeedback />}
-                />
+                <Route path="/deletefeedback/:id" element={<DeleteFeedback />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/public-articles" element={<PublicArticles />} />
                 <Route path="/addarticle" element={<AddArticle />} />
                 <Route path="/editarticle/:id" element={<EditArticle />} />
-                <Route
-                  path="/public-article/:id"
-                  element={<ArticleDetails />}
-                />
+                <Route path="/public-article/:id" element={<ArticleDetails />} />
                 <Route path="/learning" element={<LearningTopics />} />
-                <Route
-                  path="/add-learning-topic"
-                  element={<AddLearningTopic />}
-                />
-                <Route
-                  path="/edit-learning-topic/:id"
-                  element={<EditLearningTopic />}
-                />
-                <Route
-                  path="/learning/:id"
-                  element={<LearningTopicDetails />}
-                />
-                <Route
-                  path="/public-learning"
-                  element={<PublicLearningTopics />}
-                />
+                <Route path="/add-learning-topic" element={<AddLearningTopic />} />
+                <Route path="/edit-learning-topic/:id" element={<EditLearningTopic />} />
+                <Route path="/learning/:id" element={<LearningTopicDetails />} />
+                <Route path="/public-learning" element={<PublicLearningTopics />} />
                 <Route path="/quiz" element={<QuizPage />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <PrivateRoute>
-                      <AdminPanel />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    <PrivateRoute>
-                      <UserProfile />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/announcement/:id"
-                  element={<MoreAnnouncement />}
-                />
-                <Route
-                  path="/announcement-signup-step1/:id"
-                  element={<SignUpStep1 />}
-                />
-                <Route
-                  path="/announcement-signup-step2/:id"
-                  element={<SignUpStep2 />}
-                />
+                <Route path="/admin" element={<PrivateRoute><AdminPanel /></PrivateRoute>} />
+                <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+                <Route path="/announcement/:id" element={<MoreAnnouncement />} />
+                <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
+                <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
                 <Route path="/donation" element={<Donation />} />
                 <Route path="/thank-you" element={<ThankYouPage />} />
-                <Route
-                  path="/add-home"
-                  element={
-                    <PrivateRoute>
-                      <AddHome />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path="/edit-home/:id"
-                  element={
-                    <PrivateRoute>
-                      <EditHome />
-                    </PrivateRoute>
-                  }
-                />
+                <Route path="/add-home" element={<PrivateRoute><AddHome /></PrivateRoute>} />
+                <Route path="/edit-home/:id" element={<PrivateRoute><EditHome /></PrivateRoute>} />
                 <Route path="/Settings" element={<Settings />} />
-                <Route
-                  path="/addextrauserinfo"
-                  element={<Addextrauserinfo />}
-                />
-                <Route
-                  path="/editextrauserinfo/:id"
-                  element={<Editextrauserinfo />}
-                />
+                <Route path="/addextrauserinfo" element={<Addextrauserinfo />} />
+                <Route path="/editextrauserinfo/:id" element={<Editextrauserinfo />} />
                 <Route path="/Games" element={<GamePage />} />
                 <Route path="/addchat" element={<AddChat />} />
                 <Route path="/editchat/:id" element={<EditChat />} />
                 <Route path="/reports" element={<Reports />} />
-                <Route
-                  path="/report-detail/:reportId"
-                  element={<ReportDetail />}
-                />
+                <Route path="/report-detail/:reportId" element={<ReportDetail />} />
               </Routes>
             </Suspense>
           </Container>
@@ -263,22 +179,20 @@ function App() {
     );
   };
 
-  const appliedTheme = themeMode === "light" ? lightTheme : darkTheme;
-
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
-        <ThemeProvider theme={appliedTheme}>
+        <ThemeProvider theme={MyTheme}>  {/* Use MyTheme */}
           <CssBaseline />
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: appliedTheme.palette.background.default }}>
-            <AppBar position="static" sx={{ backgroundColor: appliedTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: MyTheme.palette.background.default }}>
+            <AppBar position="static" sx={{ backgroundColor: MyTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
                       <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
-                        Go <span style={{ color: appliedTheme.palette.secondary.main }}>Green</span>!
+                        Go <span style={{ color: MyTheme.palette.secondary.main }}>Green</span>!
                       </Typography>
                     </Link>
                   </Box>
@@ -324,7 +238,7 @@ function App() {
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
-                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200, backgroundColor: appliedTheme.palette.background.paper, color: appliedTheme.palette.text.primary } }}
+                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200, backgroundColor: MyTheme.palette.background.paper, color: MyTheme.palette.text.primary } }}
                     >
                       {user && <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>}
                       {user?.roles?.includes("ADMIN") && (
@@ -348,7 +262,6 @@ function App() {
                         </>
                       )}
                     </Menu>
-                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  
                   </Box>
                 </Toolbar>
               </Container>
