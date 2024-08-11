@@ -15,8 +15,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles"; // Import ThemeProvider from MUI
-import MyTheme from "./themes/MyTheme";  // Import MyTheme
+import { ThemeProvider } from "@mui/material/styles";
+import lightTheme from "./themes/lightTheme";  // Import light theme
+import darkTheme from "./themes/darkTheme";    // Import dark theme
+import DarkModeToggle from "./components/DarkModeToggle";  // Dark mode toggle component
 import http from "./http";
 import UserContext from "./contexts/UserContext";
 import SettingsModel from "./components/SettingsModel";
@@ -71,6 +73,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState("light");
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -107,6 +110,10 @@ function App() {
 
   const handleSettingsClose = () => {
     setSettingsOpen(false);
+  };
+
+  const toggleTheme = () => {
+    setThemeMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
 
   const PrivateRoute = ({ children }) => {
@@ -182,17 +189,17 @@ function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
-        <ThemeProvider theme={MyTheme}>  {/* Use MyTheme */}
+        <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme}>
           <CssBaseline />
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: MyTheme.palette.background.default }}>
-            <AppBar position="static" sx={{ backgroundColor: MyTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: themeMode === "light" ? lightTheme.palette.background.default : darkTheme.palette.background.default }}>
+            <AppBar position="static" sx={{ backgroundColor: themeMode === "light" ? lightTheme.palette.primary.main : darkTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap", marginRight: "20px" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
                       <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
-                        Go <span style={{ color: MyTheme.palette.secondary.main }}>Green</span>!
+                        Go <span style={{ color: themeMode === "light" ? lightTheme.palette.secondary.main : darkTheme.palette.secondary.main }}>Green</span>!
                       </Typography>
                     </Link>
                   </Box>
@@ -238,7 +245,7 @@ function App() {
                       anchorEl={anchorEl}
                       open={Boolean(anchorEl)}
                       onClose={handleMenuClose}
-                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200, backgroundColor: MyTheme.palette.background.paper, color: MyTheme.palette.text.primary } }}
+                      PaperProps={{ sx: { borderRadius: "16px", mt: 1, minWidth: 200, backgroundColor: themeMode === "light" ? lightTheme.palette.background.paper : darkTheme.palette.background.paper, color: themeMode === "light" ? lightTheme.palette.text.primary : darkTheme.palette.text.primary } }}
                     >
                       {user && <MenuItem onClick={handleSettingsOpen}>Settings</MenuItem>}
                       {user?.roles?.includes("ADMIN") && (
@@ -262,6 +269,7 @@ function App() {
                         </>
                       )}
                     </Menu>
+                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} />
                   </Box>
                 </Toolbar>
               </Container>
