@@ -118,7 +118,7 @@ function App() {
 
   const MainContent = () => {
     const location = useLocation();
-    const isAdminRoute = location.pathname.startsWith("/admin") || location.pathname.startsWith("/profile") || location.pathname.startsWith("/categories") || location.pathname.startsWith("/feedback");
+    const isAdminRoute = location.pathname.startsWith("/admin") || location.pathname.startsWith("/profile");
 
     return (
       <>

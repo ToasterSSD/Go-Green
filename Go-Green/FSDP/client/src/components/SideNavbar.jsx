@@ -80,40 +80,6 @@ const SideNavbar = () => {
           </ListItemIcon>
           {!isCollapsed && <ListItemText primary="User Profile" />}
         </ListItem>
-        <ListItem 
-          button 
-          component={Link} 
-          to="/categories" 
-          sx={{ 
-            bgcolor: isActive('/categories') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
-            color: '#fff',
-            justifyContent: isCollapsed ? 'center' : 'initial',
-            px: isCollapsed ? 2 : 3,
-          }}
-        >
-          <ListItemIcon sx={{ color: '#fff', minWidth: isCollapsed ? 0 : 56 }}>
-            <Category />
-          </ListItemIcon>
-          {!isCollapsed && <ListItemText primary="Categories" />}
-        </ListItem>
-        <ListItem 
-          button 
-          component={Link} 
-          to="/feedback" 
-          sx={{ 
-            bgcolor: isActive('/feedback') ? 'action.selected' : 'transparent',
-            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }, // Make the box slightly darker on hover
-            color: '#fff',
-            justifyContent: isCollapsed ? 'center' : 'initial',
-            px: isCollapsed ? 2 : 3,
-          }}
-        >
-          <ListItemIcon sx={{ color: '#fff', minWidth: isCollapsed ? 0 : 56 }}>
-            <Feedback />
-          </ListItemIcon>
-          {!isCollapsed && <ListItemText primary="Feedback" />}
-        </ListItem>
       </List>
     </Drawer>
   );
