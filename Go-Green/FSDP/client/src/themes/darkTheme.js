@@ -4,70 +4,62 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#93DAAB',  // Light green for primary actions
+      main: '#556B2F', // dark green
     },
     secondary: {
-      main: '#f4511e',  // Reddish-orange for secondary actions
+      main: '#8FBC8F', // muted green
     },
     background: {
-      default: '#121212', // Very dark background
-      paper: '#1e1e1e',   // Slightly lighter for cards/panels
+      default: '#1e1e1e', // dark background
+      paper: '#121212', // dark paper background
     },
     text: {
-      primary: '#ffffff', // White text for high contrast
-      secondary: '#b0b0b0', // Grey text for secondary information
-    },
-    action: {
-      active: '#ffffff', // White active icons for contrast
+      primary: '#f0f0f0',
+      secondary: '#aaaaaa',
     },
   },
+  typography: {
+    fontSize: 14, // Default font size
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#1e1e1e', // ensure the body background is dark
+          color: '#f0f0f0', // ensure the text color is light
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#2c2c2c', // Slightly lighter background for cards
+          color: '#f0f0f0', // Light text color for better contrast
+          boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.5)', // Add shadow for depth
+          borderRadius: '10px', // Rounded corners
+          // Removed hover effects
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: '#1d1d1d',  // Darker background for cards
-          color: '#ffffff', // Ensure text on cards is white
-        },
-      },
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: '#ffffff', // White text for better readability
-        },
-      },
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        input: {
-          color: '#ffffff', // White text inside inputs
-          backgroundColor: '#333333', // Darker background for input fields
-          borderColor: '#93DAAB', // Light green border
+          backgroundColor: '#2c2c2c', // Matching Paper background
+          color: '#f0f0f0',
+          boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.5)', // Shadow for depth
+          borderRadius: '10px',
+          // Removed hover effects
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          backgroundColor: '#93DAAB', // Primary green button color
-          color: '#121212', // Dark text on button for contrast
+          backgroundColor: '#4caf50', // Bright green button
+          color: '#ffffff',
           '&:hover': {
-            backgroundColor: '#81c784', // Slightly darker green on hover
+            backgroundColor: '#45a049', // Darker green on hover
           },
-        },
-      },
-    },
-    MuiIconButton: {
-      styleOverrides: {
-        root: {
-          color: '#93DAAB', // Primary icon button color
-        },
-      },
-    },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#444444', // Darker color for dividers to blend with dark theme
         },
       },
     },

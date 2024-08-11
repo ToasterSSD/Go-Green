@@ -160,12 +160,6 @@ function Register() {
             padding: '20px'
         }}>
             <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3, backgroundColor: isAdmin ? '#A9A9A9' : '#fff', color: '#000' }}>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://via.placeholder.com/500x140"
-                    alt="Card Image"
-                />
                 <CardContent>
                     <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
                         {isAdmin ? 'Admin Register' : 'User Register'}

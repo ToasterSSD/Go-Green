@@ -4,20 +4,33 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#93DAAB',
+      main: '#9CBA9A', // light green
     },
     secondary: {
-      main: '#f4511e',
+      main: '#06F92D', // bright green
     },
     background: {
-      default: '#ffffff',
-      paper: '#f4f4f4',
+      default: '#f0f0f0', // light background
+      paper: '#ffffff',
+    },
+    text: {
+      primary: '#333',
+      secondary: '#555',
     },
   },
   typography: {
-    // Add typography settings here if needed
+    fontSize: 14, // Default font size
   },
-  // Add any additional customization here
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#f0f0f0', // ensure the body background is light
+          color: '#333', // ensure the text color is dark
+        },
+      },
+    },
+  },
 });
 
 export default lightTheme;

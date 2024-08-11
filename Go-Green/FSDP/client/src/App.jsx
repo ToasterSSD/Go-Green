@@ -13,7 +13,6 @@ import {
   Link as MuiLink,
   CssBaseline,
   CircularProgress,
-  IconButton,
 } from "@mui/material";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -167,7 +166,7 @@ function App() {
                 <Route path="/announcement-signup-step1/:id" element={<SignUpStep1 />} />
                 <Route path="/announcement-signup-step2/:id" element={<SignUpStep2 />} />
                 <Route path="/donation" element={<Donation />} />
-                <Route path="/thank-you" element={<ThankYouPage />} />  {/* Add the Thank You page route */}
+                <Route path="/thank-you" element={<ThankYouPage />} />  
                 <Route path="/add-home" element={<PrivateRoute><AddHome /></PrivateRoute>} />
                 <Route path="/edit-home/:id" element={<PrivateRoute><EditHome /></PrivateRoute>} />
                 <Route path="/Settings" element={<Settings />} />
@@ -188,53 +187,53 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <ThemeProvider theme={appliedTheme}>
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", overflow: "hidden" }}>
-            <CssBaseline />
-            <AppBar position="static" sx={{ backgroundColor: "#9CBA9A", color: "inherit", width: "100vw", overflow: "hidden" }}>
+          <CssBaseline />
+          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: appliedTheme.palette.background.default }}>
+            <AppBar position="static" sx={{ backgroundColor: appliedTheme.palette.primary.main, color: "inherit", width: "100vw", overflow: "hidden" }}>
               <Container sx={{ padding: 0, maxWidth: "100%" }}>
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
                       <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
                       <Typography variant="h6" component="div">
-                        Go <span style={{ color: "#06F92D" }}>Green</span>!
+                        Go <span style={{ color: appliedTheme.palette.secondary.main }}>Green</span>!
                       </Typography>
                     </Link>
                   </Box>
-                  <Box sx={{ display: "flex", flexGrow: 1, ml: 4 }}>
+                  <Box sx={{ display: "flex", flexGrow: 1 }}>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      <MuiLink component={Link} to="/articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                         NewsAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/public-articles" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       News
                     </MuiLink>
-                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/announcement" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Announcements
                     </MuiLink>
-                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/chatarea" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Chat
                     </MuiLink>
                     {user?.roles?.includes("ADMIN") && (
-                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 2 }}>
+                      <MuiLink component={Link} to="/learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                         LearningAdmin
                       </MuiLink>
                     )}
-                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Learning
                     </MuiLink>
-                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Games
                     </MuiLink>
-                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Donations
                     </MuiLink>
-                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/feedback" underline="none" color="inherit" sx={{ mx: 1.5 }} className="navbar-item">
                       Feedback
                     </MuiLink>
                   </Box>
-                  <Box sx={{ display: "flex", alignItems: "center", ml: 4, width: "auto", whiteSpace: "nowrap" }}>
+                  <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
                     <Box onClick={handleMenuOpen} sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
                       <Avatar alt={user?.name || "Guest"} src={user ? "/static/images/avatar/1.jpg" : ""} sx={{ width: 40, height: 40 }} />
                       <Typography sx={{ ml: 1 }}>{user?.name || "Guest"}</Typography>
@@ -267,7 +266,7 @@ function App() {
                         </>
                       )}
                     </Menu>
-                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  {/* Dark Mode Toggle */}
+                    <DarkModeToggle toggleTheme={toggleTheme} themeMode={themeMode} sx={{ ml: 'auto' }} />  
                   </Box>
                 </Toolbar>
               </Container>
