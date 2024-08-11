@@ -11,7 +11,7 @@ import { Facebook, Twitter, Instagram, YouTube } from "@mui/icons-material";
 
 function Footer() {
   return (
-    <Box sx={{ backgroundColor: "#A7A7A7", padding: "20px 0", mt: 5 }}>
+    <Box sx={{ backgroundColor: "#A2C2E2", padding: "20px 0", mt: 5 }}>
       <Container
         maxWidth="lg"
         sx={{
