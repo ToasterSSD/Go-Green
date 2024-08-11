@@ -137,30 +137,37 @@ router.put("/:id", validateToken, async (req, res) => {
 // delete feedback via id
 router.delete("/:id", validateToken, async (req, res) => {
   let id = req.params.id;
-  // Check id not found
-  let feedback = await Feedback.findByPk(id);
-  if (!feedback) {
-    res.sendStatus(404);
-    return;
-  }
 
-  // Check request user id
-  let userId = req.user.id;
-  if (feedback.userId != userId) {
-    res.sendStatus(403);
-    return;
-  }
+  try {
+    // Check if feedback exists
+    let feedback = await Feedback.findByPk(id);
+    if (!feedback) {
+      return res.sendStatus(404);
+    }
 
-  let num = await Feedback.destroy({
-    where: { id: id },
-  });
-  if (num == 1) {
-    res.json({
-      message: "Feedback was deleted successfully.",
+    // Check request user id or if the user has admin role
+    let userId = req.user.id;
+    if (feedback.userId != userId && !req.user.roles.includes("ADMIN")) {
+      return res.sendStatus(403);
+    }
+
+    let num = await Feedback.destroy({
+      where: { id: id },
     });
-  } else {
-    res.status(400).json({
-      message: `Cannot delete feedback with id ${id}.`,
+
+    if (num == 1) {
+      res.json({
+        message: "Feedback was deleted successfully.",
+      });
+    } else {
+      res.status(400).json({
+        message: `Cannot delete feedback with id ${id}.`,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
     });
   }
 });

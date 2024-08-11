@@ -28,26 +28,10 @@ function DeleteFeedback() {
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    // Redirect non-admin users
-    if (user.role !== "ADMIN") {
-      navigate("/unauthorized");
-      return;
-    }
-  });
 
   useEffect(() => {
     http.get(`/feedback/${id}`).then((res) => {
       setFeedback(res.data);
-      setImageFile(res.data.imageFile);
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
-    http.get(`/feedback/${id}`).then((res) => {
-      setFeedback(res.data);
-      setImageFile(res.data.imageFile);
       setLoading(false);
     });
   }, []);
@@ -189,16 +173,8 @@ function DeleteFeedback() {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <Box sx={{ textAlign: "center", mt: 2 }}>
-                <Button variant="contained" component="label">
-                  Upload Image
-                  <input
-                    hidden
-                    accept="image/*"
-                    multiple
-                    type="file"
-                    onChange={onFileChange}
-                  />
-                </Button>
+                
+               
                 {imageFile && (
                   <Box className="aspect-ratio-container" sx={{ mt: 2 }}>
                     <img
