@@ -12,59 +12,6 @@ html, body, #root {
   filter: blur(5px);
 }
 
-/* Navbar item styles */
-.navbar-item {
-  position: relative;
-  display: inline-block;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: inherit;
-  text-decoration: none;
-  font-size: 0.65rem; /* Reduce font size to make it smaller */
-  transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
-}
-
-.navbar-item:hover {
-  color: #333; /* Darken color on hover */
-  transform: scale(1.05); /* Slightly scale up on hover */
-}
-
-/* Line animation */
-.navbar-item::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0%;
-  height: 2px;
-  background-color: currentColor;
-  transition: width 0.3s ease-in-out;
-}
-
-.navbar-item:hover::after,
-.navbar-item.active::after {
-  width: 100%; /* Expand line on hover or when active */
-}
-
-/* Click animation */
-.navbar-item:active {
-  transform: scale(0.95); /* Slightly shrink on click */
-}
-
-.navbar-item:active::after {
-  background-color: #06F92D; /* Change the line color on click */
-  transition: background-color 0.3s ease-in-out;
-}
-
-/* Navbar container */
-.navbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Align items to the left */
-  flex-grow: 1;
-  margin-left: 10px; /* Keep content aligned to the left */
-}
-
 .AppBar a {
   color: inherit;
   text-decoration: none;
