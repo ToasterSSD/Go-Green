@@ -22,3 +22,8 @@ html, body, #root {
   color: inherit;
   margin-left: 12px;
 }
+/* Check in your App.css or relevant CSS files */
+
+.AppBar a span {
+  color: inherit !important;  /* Ensure it doesn't override the theme's color */
+}
