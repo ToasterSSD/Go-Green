@@ -190,7 +190,7 @@ function App() {
                 <Toolbar disableGutters>
                   <Box sx={{ display: "flex", alignItems: "center", width: "auto", whiteSpace: "nowrap" }}>
                     <Link to="/" style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center" }}>
-                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "10px" }} />
+                      <img src="/uploads/New logo.png" alt="Go-Green Logo" style={{ height: "40px", marginRight: "4px" }} />
                       <Typography variant="h6" component="div">
                         Go <span style={{ color: MyTheme.palette.secondary.main }}>Green</span>!
                       </Typography>
