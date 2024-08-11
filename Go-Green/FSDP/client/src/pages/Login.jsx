@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Box, Typography, TextField, Button, Card, CardContent, CardMedia, FormControlLabel, Checkbox, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
+import { Box, Typography, TextField, Button, Card, CardContent, FormControlLabel, Checkbox, IconButton, InputAdornment, Link as MuiLink } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -62,12 +62,6 @@ function Login() {
             padding: '20px'
         }}>
             <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3 }}>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://via.placeholder.com/500x140"
-                    alt="Card Image"
-                />
                 <CardContent>
                     <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
                         Login

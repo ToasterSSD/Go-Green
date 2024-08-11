@@ -39,7 +39,7 @@ function Register() {
             .min(3, 'Name must be at least 3 characters')
             .max(50, 'Name must be at most 50 characters')
             .required('Name is required')
-            .matches(/^[a-zA-Z '-,.]+$/, "Name only allows letters, spaces, and characters: ' - , ."),
+            .matches(/^[a-zA-Z0-9\s'-,.!@#$%^&*()_+=]*$/, "Name can contain letters, numbers, spaces, and special characters like ' - , . ! @ # $ % ^ & * ( ) _ + ="),
         email: yup.string().trim()
             .email('Enter a valid email')
             .max(50, 'Email must be at most 50 characters')
@@ -160,12 +160,6 @@ function Register() {
             padding: '20px'
         }}>
             <Card sx={{ maxWidth: 500, width: '100%', boxShadow: 3, backgroundColor: isAdmin ? '#A9A9A9' : '#fff', color: '#000' }}>
-                <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://via.placeholder.com/500x140"
-                    alt="Card Image"
-                />
                 <CardContent>
                     <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
                         {isAdmin ? 'Admin Register' : 'User Register'}
