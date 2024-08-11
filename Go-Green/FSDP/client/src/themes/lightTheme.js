@@ -4,13 +4,13 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#9CBA9A', // light green
+      main: '#9CBA9A', // Light green
     },
     secondary: {
-      main: '#06F92D', // bright green
+      main: '#06F92D', // Bright green
     },
     background: {
-      default: '#f0f0f0', // light background
+      default: '#f0f0f0', // Light background
       paper: '#ffffff',
     },
     text: {
@@ -25,8 +25,8 @@ const lightTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#f0f0f0', // ensure the body background is light
-          color: '#333', // ensure the text color is dark
+          backgroundColor: '#f0f0f0', // Ensure the body background is light
+          color: '#333', // Ensure the text color is dark
         },
       },
     },

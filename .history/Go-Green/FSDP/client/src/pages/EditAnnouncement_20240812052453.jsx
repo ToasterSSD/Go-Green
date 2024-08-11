@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, TextField, Button, Grid } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Checkbox,
+  FormControlLabel,
+} from "@mui/material";
 import {
   Dialog,
   DialogTitle,
@@ -25,6 +33,11 @@ function EditAnnouncement() {
     title: "",
     content: "",
     link: "",
+    showSignUp: false,
+    eventName: "",
+    eventDate: "",
+    eventTime: "",
+    eventLocation: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,6 +66,22 @@ function EditAnnouncement() {
         .min(3, "Content must be at least 3 characters")
         .max(5000, "Content must be at most 5000 characters")
         .required("Content is required"),
+      eventName: yup.string().when("showSignUp", {
+        is: true,
+        then: yup.string().required("Event Name is required"),
+      }),
+      eventDate: yup.string().when("showSignUp", {
+        is: true,
+        then: yup.string().required("Event Date is required"),
+      }),
+      eventTime: yup.string().when("showSignUp", {
+        is: true,
+        then: yup.string().required("Event Time is required"),
+      }),
+      eventLocation: yup.string().when("showSignUp", {
+        is: true,
+        then: yup.string().required("Event Location is required"),
+      }),
     }),
     onSubmit: (data) => {
       if (imageFile) {
@@ -179,6 +208,95 @@ function EditAnnouncement() {
                   {formik.errors.content}
                 </Typography>
               ) : null}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="showSignUp"
+                    color="primary"
+                    checked={formik.values.showSignUp}
+                    onChange={formik.handleChange}
+                  />
+                }
+                label="Display Sign Up Button"
+                sx={{ mt: 2 }}
+              />
+              {formik.values.showSignUp && (
+                <>
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Event Name"
+                    name="eventName"
+                    value={formik.values.eventName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.eventName &&
+                      Boolean(formik.errors.eventName)
+                    }
+                    helperText={
+                      formik.touched.eventName && formik.errors.eventName
+                    }
+                  />
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Event Date"
+                    name="eventDate"
+                    type="date"
+                    value={formik.values.eventDate}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.eventDate &&
+                      Boolean(formik.errors.eventDate)
+                    }
+                    helperText={
+                      formik.touched.eventDate && formik.errors.eventDate
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Event Time"
+                    name="eventTime"
+                    type="time"
+                    value={formik.values.eventTime}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.eventTime &&
+                      Boolean(formik.errors.eventTime)
+                    }
+                    helperText={
+                      formik.touched.eventTime && formik.errors.eventTime
+                    }
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  <TextField
+                    fullWidth
+                    margin="dense"
+                    label="Event Location"
+                    name="eventLocation"
+                    value={formik.values.eventLocation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.eventLocation &&
+                      Boolean(formik.errors.eventLocation)
+                    }
+                    helperText={
+                      formik.touched.eventLocation &&
+                      formik.errors.eventLocation
+                    }
+                  />
+                </>
+              )}
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <Box sx={{ textAlign: "center", mt: 2 }}>

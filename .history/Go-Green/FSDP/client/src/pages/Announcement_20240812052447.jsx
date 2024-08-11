@@ -90,28 +90,41 @@ function AnnouncementCard({ announcement, user }) {
               ) || "No Content"
             )}
           </Typography>
-          {announcement.link && (
-            <Typography>
-              Link:
-              <Box component="span" sx={{ ml: 1 }}>
-                <a
-                  href={announcement.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {announcement.link}
-                </a>
-              </Box>
-            </Typography>
-          )}
-          <Button
-            component={Link}
-            to={`/announcement/${announcement.id}`}
-            variant="text"
-            color="primary"
-          >
-            Read More
-          </Button>
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            {announcement.signUpButton && (
+              <Button
+                component={Link}
+                to={`/announcement-signup-step1/${announcement.id}`}
+                variant="contained"
+                color="success"
+                sx={{ mb: 2 }}
+              >
+                Sign Up
+              </Button>
+            )}
+            {announcement.link && (
+              <Typography>
+                Link:
+                <Box component="span" sx={{ ml: 1 }}>
+                  <a
+                    href={announcement.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {announcement.link}
+                  </a>
+                </Box>
+              </Typography>
+            )}
+            <Button
+              component={Link}
+              to={`/announcement/${announcement.id}`}
+              variant="text"
+              color="primary"
+            >
+              Read More
+            </Button>
+          </Box>
         </CardContent>
       </Card>
     </Grid>
