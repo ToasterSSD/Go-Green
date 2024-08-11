@@ -67,6 +67,8 @@ const EditHome = lazy(() => import("./pages/EditHome"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Addextrauserinfo = lazy(() => import("./pages/Addextrauserinfo"));
 const Editextrauserinfo = lazy(() => import("./pages/Editextrauserinfo"));
+const GamePage = lazy(() => import("./pages/Games"));
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -161,6 +163,7 @@ function App() {
                 <Route path="/Settings" element={<Settings />} />
                 <Route path="/addextrauserinfo" element={<Addextrauserinfo />} />
                 <Route path="/editextrauserinfo/:id" element={<Editextrauserinfo />} />
+                <Route path="/Games" element={<GamePage />} />
               </Routes>
             </Suspense>
           </Container>
@@ -209,7 +212,7 @@ function App() {
                     <MuiLink component={Link} to="/public-learning" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Learning
                     </MuiLink>
-                    <MuiLink component={Link} to="/games" underline="none" color="inherit" sx={{ mx: 2 }}>
+                    <MuiLink component={Link} to="/Games" underline="none" color="inherit" sx={{ mx: 2 }}>
                       Games
                     </MuiLink>
                     <MuiLink component={Link} to="/Donation" underline="none" color="inherit" sx={{ mx: 2 }}>
