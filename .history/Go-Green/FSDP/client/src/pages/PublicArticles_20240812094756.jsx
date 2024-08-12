@@ -18,7 +18,7 @@ function PublicArticles() {
     const [filterBookmarks, setFilterBookmarks] = useState(false);
     const [isLoading, setIsLoading] = useState(true); // Loading state
 
-    const userId = 1;
+    const userId = 1; // Assume a logged-in user ID, replace with actual logi
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
